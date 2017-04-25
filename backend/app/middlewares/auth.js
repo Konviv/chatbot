@@ -1,11 +1,11 @@
-var user = require('../models/user');
+var User = require('../models/user');
 
 module.exports = function(req, res, next) {
   var token = req.headers.authorization;
   if (token) {
-    user.isValidToken(token, function(result) {
+    User.isValidToken(token, function(result) {
       if (result) {
-        // req.params.uid = result.uid;
+        req.params.uid = result.uid;
         next();
       } else {
         res.status(401).json({
