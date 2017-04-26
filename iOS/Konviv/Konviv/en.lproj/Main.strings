@@ -1,0 +1,111 @@
+
+/* Class = "UITextView"; text = "Lorem ipsum dolor sit er elit lamet, consectetaur cillium adipisicing pecu, sed do eiusmod tempor "; ObjectID = "1bq-nc-f8u"; */
+"1bq-nc-f8u.text" = "Lorem ipsum dolor sit er elit lamet, consectetaur cillium adipisicing pecu, sed do eiusmod tempor ";
+
+/* Class = "UILabel"; text = "Tools"; ObjectID = "2YN-4R-F5r"; */
+"2YN-4R-F5r.text" = "Tools";
+
+/* Class = "UILabel"; text = "Tools"; ObjectID = "2we-ou-xed"; */
+"2we-ou-xed.text" = "Tools";
+
+/* Class = "UIButton"; normalTitle = "Sign In"; ObjectID = "37c-mU-139"; */
+"37c-mU-139.normalTitle" = "Sign In";
+
+/* Class = "UILabel"; text = "Dashboard"; ObjectID = "8zc-Gg-NLH"; */
+"8zc-Gg-NLH.text" = "Dashboard";
+
+/* Class = "UILabel"; text = "Chat"; ObjectID = "Awx-EJ-E2S"; */
+"Awx-EJ-E2S.text" = "Chat";
+
+/* Class = "UINavigationItem"; title = "Dashboard"; ObjectID = "Ded-gk-Xa6"; */
+"Ded-gk-Xa6.title" = "Dashboard";
+
+/* Class = "UIButton"; normalTitle = "Register"; ObjectID = "GTS-yM-zVA"; */
+"GTS-yM-zVA.normalTitle" = "Register";
+
+/* Class = "UITextField"; placeholder = "Enter your email"; ObjectID = "H20-Ia-ip3"; */
+"H20-Ia-ip3.placeholder" = "Enter your email";
+
+/* Class = "UIButton"; normalTitle = "Login wirh Facebook"; ObjectID = "HHZ-5g-sBI"; */
+"HHZ-5g-sBI.normalTitle" = "Login wirh Facebook";
+
+/* Class = "UINavigationItem"; title = "Tools"; ObjectID = "IBX-2G-Tme"; */
+"IBX-2G-Tme.title" = "Tools";
+
+/* Class = "UILabel"; text = "Dashboard"; ObjectID = "L3u-LP-Iwl"; */
+"L3u-LP-Iwl.text" = "Dashboard";
+
+/* Class = "UIButton"; normalTitle = "Continuen with Facebook"; ObjectID = "LRO-Ih-815"; */
+"LRO-Ih-815.normalTitle" = "Continuen with Facebook";
+
+/* Class = "UILabel"; text = "Lorem iposom"; ObjectID = "Mu5-wr-loO"; */
+"Mu5-wr-loO.text" = "Lorem iposom";
+
+/* Class = "UILabel"; text = "Dashboard"; ObjectID = "P3s-9z-139"; */
+"P3s-9z-139.text" = "Dashboard";
+
+/* Class = "UINavigationItem"; title = "Chat"; ObjectID = "QAD-1L-2fp"; */
+"QAD-1L-2fp.title" = "Chat";
+
+/* Class = "UINavigationItem"; title = "Sign In"; ObjectID = "SU7-Dh-Wkl"; */
+"SU7-Dh-Wkl.title" = "Sign In";
+
+/* Class = "UILabel"; text = "Konviv "; ObjectID = "SUV-sA-91Z"; */
+"SUV-sA-91Z.text" = "Konviv ";
+
+/* Class = "UITextField"; placeholder = "Enter your email"; ObjectID = "Vfi-ru-HV8"; */
+"Vfi-ru-HV8.placeholder" = "Enter your email";
+
+/* Class = "UINavigationItem"; title = "Dashboard"; ObjectID = "WB0-F8-oZ6"; */
+"WB0-F8-oZ6.title" = "Dashboard";
+
+/* Class = "UIButton"; normalTitle = "Add Bank Account"; ObjectID = "Z7w-7X-IHh"; */
+"Z7w-7X-IHh.normalTitle" = "Add Bank Account";
+
+/* Class = "UILabel"; text = "Tools"; ObjectID = "Zzy-dH-rTY"; */
+"Zzy-dH-rTY.text" = "Tools";
+
+/* Class = "UIButton"; normalTitle = "Sign In"; ObjectID = "an2-th-Yrv"; */
+"an2-th-Yrv.normalTitle" = "Sign In";
+
+/* Class = "UILabel"; text = "For got your password"; ObjectID = "bAf-i6-qgs"; */
+"bAf-i6-qgs.text" = "For got your password";
+
+/* Class = "UILabel"; text = "Lorem iposom"; ObjectID = "dm0-eN-cS1"; */
+"dm0-eN-cS1.text" = "Lorem iposom";
+
+/* Class = "UIButton"; normalTitle = "Button"; ObjectID = "euc-74-hmo"; */
+"euc-74-hmo.normalTitle" = "Button";
+
+/* Class = "UILabel"; text = "Welcome to your"; ObjectID = "frh-fF-IDf"; */
+"frh-fF-IDf.text" = "Welcome to your";
+
+/* Class = "UITextField"; placeholder = "Enter your password"; ObjectID = "j6J-mb-WOp"; */
+"j6J-mb-WOp.placeholder" = "Enter your password";
+
+/* Class = "UITextView"; text = "Lorem ipsum dolor sit er elit lamet, consectetaur cillium adipisicing pecu, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua"; ObjectID = "l3F-0X-NE9"; */
+"l3F-0X-NE9.text" = "Lorem ipsum dolor sit er elit lamet, consectetaur cillium adipisicing pecu, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua";
+
+/* Class = "UINavigationItem"; title = "Join the conversation"; ObjectID = "m1e-Ut-Fw6"; */
+"m1e-Ut-Fw6.title" = "Join the conversation";
+
+/* Class = "UILabel"; text = "Dashboard"; ObjectID = "mqG-Hl-DzU"; */
+"mqG-Hl-DzU.text" = "Dashboard";
+
+/* Class = "UINavigationItem"; title = "Tools"; ObjectID = "q8P-VQ-BHd"; */
+"q8P-VQ-BHd.title" = "Tools";
+
+/* Class = "UILabel"; text = "Chat"; ObjectID = "rM5-aW-PZ8"; */
+"rM5-aW-PZ8.text" = "Chat";
+
+/* Class = "UILabel"; text = "Chat"; ObjectID = "rOQ-vp-eCV"; */
+"rOQ-vp-eCV.text" = "Chat";
+
+/* Class = "UIButton"; normalTitle = "Register"; ObjectID = "tRv-tV-iUh"; */
+"tRv-tV-iUh.normalTitle" = "Register";
+
+/* Class = "UITextField"; placeholder = "Enter your password"; ObjectID = "uJh-ni-Yp5"; */
+"uJh-ni-Yp5.placeholder" = "Enter your password";
+
+/* Class = "UITextField"; text = "$4,98"; ObjectID = "we5-GU-gd0"; */
+"we5-GU-gd0.text" = "$4,98";
