@@ -1,9 +1,9 @@
-var User = require('../models/user');
+var FirebaseAuth = require('../models/firebase_auth');
 
 module.exports = function(req, res, next) {
   var token = req.headers.authorization;
   if (token) {
-    User.isValidToken(token, function(result) {
+    FirebaseAuth.isValidToken(token, function(result) {
       if (result) {
         req.params.uid = result.uid;
         next();

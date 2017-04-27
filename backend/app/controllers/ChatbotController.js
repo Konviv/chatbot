@@ -10,7 +10,7 @@ var conversation = new watsonConversation({
 });
 
 // SET MIDDLEWARES
-// router.use(require('../middlewares/auth'));
+router.use(require('../middlewares/firebase_auth'));
 
 // GET ACCEPT-LANGUAGE TO SELECT THE RIGHT WORKSPACE TO USE
 var requestLocale = function(acceptLanguage) {
