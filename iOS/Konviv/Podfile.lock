@@ -30,10 +30,12 @@ PODS:
     - GoogleToolboxForMac/NSString+URLArguments (= 2.1.1)
   - GoogleToolboxForMac/NSString+URLArguments (2.1.1)
   - GTMSessionFetcher/Core (1.1.9)
+  - Plaid (1.0.4)
 
 DEPENDENCIES:
   - Firebase
   - Firebase/Auth
+  - Plaid
 
 SPEC CHECKSUMS:
   Firebase: 4b66b5b59c43edac745b87f0c87e42cdd0279c13
@@ -43,7 +45,8 @@ SPEC CHECKSUMS:
   FirebaseInstanceID: b9eedd6846fb5e1f0f7279e1deaa7a7e4cf8392e
   GoogleToolboxForMac: 8e329f1b599f2512c6b10676d45736bcc2cbbeb0
   GTMSessionFetcher: 5c046c76a1f859bc9c187e918f18e4fc7bb57b5e
+  Plaid: a87b0944ec1d635de4a247a56f54f50db38ac39e
 
-PODFILE CHECKSUM: 9d89f1554ae68a85b513325e673e32111d9cae48
+PODFILE CHECKSUM: 3cf4f3b0069644a64d327e31d9100dd2ad50c2ad
 
 COCOAPODS: 1.0.1

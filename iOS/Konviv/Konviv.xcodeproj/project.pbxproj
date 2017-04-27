@@ -23,6 +23,7 @@
 		B86F39251E984D6E00FD3A57 /* DashboardViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B86F39241E984D6E00FD3A57 /* DashboardViewController.swift */; };
 		B86F39271E984D7A00FD3A57 /* ToolsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B86F39261E984D7A00FD3A57 /* ToolsViewController.swift */; };
 		B86F39291E984D8500FD3A57 /* ChatViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B86F39281E984D8500FD3A57 /* ChatViewController.swift */; };
+		B8886D041EB2362D00FBAB21 /* AddBankViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B8886D031EB2362D00FBAB21 /* AddBankViewController.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -46,6 +47,7 @@
 		B86F39261E984D7A00FD3A57 /* ToolsViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ToolsViewController.swift; sourceTree = "<group>"; };
 		B86F39281E984D8500FD3A57 /* ChatViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ChatViewController.swift; sourceTree = "<group>"; };
 		B87D1A841EB0E4A50047617D /* Konviv.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = Konviv.entitlements; sourceTree = "<group>"; };
+		B8886D031EB2362D00FBAB21 /* AddBankViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AddBankViewController.swift; sourceTree = "<group>"; };
 		E6C43E009F189BA6C18EE32D /* Pods-Konviv.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Konviv.release.xcconfig"; path = "Pods/Target Support Files/Pods-Konviv/Pods-Konviv.release.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -116,6 +118,7 @@
 				B86F39201E98068700FD3A57 /* SignInViewController.swift */,
 				B86F39241E984D6E00FD3A57 /* DashboardViewController.swift */,
 				B86F39261E984D7A00FD3A57 /* ToolsViewController.swift */,
+				B8886D031EB2362D00FBAB21 /* AddBankViewController.swift */,
 			);
 			path = Konviv;
 			sourceTree = "<group>";
@@ -260,6 +263,7 @@
 				B86F390E1E97F8AA00FD3A57 /* Konviv.xcdatamodeld in Sources */,
 				B86F39291E984D8500FD3A57 /* ChatViewController.swift in Sources */,
 				B86F391D1E98066700FD3A57 /* HomeViewController.swift in Sources */,
+				B8886D041EB2362D00FBAB21 /* AddBankViewController.swift in Sources */,
 				B82893F01EAEA82300527C08 /* LandingViewController.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

@@ -8,4 +8,7 @@ target 'Konviv' do
   # Pods for Konviv
   pod 'Firebase'
   pod 'Firebase/Auth'
+  pod 'Plaid'  , '~> 1.0.4'
+  
+  
 end

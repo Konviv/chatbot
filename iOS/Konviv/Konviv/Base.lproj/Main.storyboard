@@ -258,7 +258,7 @@
                                 <inset key="contentEdgeInsets" minX="0.0" minY="10" maxX="0.0" maxY="10"/>
                                 <state key="normal" title="Add Bank Account"/>
                                 <connections>
-                                    <segue destination="Owz-lU-ijs" kind="show" id="2zk-G2-MJd"/>
+                                    <action selector="didTabOnAddBankAccount:" destination="qK4-ln-ect" eventType="touchUpInside" id="3RP-uq-W7b"/>
                                 </connections>
                             </button>
                             <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="9YI-yM-dwW">
@@ -296,7 +296,7 @@
         <!--Dashboard-->
         <scene sceneID="hmf-TL-6Gx">
             <objects>
-                <viewController id="Owz-lU-ijs" customClass="DashboardViewController" customModule="Konviv" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController id="Owz-lU-ijs" customClass="AddBankViewController" customModule="Konviv" customModuleProvider="target" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="VDt-ro-qaH"/>
                         <viewControllerLayoutGuide type="bottom" id="TER-gl-txP"/>
@@ -305,29 +305,46 @@
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="euc-74-hmo">
-                                <rect key="frame" x="0.0" y="93" width="46" height="30"/>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Plaid Link iOS " textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="s8v-LG-XSx">
+                                <rect key="frame" x="120" y="28" width="134" height="21"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                <nil key="textColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="xTg-Ci-aTm">
+                                <rect key="frame" x="152" y="169" width="46" height="30"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <state key="normal" title="Button"/>
+                            </button>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="bvi-g5-fOU">
+                                <rect key="frame" x="66" y="133" width="219" height="21"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                <nil key="textColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="a1g-gF-FHb">
+                                <rect key="frame" x="31" y="70" width="46" height="30"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <state key="normal" title="Button"/>
                                 <connections>
-                                    <segue destination="dBa-B8-SCp" kind="show" id="ZMG-cP-PAV"/>
+                                    <segue destination="qK4-ln-ect" kind="show" id="05B-CV-NxF"/>
                                 </connections>
                             </button>
-                            <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="left" contentVerticalAlignment="center" text="$4,98" borderStyle="roundedRect" textAlignment="center" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="we5-GU-gd0">
-                                <rect key="frame" x="139" y="94" width="97" height="30"/>
-                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                <color key="textColor" red="0.058823529409999999" green="0.40000000000000002" blue="0.81568627449999997" alpha="1" colorSpace="calibratedRGB"/>
-                                <fontDescription key="fontDescription" type="system" pointSize="20"/>
-                                <textInputTraits key="textInputTraits"/>
-                            </textField>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                     </view>
                     <navigationItem key="navigationItem" title="Dashboard" id="WB0-F8-oZ6"/>
+                    <connections>
+                        <outlet property="button" destination="xTg-Ci-aTm" id="8IW-pR-IUB"/>
+                        <outlet property="buttonContainerView" destination="3Ke-1d-3fc" id="ALk-3B-rXf"/>
+                        <outlet property="label" destination="bvi-g5-fOU" id="IsC-fm-Rpo"/>
+                    </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="eiD-31-rTk" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="4916" y="-304"/>
+            <point key="canvasLocation" x="4916" y="-304.4977511244378"/>
         </scene>
         <!--Dashboard View Controller-->
         <scene sceneID="Ije-0o-vO6">
@@ -747,6 +764,14 @@
                                     <segue destination="xBe-lg-Wza" kind="show" id="9kR-Db-rAD"/>
                                 </connections>
                             </button>
+                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="ulu-9X-Utg">
+                                <rect key="frame" x="164" y="210" width="46" height="30"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <state key="normal" title="Button"/>
+                                <connections>
+                                    <segue destination="Owz-lU-ijs" kind="show" id="UOT-gp-t4P"/>
+                                </connections>
+                            </button>
                         </subviews>
                         <color key="backgroundColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
                     </view>
@@ -786,12 +811,12 @@
         <image name="tools" width="512" height="512"/>
     </resources>
     <inferredMetricsTieBreakers>
+        <segue reference="9kR-Db-rAD"/>
+        <segue reference="qMB-LQ-axd"/>
+        <segue reference="tO4-P8-v0G"/>
+        <segue reference="yfT-QR-AUK"/>
         <segue reference="xdJ-cD-QLJ"/>
         <segue reference="ocb-tN-eK8"/>
-        <segue reference="yfT-QR-AUK"/>
         <segue reference="HTy-oU-KEl"/>
-        <segue reference="qMB-LQ-axd"/>
-        <segue reference="9kR-Db-rAD"/>
-        <segue reference="tO4-P8-v0G"/>
     </inferredMetricsTieBreakers>
 </document>
