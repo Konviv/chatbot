@@ -1,6 +1,7 @@
 var envvar             = require('envvar');
 var router             = require('express').Router();
 var messagesHelper     = require('../helpers/MessagesHelper');
+var chatbotValidator   = require('../validators/chatbot_validator');
 var watsonConversation = require('watson-developer-cloud/conversation/v1');
 // WATSON CONVERSTION SERVICES CONNECTION
 var conversation = new watsonConversation({
@@ -10,7 +11,7 @@ var conversation = new watsonConversation({
 });
 
 // SET MIDDLEWARES
-// router.use(require('../middlewares/firebase_auth'));
+router.use(require('../middlewares/firebase_auth'));
 
 // GET ACCEPT-LANGUAGE TO SELECT THE RIGHT WORKSPACE TO USE
 var requestLocale = function(acceptLanguage) {
@@ -63,7 +64,7 @@ router.post('/start', function(req, res) {
 router.post('/', function(req, res) {
   var message = req.body.message;
   var context = req.body.context;
-  if (!message || !message.trim() || !context) {
+  if (!chatbotValidator.isValidMessage(message, context)) {
     return res.status(400).json({
       code: 400,
       reason: 'No message or context found'
