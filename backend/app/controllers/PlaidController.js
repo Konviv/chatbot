@@ -1,6 +1,7 @@
 var router        = require('express').Router();
 var plaid         = require('plaid');
 var envvar        = require('envvar');
+var moment        = require('moment');
 var Item          = require('../models/plaid_item');
 var itemValidator = require('../validators/item_validator');
 // PLAID APP CONNECTION
@@ -27,12 +28,12 @@ router.post('/authenticate', function(req, res) {
   var publicToken = req.body.item.public_token;
   plaidClient.exchangePublicToken(publicToken, function(error, tokenResponse) {
     if (error !== null) {
-      res.status(error.error_code).json({
-        code: error.error_code,
+      res.status(error.status_code).json({
+        code: error.status_code,
         reason: 'Could not exchange public_token!'
       });
     } else {
-      var uid = req.params.uid;
+      var uid = req.query.uid;
       var item = {
         access_token: tokenResponse.access_token,
         institution: {
@@ -54,7 +55,7 @@ router.post('/authenticate', function(req, res) {
 });
 
 router.get('/accounts', function(req, res) {
-  var uid = req.params.uid;
+  var uid = req.query.uid;
   Item.getAll(uid, function(data) {
     var items = data.items;
     if (data.items.length > 0) {
@@ -84,7 +85,7 @@ router.get('/accounts', function(req, res) {
 });
 
 router.get('/accounts_total', function(req, res) {
-  var uid = req.params.uid;
+  var uid = req.query.uid;
   Item.getAll(uid, function(data) {
     var items = data.items;
     if (data.items.length > 0) {
@@ -97,6 +98,41 @@ router.get('/accounts_total', function(req, res) {
         // TODO. POST MESSAGE: bankTotal
         res.json({
           output: bankTotal
+        });
+      });
+    } else {
+      // TODO. POST MESSAGE: You don't have banks registered in your account yet.
+      res.json({
+        output: "You don't have banks registered in your account yet."
+      });
+    }
+  }, function(error) {
+    res.status(500).json({
+      code: 500,
+      reason: 'There is no connection with the bank in this moment. Try again later'
+    });
+  });
+});
+
+router.get('/transactions', function(req, res) {
+  var uid = req.query.uid;
+
+  var startDate = moment().subtract(30, 'days').format('YYYY-MM-DD');
+  var endDate = moment().format('YYYY-MM-DD');
+  var options = {};
+
+  Item.getAll(uid, function(data) {
+    var items = data.items;
+    if (data.items.length > 0) {
+      var promises = [];
+      items.forEach(function(item) {
+        promises.push(Item.getTransactions(plaidClient, item.access_token, item.institution.name, startDate, endDate, options));
+      });
+      Promise.all(promises).then(function(result) {
+        var transactions = result.join('\n');
+        // TODO. POST MESSAGE: transactions
+        res.json({
+          output: transactions
         });
       });
     } else {
@@ -152,7 +188,7 @@ router.get('/accounts_total', function(req, res) {
 //         });
 //     });
 // });
-//
+
 // router.get('/auth', function(req, res) {
 //   plaidClient.getAuth(ACCESS_TOKEN, function(error, response) {
 //     console.log('----------------------------------------------');
@@ -166,7 +202,7 @@ router.get('/accounts_total', function(req, res) {
 //     });
 //   });
 // });
-//
+
 // router.post('/transactions', function(request, response, next) {
 //     // Pull transactions for the Item for the last 30 days
 //     var startDate = moment().subtract(30, 'days').format('YYYY-MM-DD');

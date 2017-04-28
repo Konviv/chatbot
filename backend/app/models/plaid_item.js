@@ -100,3 +100,23 @@ exports.getTotalOnBank = function(plaidClient, accessToken, institutionName) {
     });
   });
 };
+
+exports.getTransactions = function(plaidClient, accessToken, institutionName, startDate, endDate, options) {
+  return new Promise(function(resolve, reject) {
+    plaidClient.getTransactions(accessToken, startDate, endDate, options, function(error, result) {
+      if (error !== null) {
+        resolve(institutionName + ': No connection with the bank.\n');
+      } else {
+        if (result.transactions.length > 0) {
+          var transactions = [];
+          result.transactions.forEach(function(transaction) {
+            transactions.push('$' + transaction.amount + ' at ' + transaction.name + ' on ' + transaction.date);
+          });
+          resolve(institutionName + '\nYour last transactions are ' + transactions.join(', '));
+        } else {
+          resolve(institutionName + ": You don't have transactions registered.\n");
+        }
+      }
+    });
+  });
+};

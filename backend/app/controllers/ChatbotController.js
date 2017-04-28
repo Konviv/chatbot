@@ -10,7 +10,7 @@ var conversation = new watsonConversation({
 });
 
 // SET MIDDLEWARES
-router.use(require('../middlewares/firebase_auth'));
+// router.use(require('../middlewares/firebase_auth'));
 
 // GET ACCEPT-LANGUAGE TO SELECT THE RIGHT WORKSPACE TO USE
 var requestLocale = function(acceptLanguage) {
@@ -20,7 +20,6 @@ var requestLocale = function(acceptLanguage) {
 };
 
 router.get('/messages', function(req, res) {
-  // var uid = req.params.uid;   // <- this is got by Auth
   var uid = req.query.uid;
   messagesHelper.readMessages(uid, function(data) {
     res.json(data);
@@ -29,8 +28,9 @@ router.get('/messages', function(req, res) {
   });
 });
 
-router.get('/', function(req, res) {
-  var locale = requestLocale(req.headers['accept-language']);
+router.post('/start', function(req, res) {
+  var uid          = req.query.uid;
+  var locale       = requestLocale(req.headers['accept-language']);
   var workspace_id = locale === 'es' ? envvar.string('WATSON_ES_WORKSPACE_ID')
                                      : envvar.string('WATSON_EN_WORKSPACE_ID');
   var message = {
@@ -40,11 +40,22 @@ router.get('/', function(req, res) {
   };
   conversation.message(message, function(error, response) {
     if (error) {
-      return res.json(error);
+      return res.status(error.code).json({
+        code: error.code,
+        reason: 'Watson Conversation says: ' + error.error
+      });
     }
-    res.json({
-      output: response.output.text,
-      context: response.context
+    var output = response.output.text.join('\n');
+    messagesHelper.pushMessage(uid, output, false, function(){
+      res.json({
+        output: output,
+        context: response.context
+      });
+    }, function(error){
+      res.status(500).json({
+        code: 500,
+        reason: 'The transaction could not be processed in this moment. Please try again later'
+      });
     });
   });
 });
@@ -59,7 +70,6 @@ router.post('/', function(req, res) {
     });
   }
   // STORE MESSAGE SENT
-  // var uid = req.params.uid;   // <- this is got by Auth
   var uid = req.query.uid;
   messagesHelper.pushMessage(uid, message, true, function() {
     var locale = requestLocale(req.headers['accept-language']);
@@ -72,12 +82,14 @@ router.post('/', function(req, res) {
       workspace_id: workspace_id,
     };
     conversation.message(data, function(error, response) {
-
-
-
       if (error) {
-        return res.json(error);
+        return res.status(error.code).json({
+          code: error.code,
+          reason: 'Watson Conversation says: ' + error.error
+        });
       }
+
+
       // Check what action is next.
       if (response.output.action === 'use_different_actions') {
         // if (response.intents.length > 0) {
@@ -92,8 +104,10 @@ router.post('/', function(req, res) {
         if (response.output.text.length !== 0) {
           console.log(response.output.text[0]);
         }
+
+        var output = response.output.text.join('\n');
         return res.json({
-          output: response.output.text,
+          output: output,
           context: response.context,
         });
       }
@@ -101,7 +115,7 @@ router.post('/', function(req, res) {
 
 
     });
-  }, function() {
+  }, function(error) {
     res.status(500).json({
       code: 500,
       reason: 'Message could not be processed.'

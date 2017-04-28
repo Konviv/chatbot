@@ -5,7 +5,7 @@ module.exports = function(req, res, next) {
   if (token) {
     FirebaseAuth.isValidToken(token, function(result) {
       if (result) {
-        req.params.uid = result.uid;
+        req.query.uid = result.uid;
         next();
       } else {
         res.status(401).json({

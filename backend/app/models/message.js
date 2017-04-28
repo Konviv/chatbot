@@ -23,7 +23,7 @@ exports.store = function(uid, message, successCallback, errorCallback) {
   var messagesRef = usersRef.child(util.format('%s/messages', uid));
   var newMessage = messagesRef.push().set(message, function(error) {
     if (error) {
-      errorCallback();
+      errorCallback(error);
     } else {
       successCallback();
     }
