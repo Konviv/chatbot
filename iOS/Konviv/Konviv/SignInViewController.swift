@@ -13,12 +13,21 @@ class SignInViewController: UIViewController {
 
     @IBOutlet weak var emailTxtField: UITextField!
     @IBOutlet weak var passwordTxtField: UITextField!
+    @IBOutlet weak var signInBtn: UIButton!
+    
     
     override func viewDidLoad() {
         super.viewDidLoad()
         self.view.addGestureRecognizer(UITapGestureRecognizer(target: self.view, action: #selector(UIView.endEditing(_:))))
+        let btnRadious = 20
+        //let btnBackgroundColor = UIColor(red: 36.0, green: 41.0, blue: 36.0, alpha: 1)
+
+        signInBtn?.layer.cornerRadius = CGFloat(btnRadious)
+        
+        //signInBtn?.backgroundColor = btnBackgroundColor
         // Do any additional setup after loading the view.
     }
+    
 
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
@@ -47,13 +56,15 @@ class SignInViewController: UIViewController {
                 return;
             }
             user?.getTokenForcingRefresh(true) {idToken, err in
-                /*print("---TOKEN---")
-                print(err)
-                print(idToken)
+                //print("---TOKEN---")
+                //print(err)
                 
-                print(user?.email)
-                print("---END TOKEN---")
-                */
+                UserDefaults.standard.setValue(idToken, forKey: "user_auth_token")
+                //print(UserDefaults.standard.string(forKey: "user_auth_token"))
+                //print(user?.email)
+                //print("---END TOKEN---")
+                
+                
                 let vc = self.storyboard?.instantiateViewController(withIdentifier: "Dashboard")
                 self.present(vc!, animated: true)
             }

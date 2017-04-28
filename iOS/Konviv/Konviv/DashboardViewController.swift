@@ -18,6 +18,9 @@ class DashboardViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         self.navigationItem.setHidesBackButton(true, animated: false)
+        print("*-*-*-*-*-*-*-*-*TOKEN*-*-*-*-*-*-*-*-*")
+        print(UserDefaults.standard.string(forKey: "user_auth_token"))
+
     }
     
     override func didReceiveMemoryWarning() {
@@ -100,23 +103,27 @@ class DashboardViewController: UIViewController {
                             ]
                     ]
             ]
-        let json = try? JSONSerialization.data(withJSONObject: dictionary, options: [])
-        //print("-----------------------------JSON PRINTING-------------------------------")
-        // let convertedString = String(data: json!, encoding: String.Encoding.utf8) // the data will be converted to the string
-        //NSLog(convertedString!)
-        let endpoint = "https://api.github.com/users";
-        
+        let json = try? JSONSerialization.data(withJSONObject: dictionary)
+        print("-----------------------------R E Q U E S T-------------------------------")
+       let convertedString = String(data: json!, encoding: String.Encoding.utf8) // the data will be converted to the string
+        NSLog(convertedString!)
+        let endpoint = "http://192.168.1.3:8080/api/v1/plaid/authenticate";
+        let auth_token = UserDefaults.standard.string(forKey: "user_auth_token")
         guard let baseURL = URL(string : endpoint) else {
             return false
         }
         var request = URLRequest(url: baseURL)
-        request.httpMethod = "GET"
-        //request.addValue("token", forHTTPHeaderField: "Autorization")
-        //request.addValue("application/json", forHTTPHeaderField: "Content-Type")
-        //request.httpBody = json
+        request.httpMethod = "POST"
+        request.addValue(auth_token!, forHTTPHeaderField: "Autorization")
+        request.addValue("application/json", forHTTPHeaderField: "Content-Type")
+        request.addValue("application/json", forHTTPHeaderField: "Accept")
+        request.httpBody = json
+        
         
         let task = URLSession.shared.dataTask(with: request) { (data: Data?, response: URLResponse?, error: Error?) in
-            
+            print("")
+            print("····················································R E S P O N S E ·······················································")
+            print("")
             if error != nil
             {
                 print("error=\(error)")
@@ -132,6 +139,11 @@ class DashboardViewController: UIViewController {
         task.resume()
         
         return false
+    }
+    @IBAction func didTabObLogout(_ sender: Any) {
+        let vc = self.storyboard?.instantiateViewController(withIdentifier: "Landingscreen")
+        UserDefaults.standard.set("", forKey: "user_auth_token")
+        self.present(vc!, animated: true)
     }
     
     /*

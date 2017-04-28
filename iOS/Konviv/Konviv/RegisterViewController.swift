@@ -38,6 +38,18 @@ class RegisterViewController: UIViewController {
         FIRAuth.auth()?.createUser(withEmail: email!, password: password!) {(user, error)in
             print(user)
             print(error)
+            if(user == nil){
+                let alert = UIAlertController(title: "Error", message: "", preferredStyle: .actionSheet)
+                let okAction = UIAlertAction(title: "OK", style: .default) { action in
+                    alert.dismiss(animated: true, completion: nil)
+                }
+                alert.addAction(okAction)
+                self.present(alert,animated: true)
+                return
+            }
+            let vc = self.storyboard?.instantiateViewController(withIdentifier: "SignIn")
+            self.present(vc!, animated: true)
+
         }
         
     }
