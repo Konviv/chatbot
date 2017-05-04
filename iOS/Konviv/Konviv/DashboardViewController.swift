@@ -8,6 +8,7 @@
 
 import UIKit
 import LinkKit
+import Firebase
 class DashboardViewController: UIViewController {
     
     override func awakeFromNib() {
@@ -17,7 +18,6 @@ class DashboardViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        self.navigationItem.setHidesBackButton(true, animated: false)
         print("*-*-*-*-*-*-*-*-*TOKEN*-*-*-*-*-*-*-*-*")
         print(UserDefaults.standard.string(forKey: "user_auth_token"))
 
@@ -104,23 +104,24 @@ class DashboardViewController: UIViewController {
                     ]
             ]
         let json = try? JSONSerialization.data(withJSONObject: dictionary)
+        
         print("-----------------------------R E Q U E S T-------------------------------")
-       let convertedString = String(data: json!, encoding: String.Encoding.utf8) // the data will be converted to the string
+        let convertedString = String(data: json!, encoding: String.Encoding.utf8) // the data will be converted to the string
         NSLog(convertedString!)
-        let endpoint = "http://192.168.1.3:8080/api/v1/plaid/authenticate";
-        let auth_token = UserDefaults.standard.string(forKey: "user_auth_token")
-        guard let baseURL = URL(string : endpoint) else {
-            return false
-        }
-        var request = URLRequest(url: baseURL)
+        print(json as! NSData)
+        let endpoint = "http://192.168.1.13:8080/api/v1/plaid/authenticate";
+        let url = URL(string: endpoint)!
+        let session = URLSession.shared
+        let request = NSMutableURLRequest(url: url)
+        
         request.httpMethod = "POST"
-        request.addValue(auth_token!, forHTTPHeaderField: "Autorization")
+        request.httpBody = json
+        let auth_token = UserDefaults.standard.string(forKey: "user_auth_token")
+        request.addValue(auth_token!, forHTTPHeaderField: "Authorization")
         request.addValue("application/json", forHTTPHeaderField: "Content-Type")
         request.addValue("application/json", forHTTPHeaderField: "Accept")
-        request.httpBody = json
-        
-        
-        let task = URLSession.shared.dataTask(with: request) { (data: Data?, response: URLResponse?, error: Error?) in
+        print(request.allHTTPHeaderFields)
+        let task = session.dataTask(with: request as URLRequest) { (data: Data?, response: URLResponse?, error: Error?) in
             print("")
             print("····················································R E S P O N S E ·······················································")
             print("")
@@ -129,22 +130,48 @@ class DashboardViewController: UIViewController {
                 print("error=\(error)")
                 return
             }
+            print("response = \(response!)")
+            self.handleResponse(respose: response!)
+            let res = String(data: data!, encoding: String.Encoding.utf8) // the data will be converted to the string
+            NSLog(res!)
+            print("response = \(data!  as! NSData)")
             
-            // You can print out response object
-            print("response = \(response)")
-            print("response = \(data)")
-            
-            //Let's convert response sent from a server side script to a NSDictionary object:
-                  }
+            }
         task.resume()
         
         return false
     }
-    @IBAction func didTabObLogout(_ sender: Any) {
+    
+    func handleResponse(respose: URLResponse) -> Void {
+        let res = respose as? HTTPURLResponse
+        let status = res?.statusCode
+        
+        if (status! >= 200 && status! < 300) {
+            
+        }else if(status! >= 400) {
+            if let user = FIRAuth.auth()?.currentUser {
+                
+                user.getTokenForcingRefresh(true, completion: { (val:String?, err: Error?) in
+                    if(err != nil){
+                        UserDefaults.standard.setValue("user_auth_token", forKey: val!)
+                    }
+                })
+                let alert = UIAlertController(title: "Konviv", message: "The transaction was unsuccessful, please try again", preferredStyle: UIAlertControllerStyle.alert)
+                let actionOk = UIAlertAction(title: "Ok", style: UIAlertActionStyle.default, handler: nil)
+                alert.addAction(actionOk)
+                self.present(alert, animated: true, completion: nil)
+            } else {
+                self.didTabOnLogout(Any)
+            }
+
+        }
+    }
+    @IBAction func didTabOnLogout(_ sender: Any) {
         let vc = self.storyboard?.instantiateViewController(withIdentifier: "Landingscreen")
         UserDefaults.standard.set("", forKey: "user_auth_token")
         self.present(vc!, animated: true)
     }
+    
     
     /*
      // MARK: - Navigation

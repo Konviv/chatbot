@@ -20,12 +20,7 @@ class SignInViewController: UIViewController {
         super.viewDidLoad()
         self.view.addGestureRecognizer(UITapGestureRecognizer(target: self.view, action: #selector(UIView.endEditing(_:))))
         let btnRadious = 20
-        //let btnBackgroundColor = UIColor(red: 36.0, green: 41.0, blue: 36.0, alpha: 1)
-
         signInBtn?.layer.cornerRadius = CGFloat(btnRadious)
-        
-        //signInBtn?.backgroundColor = btnBackgroundColor
-        // Do any additional setup after loading the view.
     }
     
 
@@ -47,39 +42,90 @@ class SignInViewController: UIViewController {
         let email = emailTxtField.text
         let password  = passwordTxtField.text
         FIRAuth.auth()?.signIn(withEmail: email!, password: password!) { (user, error) in
-            /*print("-----RESPONSE----")
+            print("")
+            print("error")
             print(error)
-            print(user)
-            print("-------END SIGNIN-------")*/
-            if (user == nil){
-                self.responseUser();
+            if (error != nil){
+                
+                self.prensetAler(msg: self.handleError(error: error as! NSError))
                 return;
             }
             user?.getTokenForcingRefresh(true) {idToken, err in
-                //print("---TOKEN---")
-                //print(err)
                 
                 UserDefaults.standard.setValue(idToken, forKey: "user_auth_token")
-                //print(UserDefaults.standard.string(forKey: "user_auth_token"))
-                //print(user?.email)
-                //print("---END TOKEN---")
+                let vc = self.storyboard?.instantiateViewController(withIdentifier: "dashboardNavController")
+                let appDelegate = UIApplication.shared.delegate as! AppDelegate
+                appDelegate.window?.rootViewController = vc
                 
-                
-                let vc = self.storyboard?.instantiateViewController(withIdentifier: "Dashboard")
-                self.present(vc!, animated: true)
             }
         }
 
     }
     
-    func responseUser() {
-        let alert = UIAlertController(title: "Error", message: "Invalid Credentials", preferredStyle: .actionSheet)
+    func handleError(error:NSError) -> String{
+        switch error.code {
+        case FIRAuthErrorCode.errorCodeInvalidEmail.rawValue:
+            return "Invalid email"
+        case FIRAuthErrorCode.errorCodeInvalidCredential.rawValue:
+            return "Invalid credentials"
+        case FIRAuthErrorCode.errorCodeOperationNotAllowed.rawValue:
+            return "Operation not allowed"
+        case FIRAuthErrorCode.errorCodeInvalidCredential.rawValue:
+            return "Invalid credentials"
+        case FIRAuthErrorCode.errorCodeEmailAlreadyInUse.rawValue:
+            return "The email is already in use"
+        case FIRAuthErrorCode.errorCodeUserDisabled.rawValue:
+            return "User account disabled"
+        case FIRAuthErrorCode.errorCodeWrongPassword.rawValue:
+            return "Invalid password"
+        case FIRAuthErrorCode.errorCodeUserNotFound.rawValue:
+            return "User account no founded"
+        case 17011:
+            return "There is no user record corresponding to those credentials"
+        default:
+            return "External error"
+        }
+    }
+    
+    func prensetAler(msg:String) -> Void {
+        
+        let alert = UIAlertController(title: "Error", message: msg, preferredStyle: .actionSheet)
         let okAction = UIAlertAction(title: "OK", style: .default) { action in
             alert.dismiss(animated: true, completion: nil)
         }
         alert.addAction(okAction)
         self.present(alert,animated: true)
-        print("INVALID CREDENDTIALS")
+    }
+    
+    @IBAction func didTabOnResetPassword(_ sender: Any) {
+        let alertPrompt = UIAlertController(title: "Reset password", message: "Enter your email.", preferredStyle: UIAlertControllerStyle.alert)
+        alertPrompt.addTextField { (emailToResetPass:UITextField) in
+            emailToResetPass.placeholder = "example@domain.com"
+        }
+        let restablishBtn = UIAlertAction(title: "Restablish", style: UIAlertActionStyle.default) { (action:UIAlertAction) in
+            self.sendEmail(email: (alertPrompt.textFields?.first?.text)!)
+        }
+        let cancelBtn = UIAlertAction(title: "Cancel", style: UIAlertActionStyle.cancel) { (action:UIAlertAction) in }
+        alertPrompt.addAction(restablishBtn)
+        alertPrompt.addAction(cancelBtn)
+        self.present(alertPrompt,animated:true,completion:nil)
+    }
+    
+    func sendEmail(email:String) -> Void {
+        if(email.isEmpty){
+            self.prensetAler(msg: "You didn't type an email address")
+            return
+        }
+        FIRAuth.auth()?.sendPasswordReset(withEmail: email) { error in
+            if let error = error {
+                self.prensetAler(msg: self.handleError(error: error as NSError))
+                return
+            }
+            let alert = UIAlertController(title: "Success", message: "Check your email.", preferredStyle: UIAlertControllerStyle.alert)
+            let actionOk = UIAlertAction(title: "Ok", style: UIAlertActionStyle.default){ (action:UIAlertAction) in }
+            alert.addAction(actionOk)
+            self.present(alert, animated: true, completion: nil)
+        }
     }
     /*
     // MARK: - Navigation
