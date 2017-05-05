@@ -58,6 +58,15 @@ router.get('/messages', function(req, res) {
   });
 });
 
+var getContext = function(req){
+  var context = !req.body.context ? {} : req.body.context;
+  // context.timezone = 'America/Costa_Rica';
+  if (req.query.display_name && !context.display_name) {
+    context.display_name = req.query.display_name;
+  }
+  return context;
+};
+
 router.post('/start', function(req, res) {
   var uid          = req.query.uid;
   var locale       = requestLocale(req.headers['accept-language']);
@@ -65,7 +74,7 @@ router.post('/start', function(req, res) {
                                      : envvar.string('WATSON_EN_WORKSPACE_ID');
   var message = {
     input: {},
-    context: !req.body.context ? {} : req.body.context,
+    context: getContext(req),
     workspace_id: workspace_id,
   };
   watsonClient.message(message, function(error, response) {
@@ -83,8 +92,7 @@ router.post('/start', function(req, res) {
 
 router.post('/', function(req, res) {
   var message = req.body.message;
-  var context = req.body.context;
-  if (!chatbotValidator.isValidMessage(message, context)) {
+  if (!chatbotValidator.isValidMessage(message, req.body.context)) {
     return res.status(400).json({
       code: 400,
       reason: 'No message or context found'
@@ -98,7 +106,7 @@ router.post('/', function(req, res) {
     // CREATE AND SEND MESSAGE TO WATSON
     var data = {
       input: { text: message },
-      context: context,
+      context: getContext(req),
       workspace_id: workspace_id,
     };
     watsonClient.message(data, function(error, response) {
@@ -108,8 +116,8 @@ router.post('/', function(req, res) {
           reason: 'Watson Conversation says: ' + error.error
         });
       }
-      context    = response.context;
-      var action = response.output.action;
+      var context = response.context;
+      var action  = response.output.action;
       if (!action) {
         storeWatsonOutput(uid, response.output.text, context, res);
       } else {
