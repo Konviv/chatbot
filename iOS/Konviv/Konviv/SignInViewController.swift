@@ -21,6 +21,8 @@ class SignInViewController: UIViewController {
         self.view.addGestureRecognizer(UITapGestureRecognizer(target: self.view, action: #selector(UIView.endEditing(_:))))
         let btnRadious = 20
         signInBtn?.layer.cornerRadius = CGFloat(btnRadious)
+        self.navigationItem.setHidesBackButton(true, animated: false)
+
     }
     
 
@@ -37,13 +39,26 @@ class SignInViewController: UIViewController {
         self.navigationController?.title? = "Sign In"
 
     }
-   
+    @IBAction func EndEditing(_ sender: Any) {
+        animateViewMoving(up: true, moveValue: 150)
+    }
+    @IBAction func BeginEditing(_ sender: Any) {
+        animateViewMoving(up: false, moveValue: 150)
+    }
+    func animateViewMoving (up:Bool, moveValue :CGFloat){
+        let movementDuration:TimeInterval = 0.2
+        let movement:CGFloat = ( up ? -moveValue : moveValue)
+        UIView.beginAnimations( "animateView", context: nil)
+        UIView.setAnimationBeginsFromCurrentState(true)
+        UIView.setAnimationDuration(movementDuration )
+        self.view.frame = self.view.frame.offsetBy(dx: 0,  dy: movement)
+        UIView.commitAnimations()
+    }
     @IBAction func didTabOnSigIn(_ sender: Any) {
         let email = emailTxtField.text
         let password  = passwordTxtField.text
+        self.view.endEditing(true)
         FIRAuth.auth()?.signIn(withEmail: email!, password: password!) { (user, error) in
-            print("")
-            print("error")
             print(error)
             if (error != nil){
                 

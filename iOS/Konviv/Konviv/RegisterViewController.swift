@@ -20,7 +20,8 @@ class RegisterViewController: UIViewController {
         super.viewDidLoad()
         let btnRadious = 20
         registerBtn.layer.cornerRadius = CGFloat(btnRadious)
-
+        self.view.addGestureRecognizer(UITapGestureRecognizer(target:self.view, action: #selector(UIView.endEditing(_:))))
+        self.navigationItem.setHidesBackButton(true, animated: false)
         // Do any additional setup after loading the view.
     }
 
@@ -36,13 +37,27 @@ class RegisterViewController: UIViewController {
         // Show the navigation bar on other view controllers
         self.navigationController?.isNavigationBarHidden = true
     }
-    
+    @IBAction func EndEditing(_ sender: Any) {
+        animateViewMoving(up: true, moveValue: 150)
+    }
+    @IBAction func BeginEditing(_ sender: Any) {
+        animateViewMoving(up: false, moveValue: 150)
+    }
+    func animateViewMoving (up:Bool, moveValue :CGFloat){
+        let movementDuration:TimeInterval = 0.2
+        let movement:CGFloat = ( up ? -moveValue : moveValue)
+        UIView.beginAnimations( "animateView", context: nil)
+        UIView.setAnimationBeginsFromCurrentState(true)
+        UIView.setAnimationDuration(movementDuration )
+        self.view.frame = self.view.frame.offsetBy(dx: 0,  dy: movement)
+        UIView.commitAnimations()
+    }
     @IBAction func didTabOnRegister(_ sender: Any) {
         let name = nameTextField.text
         let lastname = lastNameField.text
         let email = emailTxtField.text
         let password = passwordTxtField.text
-        print("touched")
+        self.view.endEditing(true)
         if (name?.isEmpty)! {
             self.prensetAlert(msg: "The name is empy")
             return

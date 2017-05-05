@@ -244,17 +244,6 @@
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <color key="backgroundColor" red="0.92600160256410247" green="0.92600160256410247" blue="0.92600160256410247" alpha="1" colorSpace="calibratedRGB"/>
                             </button>
-                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Z7w-7X-IHh">
-                                <rect key="frame" x="111" y="335" width="152" height="44"/>
-                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                <inset key="contentEdgeInsets" minX="0.0" minY="10" maxX="0.0" maxY="10"/>
-                                <state key="normal" title="Add Bank Account">
-                                    <color key="titleColor" red="0.0" green="0.56592547204814592" blue="0.9011418269" alpha="1" colorSpace="calibratedRGB"/>
-                                </state>
-                                <connections>
-                                    <action selector="didTabOnAddBankAccount:" destination="qK4-ln-ect" eventType="touchUpInside" id="3RP-uq-W7b"/>
-                                </connections>
-                            </button>
                             <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="9YI-yM-dwW">
                                 <rect key="frame" x="63" y="582" width="43" height="45"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
@@ -276,7 +265,7 @@
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <state key="normal" title="see my bank accounts"/>
                                 <connections>
-                                    <segue destination="JQI-AI-Juf" kind="show" id="qBq-i3-NOR"/>
+                                    <segue destination="E8g-Ep-YZI" kind="show" id="VQx-da-D1Y"/>
                                 </connections>
                             </button>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Once you add your first bank account, you will see your transaction history here" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="4" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="8Ta-Gr-mSg">
@@ -287,6 +276,18 @@
                                 <color key="textColor" red="0.50256086680699907" green="0.4937794001004393" blue="0.50899439102564115" alpha="1" colorSpace="calibratedRGB"/>
                                 <color key="highlightedColor" red="0.80228365384615385" green="0.80228365384615385" blue="0.80228365384615385" alpha="1" colorSpace="calibratedRGB"/>
                             </label>
+                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Z7w-7X-IHh">
+                                <rect key="frame" x="67" y="339" width="240" height="40"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <color key="backgroundColor" red="0.28342389471504714" green="0.67259494757067828" blue="1" alpha="1" colorSpace="calibratedRGB"/>
+                                <inset key="contentEdgeInsets" minX="0.0" minY="10" maxX="0.0" maxY="10"/>
+                                <state key="normal" title="Add Bank Account">
+                                    <color key="titleColor" red="0.97244727560157473" green="1" blue="0.99436165289610512" alpha="1" colorSpace="calibratedRGB"/>
+                                </state>
+                                <connections>
+                                    <action selector="didTabOnAddBankAccount:" destination="qK4-ln-ect" eventType="touchUpInside" id="3RP-uq-W7b"/>
+                                </connections>
+                            </button>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <gestureRecognizers/>
@@ -296,12 +297,16 @@
                         </connections>
                     </view>
                     <navigationItem key="navigationItem" title="Dashboard" id="Ded-gk-Xa6">
-                        <barButtonItem key="leftBarButtonItem" title="Item" id="ECE-6g-gfj">
+                        <barButtonItem key="leftBarButtonItem" title="Logout" id="ECE-6g-gfj">
+                            <color key="tintColor" red="0.50256086680000001" green="0.49377940009999999" blue="0.50899439099999999" alpha="1" colorSpace="calibratedRGB"/>
                             <connections>
                                 <action selector="didTabOnLogout:" destination="qK4-ln-ect" id="0Ql-Vv-Z0H"/>
                             </connections>
                         </barButtonItem>
                     </navigationItem>
+                    <connections>
+                        <outlet property="addBankAccountBtn" destination="Z7w-7X-IHh" id="pw4-6Z-Sk2"/>
+                    </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="or8-2G-nh9" userLabel="First Responder" sceneMemberID="firstResponder"/>
                 <swipeGestureRecognizer direction="right" id="NaW-qF-GDh"/>
@@ -394,14 +399,32 @@
                                 <color key="textColor" white="0.33333333333333331" alpha="1" colorSpace="calibratedWhite"/>
                                 <nil key="highlightedColor"/>
                             </label>
+                            <tableView clipsSubviews="YES" contentMode="scaleToFill" fixedFrame="YES" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="44" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="Npe-Yl-HBZ">
+                                <rect key="frame" x="18" y="118" width="346" height="434"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                <prototypes>
+                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="menuItem" id="aJd-LY-tN9">
+                                        <rect key="frame" x="0.0" y="28" width="346" height="44"/>
+                                        <autoresizingMask key="autoresizingMask"/>
+                                        <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="aJd-LY-tN9" id="JBG-aI-WeQ">
+                                            <rect key="frame" x="0.0" y="0.0" width="346" height="43"/>
+                                            <autoresizingMask key="autoresizingMask"/>
+                                        </tableViewCellContentView>
+                                    </tableViewCell>
+                                </prototypes>
+                            </tableView>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                     </view>
                     <navigationItem key="navigationItem" title="Dashboard" id="ipg-TM-HcY"/>
+                    <connections>
+                        <outlet property="tableView" destination="Npe-Yl-HBZ" id="QEv-pO-bto"/>
+                    </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="leF-Uc-Yv1" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="5708" y="-99.400299850074973"/>
+            <point key="canvasLocation" x="6647.1999999999998" y="-99.400299850074973"/>
         </scene>
         <!--Dashboard-->
         <scene sceneID="hmf-TL-6Gx">
@@ -437,7 +460,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="eiD-31-rTk" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="9933.6000000000004" y="-712.89355322338838"/>
+            <point key="canvasLocation" x="10872.799999999999" y="-712.89355322338838"/>
         </scene>
         <!--Dashboard View Controller-->
         <scene sceneID="Ije-0o-vO6">
@@ -455,7 +478,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="jrX-VF-5hW" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="8994.3999999999996" y="-44.527736131934034"/>
+            <point key="canvasLocation" x="9933.6000000000004" y="-44.527736131934034"/>
         </scene>
         <!--Chat-->
         <scene sceneID="J7K-Rh-4xP">
@@ -551,7 +574,7 @@
                 <swipeGestureRecognizer direction="left" id="CLM-E5-v0y"/>
                 <swipeGestureRecognizer direction="right" id="D0X-sx-qew"/>
             </objects>
-            <point key="canvasLocation" x="7566" y="-485"/>
+            <point key="canvasLocation" x="8504.7999999999993" y="-485.30734632683664"/>
         </scene>
         <!--Tools-->
         <scene sceneID="Uhq-Iy-ecb">
@@ -990,22 +1013,50 @@
             <point key="canvasLocation" x="4770" y="-1400"/>
         </scene>
         <!--Navigation Controller-->
-        <scene sceneID="jKK-nz-z9n">
+        <scene sceneID="GrO-BY-xjJ">
             <objects>
-                <navigationController automaticallyAdjustsScrollViewInsets="NO" id="JQI-AI-Juf" sceneMemberID="viewController">
+                <navigationController automaticallyAdjustsScrollViewInsets="NO" id="E8g-Ep-YZI" sceneMemberID="viewController">
                     <toolbarItems/>
-                    <navigationBar key="navigationBar" contentMode="scaleToFill" id="q0X-ZO-sPh">
+                    <navigationBar key="navigationBar" contentMode="scaleToFill" id="qRR-dT-UbC">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="44"/>
                         <autoresizingMask key="autoresizingMask"/>
                     </navigationBar>
                     <nil name="viewControllers"/>
                     <connections>
-                        <segue destination="Dim-w4-YJO" kind="relationship" relationship="rootViewController" id="9Xq-go-Cji"/>
+                        <segue destination="Dim-w4-YJO" kind="relationship" relationship="rootViewController" id="N6U-3G-Xac"/>
                     </connections>
                 </navigationController>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="Drf-FN-knw" userLabel="First Responder" sceneMemberID="firstResponder"/>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="OSj-kO-M18" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="4768.8000000000002" y="-99.400299850074973"/>
+            <point key="canvasLocation" x="5708" y="-99.400299850074973"/>
+        </scene>
+        <!--User Accounts Table View Controller-->
+        <scene sceneID="1nD-w5-d6Y">
+            <objects>
+                <tableViewController id="mDC-E9-mxd" customClass="UserAccountsTableViewController" customModule="Konviv" customModuleProvider="target" sceneMemberID="viewController">
+                    <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="69" sectionHeaderHeight="28" sectionFooterHeight="28" id="Kca-9F-oXL">
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                        <prototypes>
+                            <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="menuItem" rowHeight="69" id="0Lc-35-W7P">
+                                <rect key="frame" x="0.0" y="28" width="375" height="69"/>
+                                <autoresizingMask key="autoresizingMask"/>
+                                <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="0Lc-35-W7P" id="HdD-eL-mDL">
+                                    <rect key="frame" x="0.0" y="0.0" width="375" height="68"/>
+                                    <autoresizingMask key="autoresizingMask"/>
+                                </tableViewCellContentView>
+                            </tableViewCell>
+                        </prototypes>
+                        <connections>
+                            <outlet property="dataSource" destination="mDC-E9-mxd" id="nXw-s1-GUH"/>
+                            <outlet property="delegate" destination="mDC-E9-mxd" id="Tid-EG-DZh"/>
+                        </connections>
+                    </tableView>
+                </tableViewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="VbX-VP-0LQ" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="4389.6000000000004" y="447.52623688155927"/>
         </scene>
     </scenes>
     <resources>
@@ -1016,13 +1067,13 @@
         <image name="tools" width="512" height="512"/>
     </resources>
     <inferredMetricsTieBreakers>
-        <segue reference="RAs-As-J62"/>
-        <segue reference="9kR-Db-rAD"/>
-        <segue reference="bQB-AW-hnQ"/>
         <segue reference="bDV-Bf-M6V"/>
-        <segue reference="Jo1-J2-2xQ"/>
-        <segue reference="oOO-iS-PLT"/>
-        <segue reference="shV-ul-zrv"/>
+        <segue reference="7rP-Er-bS9"/>
         <segue reference="VSc-so-8sF"/>
+        <segue reference="shV-ul-zrv"/>
+        <segue reference="oOO-iS-PLT"/>
+        <segue reference="bQB-AW-hnQ"/>
+        <segue reference="9kR-Db-rAD"/>
+        <segue reference="tO4-P8-v0G"/>
     </inferredMetricsTieBreakers>
 </document>

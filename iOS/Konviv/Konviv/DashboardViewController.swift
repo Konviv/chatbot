@@ -11,6 +11,7 @@ import LinkKit
 import Firebase
 class DashboardViewController: UIViewController {
     
+    @IBOutlet weak var addBankAccountBtn: UIButton!
     override func awakeFromNib() {
         super.awakeFromNib()
         //   NotificationCenter.defaultCenter.addObserver(self, selector: #selector(AddBankViewController.(_:)), name: "PLDPlaidLinkSetupFinished", object: nil)
@@ -18,9 +19,8 @@ class DashboardViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        print("*-*-*-*-*-*-*-*-*TOKEN*-*-*-*-*-*-*-*-*")
-        print(UserDefaults.standard.string(forKey: "user_auth_token"))
-
+        let btnRadious = 20
+        addBankAccountBtn?.layer.cornerRadius = CGFloat(btnRadious)
     }
     
     override func didReceiveMemoryWarning() {
@@ -109,7 +109,7 @@ class DashboardViewController: UIViewController {
         let convertedString = String(data: json!, encoding: String.Encoding.utf8) // the data will be converted to the string
         NSLog(convertedString!)
         print(json as! NSData)
-        let endpoint = "http://192.168.1.13:8080/api/v1/plaid/authenticate";
+        let endpoint = "http://192.168.1.9:8080/api/v1/plaid/authenticate";
         let url = URL(string: endpoint)!
         let session = URLSession.shared
         let request = NSMutableURLRequest(url: url)
