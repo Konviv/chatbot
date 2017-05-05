@@ -11,6 +11,7 @@
 		B82893E41EAE72D400527C08 /* PageViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B82893E31EAE72D400527C08 /* PageViewController.swift */; };
 		B82893F01EAEA82300527C08 /* LandingViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B82893EF1EAEA82300527C08 /* LandingViewController.swift */; };
 		B867675C1EAFE62C0067CAAC /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = B867675B1EAFE62C0067CAAC /* GoogleService-Info.plist */; };
+		B86AB1451EBD13DA00320DB9 /* UserAccountsTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B86AB1441EBD13DA00320DB9 /* UserAccountsTableViewController.swift */; };
 		B86F39061E97F8AA00FD3A57 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = B86F39051E97F8AA00FD3A57 /* AppDelegate.swift */; };
 		B86F39081E97F8AA00FD3A57 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B86F39071E97F8AA00FD3A57 /* ViewController.swift */; };
 		B86F390B1E97F8AA00FD3A57 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = B86F39091E97F8AA00FD3A57 /* Main.storyboard */; };
@@ -23,6 +24,8 @@
 		B86F39251E984D6E00FD3A57 /* DashboardViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B86F39241E984D6E00FD3A57 /* DashboardViewController.swift */; };
 		B86F39271E984D7A00FD3A57 /* ToolsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B86F39261E984D7A00FD3A57 /* ToolsViewController.swift */; };
 		B86F39291E984D8500FD3A57 /* ChatViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B86F39281E984D8500FD3A57 /* ChatViewController.swift */; };
+		B8884F981EBBCDED00050DE1 /* UserAccountsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B8884F971EBBCDED00050DE1 /* UserAccountsViewController.swift */; };
+		B8886D041EB2362D00FBAB21 /* AddBankViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B8886D031EB2362D00FBAB21 /* AddBankViewController.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -31,6 +34,7 @@
 		B82893E31EAE72D400527C08 /* PageViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PageViewController.swift; sourceTree = "<group>"; };
 		B82893EF1EAEA82300527C08 /* LandingViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LandingViewController.swift; sourceTree = "<group>"; };
 		B867675B1EAFE62C0067CAAC /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
+		B86AB1441EBD13DA00320DB9 /* UserAccountsTableViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UserAccountsTableViewController.swift; sourceTree = "<group>"; };
 		B86F39021E97F8A900FD3A57 /* Konviv.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Konviv.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		B86F39051E97F8AA00FD3A57 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		B86F39071E97F8AA00FD3A57 /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
@@ -46,6 +50,8 @@
 		B86F39261E984D7A00FD3A57 /* ToolsViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ToolsViewController.swift; sourceTree = "<group>"; };
 		B86F39281E984D8500FD3A57 /* ChatViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ChatViewController.swift; sourceTree = "<group>"; };
 		B87D1A841EB0E4A50047617D /* Konviv.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = Konviv.entitlements; sourceTree = "<group>"; };
+		B8884F971EBBCDED00050DE1 /* UserAccountsViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UserAccountsViewController.swift; sourceTree = "<group>"; };
+		B8886D031EB2362D00FBAB21 /* AddBankViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AddBankViewController.swift; sourceTree = "<group>"; };
 		E6C43E009F189BA6C18EE32D /* Pods-Konviv.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Konviv.release.xcconfig"; path = "Pods/Target Support Files/Pods-Konviv/Pods-Konviv.release.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -107,6 +113,7 @@
 				B82893EF1EAEA82300527C08 /* LandingViewController.swift */,
 				B86F39091E97F8AA00FD3A57 /* Main.storyboard */,
 				B82893E31EAE72D400527C08 /* PageViewController.swift */,
+				B86AB1441EBD13DA00320DB9 /* UserAccountsTableViewController.swift */,
 				B86F390F1E97F8AA00FD3A57 /* Assets.xcassets */,
 				B86F39111E97F8AA00FD3A57 /* LaunchScreen.storyboard */,
 				B86F39141E97F8AA00FD3A57 /* Info.plist */,
@@ -116,6 +123,8 @@
 				B86F39201E98068700FD3A57 /* SignInViewController.swift */,
 				B86F39241E984D6E00FD3A57 /* DashboardViewController.swift */,
 				B86F39261E984D7A00FD3A57 /* ToolsViewController.swift */,
+				B8886D031EB2362D00FBAB21 /* AddBankViewController.swift */,
+				B8884F971EBBCDED00050DE1 /* UserAccountsViewController.swift */,
 			);
 			path = Konviv;
 			sourceTree = "<group>";
@@ -256,10 +265,13 @@
 				B86F391F1E98067A00FD3A57 /* RegisterViewController.swift in Sources */,
 				B86F39211E98068700FD3A57 /* SignInViewController.swift in Sources */,
 				B86F39271E984D7A00FD3A57 /* ToolsViewController.swift in Sources */,
+				B86AB1451EBD13DA00320DB9 /* UserAccountsTableViewController.swift in Sources */,
 				B86F39061E97F8AA00FD3A57 /* AppDelegate.swift in Sources */,
 				B86F390E1E97F8AA00FD3A57 /* Konviv.xcdatamodeld in Sources */,
 				B86F39291E984D8500FD3A57 /* ChatViewController.swift in Sources */,
 				B86F391D1E98066700FD3A57 /* HomeViewController.swift in Sources */,
+				B8884F981EBBCDED00050DE1 /* UserAccountsViewController.swift in Sources */,
+				B8886D041EB2362D00FBAB21 /* AddBankViewController.swift in Sources */,
 				B82893F01EAEA82300527C08 /* LandingViewController.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
