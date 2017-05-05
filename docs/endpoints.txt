@@ -1,0 +1,33 @@
+Get all messages
+  - Method  -> GET
+  - URL     -> http://192.168.1.9:8080/api/v1/chatbot/messages
+  - HEADERS -> Authorization: [firebase_auth_token]
+  - PARAMS  -> N/A
+
+Start Chatbot Conversation
+  - Method  -> POST
+  - URL     -> http://192.168.1.9:8080/api/v1/chatbot/start
+  - HEADERS -> Authorization: [firebase_auth_token]; Content-Type: application/json
+  - BODY    -> N/A || { context: watson_conversation_context }
+
+Send Message to Chatbot
+  - Method  -> POST
+  - URL     -> http://192.168.1.9:8080/api/v1/chatbot/
+  - HEADERS -> Authorization: [firebase_auth_token]; Content-Type: application/json
+  - BODY    -> { "message": "message to send",
+                 "context": watson_conversation_context
+               }
+
+Sign in within a Bank
+- Method  -> POST
+- URL     -> http://192.168.1.9:8080/api/v1/plaid/authenticate
+- HEADERS -> Authorization: [firebase_auth_token]; Content-Type: application/json
+- BODY    -> {
+                item: {
+                  "public_token": 'HJS3LKS359S',
+                  "institution": {
+                    "id": 'ins_5',
+                    "name": 'Citi'
+                  }
+                }
+              }
