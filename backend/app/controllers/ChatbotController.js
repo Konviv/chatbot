@@ -1,14 +1,9 @@
-var envvar             = require('envvar');
-var router             = require('express').Router();
-var messagesHelper     = require('../helpers/MessagesHelper');
-var chatbotValidator   = require('../validators/chatbot_validator');
-var watsonConversation = require('watson-developer-cloud/conversation/v1');
-// WATSON CONVERSTION SERVICES CONNECTION
-var conversation = new watsonConversation({
-  username: envvar.string('WATSON_USERNAME'),
-  password: envvar.string('WATSON_PASSWORD'),
-  version_date: watsonConversation.VERSION_DATE_2017_02_03
-});
+var envvar           = require('envvar');
+var router           = require('express').Router();
+var watsonClient     = require('../clients/watson_client').Client();
+var chatbotValidator = require('../validators/chatbot_validator');
+var messagesHelper   = require('../helpers/MessagesHelper');
+var accountsHelper   = require('../helpers/AccountsHelper');
 
 // SET MIDDLEWARES
 router.use(require('../middlewares/firebase_auth'));
@@ -18,6 +13,40 @@ var requestLocale = function(acceptLanguage) {
   var regex = /[a-z]{2,}/;
   var match = regex.exec(acceptLanguage);
   return match ? match[0] : 'en';
+};
+
+var storeWatsonOutput = function(uid, output, context, res) {
+  messagesHelper.pushMessage(uid, output, false, function() {
+    res.json({ output: output, context: context });
+  }, function(error) {
+    res.status(500).json({ code: 500, reason: 'The transaction could not be processed in this moment. Please try again later' });
+  });
+};
+
+var bankRequest = function(uid, action, entities) {
+  return new Promise(function(resolve, reject) {
+    if (action === 'total_money') {
+      accountsHelper.getAccountsTotal(uid, resolve, reject);
+    } else if (action === 'accounts_summary') {
+      accountsHelper.getAccountsSummary(uid, resolve, reject);
+    } else if (action === 'last_affected_account') {
+      accountsHelper.getLastAffectedAccount(uid, resolve, reject);
+    } else if (action === 'spending_avg') {
+      accountsHelper.getSpendingAvg(uid, resolve, reject);
+    } else if (action === 'last_transactions') {
+      if (entities[0].entity === 'sys-number') {
+        accountsHelper.getLastTransactions(uid, parseInt(entities[0].value), resolve, reject);
+      } else {
+        reject({ code: 400, reason: 'The question has a bad format. Please rephrase your question' });
+      }
+    } else if (action === 'most_expensive_bill' || action === 'cheapest_bill') {
+      if (entities[0].entity === 'featured_bill') {
+        accountsHelper.getFeaturedTransaction(uid, action, entities[0].value, resolve, reject);
+      } else {
+        reject({ code: 400, reason: 'The question has a bad format. Please rephrase your question' });
+      }
+    }
+  });
 };
 
 router.get('/messages', function(req, res) {
@@ -39,25 +68,16 @@ router.post('/start', function(req, res) {
     context: !req.body.context ? {} : req.body.context,
     workspace_id: workspace_id,
   };
-  conversation.message(message, function(error, response) {
+  watsonClient.message(message, function(error, response) {
     if (error) {
       return res.status(error.code).json({
         code: error.code,
         reason: 'Watson Conversation says: ' + error.error
       });
     }
-    var output = response.output.text.join('\n');
-    messagesHelper.pushMessage(uid, output, false, function(){
-      res.json({
-        output: output,
-        context: response.context
-      });
-    }, function(error){
-      res.status(500).json({
-        code: 500,
-        reason: 'The transaction could not be processed in this moment. Please try again later'
-      });
-    });
+    var context = response.context;
+    var output  = response.output.text;
+    storeWatsonOutput(uid, output, context, res);
   });
 });
 
@@ -70,7 +90,6 @@ router.post('/', function(req, res) {
       reason: 'No message or context found'
     });
   }
-  // STORE MESSAGE SENT
   var uid = req.query.uid;
   messagesHelper.pushMessage(uid, message, true, function() {
     var locale = requestLocale(req.headers['accept-language']);
@@ -82,39 +101,24 @@ router.post('/', function(req, res) {
       context: context,
       workspace_id: workspace_id,
     };
-    conversation.message(data, function(error, response) {
+    watsonClient.message(data, function(error, response) {
       if (error) {
         return res.status(error.code).json({
           code: error.code,
           reason: 'Watson Conversation says: ' + error.error
         });
       }
-
-
-      // Check what action is next.
-      if (response.output.action === 'use_different_actions') {
-        // if (response.intents.length > 0) {
-        //   console.log('Detected intent: #' + response.intents[0].intent);
-        // }
-        // // entities works like params
-        // if (response.entities.length > 0){
-        //   console.log('Detected entities: @' + response.entities[0].entity + '. value ' + response.entities[0].value);
-        // }
-        // REDIREC TO THE RIGHT METHOD WITH ENTITIES AS PARAMS AND CONTEXT;
+      context    = response.context;
+      var action = response.output.action;
+      if (!action) {
+        storeWatsonOutput(uid, response.output.text, context, res);
       } else {
-        if (response.output.text.length !== 0) {
-          console.log(response.output.text[0]);
-        }
-
-        var output = response.output.text.join('\n');
-        return res.json({
-          output: output,
-          context: response.context,
+        bankRequest(uid, action, response.entities).then(function(result) {
+          storeWatsonOutput(uid, result, context, res);
+        }, function(error) {
+          res.status(error.code).json(error);
         });
       }
-
-
-
     });
   }, function(error) {
     res.status(500).json({

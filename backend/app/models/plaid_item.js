@@ -2,20 +2,14 @@ var util     = require('util');
 var firebase = require('../db/firebase');
 var usersRef = firebase.database().ref('users');
 
-exports.getAll = function(uid, successCallback, errorCallback) {
+exports.store = function(uid, item, successCallback, errorCallback) {
   var itemsRef = usersRef.child(util.format('%s/items', uid));
-  itemsRef.once('value', function(items) {
-    var response = { items: [] };
-    items.forEach(function(item) {
-      response.items.push(item.val());
-    });
-    successCallback(response);
-  }, function (error) {
-    var response = {
-      code: error.code,
-      reason: 'Items read failed'
-    };
-    errorCallback(response);
+  itemsRef.push().set(item, function(error) {
+    if (error) {
+      errorCallback(error);
+    } else {
+      successCallback();
+    }
   });
 };
 
@@ -36,17 +30,6 @@ exports.getByInstitutionId = function(uid, institutionId, successCallback, error
   });
 };
 
-exports.store = function(uid, item, successCallback, errorCallback) {
-  var itemsRef = usersRef.child(util.format('%s/items', uid));
-  itemsRef.push().set(item, function(error) {
-    if (error) {
-      errorCallback(error);
-    } else {
-      successCallback();
-    }
-  });
-};
-
 // exports.update = function(uid, institutionId, values, successCallback, errorCallback) {
 //   var itemsRef = usersRef.child(util.format('%s/items', uid));
 //   itemsRef.update(values, function(error) {
@@ -58,22 +41,56 @@ exports.store = function(uid, item, successCallback, errorCallback) {
 //   });
 // };
 
+exports.getAll = function(uid, successCallback, errorCallback) {
+  var itemsRef = usersRef.child(util.format('%s/items', uid));
+  itemsRef.once('value', function(result) {
+    var items = [];
+    result.forEach(function(item) {
+      items.push(item.val());
+    });
+    successCallback(items);
+  }, function (error) {
+    errorCallback({
+      code: error.code,
+      reason: 'Impossible to read your bank information in this moment. Please try again later'
+    });
+  });
+};
+
+exports.getAccounts = function(plaidClient, accessToken, institutionName) {
+  return new Promise(function(resolve, reject) {
+    plaidClient.getAccounts(accessToken, function(error, result) {
+      if (error !== null) {
+        reject({ code: 500, reason: 'Impossible to stablish connection with the bank in this moment. Please try again later' });
+      } else {
+        var bankDetails = { bank_name: institutionName, accounts: [] };
+        if (result.accounts.length > 0) {
+          result.accounts.forEach(function(account) {
+            bankDetails.accounts.push({ id: account.account_id, name:account.name, balances: account.balances });
+          });
+        }
+        resolve(bankDetails);
+      }
+    });
+  });
+};
+
 exports.getAccountsBalance = function(plaidClient, accessToken, institutionName) {
   return new Promise(function(resolve, reject) {
     plaidClient.getBalance(accessToken, function(error, result) {
       if (error !== null) {
-        resolve(institutionName + ': No connection with the bank.\n');
+        reject({ code: 500, reason: 'Impossible to stablish connection with the bank in this moment. Please try again later' });
       } else {
         if (result.accounts.length > 0) {
-          var bankBalance = institutionName + '\n';
+          var summary = [];
           result.accounts.forEach(function(account) {
             var accountName  = account.name;
             var accountMoney = account.balances.available !== null ? account.balances.available : account.balances.current;
-            bankBalance = bankBalance.concat(accountName, ': $', accountMoney, '\n');
+            summary.push(util.format('Your %s account has $%d in it', accountName, accountMoney));
           });
-          resolve(bankBalance);
+          resolve(institutionName + '\n' + summary.join(', '));
         } else {
-          resolve(institutionName + ': No accounts registered in this bank.\n');
+          resolve(institutionName + '\nNo accounts registered in this bank.');
         }
       }
     });
@@ -84,7 +101,7 @@ exports.getTotalOnBank = function(plaidClient, accessToken, institutionName) {
   return new Promise(function(resolve, reject) {
     plaidClient.getBalance(accessToken, function(error, result) {
       if (error !== null) {
-        resolve(institutionName + ': No connection with the bank.\n');
+        reject({ code: 500, reason: 'Impossible to stablish connection with the bank in this moment. Please try again later' });
       } else {
         if (result.accounts.length > 0) {
           var bankTotal = 0;
@@ -92,29 +109,105 @@ exports.getTotalOnBank = function(plaidClient, accessToken, institutionName) {
             var accountMoney = account.balances.available !== null ? account.balances.available : account.balances.current;
             bankTotal += accountMoney;
           });
-          resolve('The total you have in all of your accounts in ' + institutionName + ' is: $' + bankTotal + '\n');
+          resolve(institutionName + util.format('\nThe total you have in all of your accounts is: $%d', bankTotal));
         } else {
-          resolve(institutionName + ': No accounts registered in this bank.\n');
+          resolve(institutionName + '\nNo accounts registered in this bank.');
         }
       }
     });
   });
 };
 
-exports.getTransactions = function(plaidClient, accessToken, institutionName, startDate, endDate, options) {
+var transformAccounts = function(accountsJSON) {
+  var accounts = {};
+  accountsJSON.forEach(function (account) {
+    accounts[account.account_id] = { name: account.name,
+                                     official_name: account.official_name,
+                                     subtype: account.subtype,
+                                     type: account.type
+                                   };
+  });
+  return accounts;
+};
+
+exports.getLastTransaction = function(plaidClient, accessToken, institutionName, params) {
   return new Promise(function(resolve, reject) {
-    plaidClient.getTransactions(accessToken, startDate, endDate, options, function(error, result) {
+    plaidClient.getTransactions(accessToken, params.start_date, params.end_date, params.options, function(error, result) {
       if (error !== null) {
-        resolve(institutionName + ': No connection with the bank.\n');
+        reject({ code: 500, reason: 'Impossible to stablish connection with the bank in this moment. Please try again later' });
+      } else {
+        if (result.transactions.length > 0) {
+          var transaction = result.transactions[0];
+          var accounts    = transformAccounts(result.accounts);
+          var accountName = accounts[transaction.account_id].name;
+          resolve(util.format('%s\nYour last payment was $%d from your %s account for %s.', institutionName, transaction.amount, accountName, transaction.name));
+        } else {
+          resolve(institutionName + '\nNo transactions registered.');
+        }
+      }
+    });
+  });
+};
+
+exports.getLastTransactions = function(plaidClient, accessToken, institutionName, params) {
+  return new Promise(function(resolve, reject) {
+    plaidClient.getTransactions(accessToken, params.start_date, params.end_date, params.options, function(error, result) {
+      if (error !== null) {
+        reject({ code: 500, reason: 'Impossible to stablish connection with the bank in this moment. Please try again later' });
       } else {
         if (result.transactions.length > 0) {
           var transactions = [];
           result.transactions.forEach(function(transaction) {
-            transactions.push('$' + transaction.amount + ' at ' + transaction.name + ' on ' + transaction.date);
+            transactions.push(util.format('$%d on %s', transaction.amount, transaction.name));
           });
-          resolve(institutionName + '\nYour last transactions are ' + transactions.join(', '));
+          resolve(util.format('%s\nYour last %d transactions are %s.', institutionName, params.options.count, transactions.join(', ')));
         } else {
-          resolve(institutionName + ": You don't have transactions registered.\n");
+          resolve(institutionName + '\nNo transactions registered.');
+        }
+      }
+    });
+  });
+};
+
+exports.getSpendingAvg = function(plaidClient, accessToken, institutionName, params) {
+  return new Promise(function(resolve, reject) {
+    plaidClient.getTransactions(accessToken, params.start_date, params.end_date, params.options, function(error, result) {
+      if (error !== null) {
+        reject({ code: 500, reason: 'Impossible to stablish connection with the bank in this moment. Please try again later' });
+      } else {
+        if (result.transactions.length > 0) {
+          var transactionsAmount = 0;
+          result.transactions.forEach(function(transaction) {
+            transactionsAmount += transaction.amount;
+          });
+          resolve(util.format('%s\nYour daily average for spending is $%d.', institutionName, (transactionsAmount / params.days)));
+        } else {
+          resolve(institutionName + '\nNo transactions registered.');
+        }
+      }
+    });
+  });
+};
+
+exports.getFeaturedBill = function(plaidClient, accessToken, institutionName, params) {
+  return new Promise(function(resolve, reject) {
+    plaidClient.getTransactions(accessToken, params.start_date, params.end_date, params.options, function(error, result) {
+      if (error !== null) {
+        reject({ code: 500, reason: 'Impossible to stablish connection with the bank in this moment. Please try again later' });
+      } else {
+        if (result.transactions.length > 0) {
+          result.transactions.sort(function(transactionA, transactionB) {
+            return transactionA.amount - transactionB.amount;
+          });
+          var transaction = null;
+          if (params.action === 'most_expensive_bill') {
+            transaction = result.transactions[result.transactions.length - 1];
+          } else {
+            transaction = result.transactions[0];
+          }
+          resolve(util.format('%s\nYour %s bill this month was $%d on %s.', institutionName, params.feature, transaction.amount, transaction.name));
+        } else {
+          resolve(institutionName + '\nNo transactions registered.');
         }
       }
     });
