@@ -5,7 +5,6 @@ exports.get = function(uid, callback) {
     callback(userRecord);
   })
   .catch(function(error) {
-    console.log("Error fetching user data:", error);
     callback(error);
   });
 };

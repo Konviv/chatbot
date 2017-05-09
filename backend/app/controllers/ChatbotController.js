@@ -45,9 +45,53 @@ var bankRequest = function(uid, action, entities) {
       } else {
         reject({ code: 400, reason: 'The question has a bad format. Please rephrase your question' });
       }
+    } else if (action === 'account_funds') {
+      if (entities[0].entity === 'account_category') {
+        accountsHelper.getAccountFunds(uid, entities[0].value, resolve, reject);
+      } else {
+        reject({ code: 400, reason: 'The question has a bad format. Please rephrase your question' });
+      }
+    } else if (action === 'expenses_on_time') {
+      var params = { dates: [], shoppingCategory: '' };
+      entities.forEach(function(entity) {
+        if (entity.entity === 'sys-date') {
+          params.dates.push(entity.value);
+        } else if (entity.entity === 'shopping_category') {
+          params.shoppingCategory = entity.value;
+        }
+      });
+
+
+      // ***********************************************************************
+      if (params.shoppingCategory !== '') {
+        var workspace_id = /*locale === 'es' ? envvar.string('WATSON_ES_WORKSPACE_ID')
+                                           :*/ envvar.string('WATSON_EN_WORKSPACE_ID');
+        var options = { workspace_id: workspace_id, entity: 'shopping_category', value: params.shoppingCategory };
+        watsonClient.getSynonyms(options, function(error, result) {
+
+          console.log("error: " + JSON.stringify(error));
+          console.log("Synonyms: " + JSON.stringify(result));
+          resolve(result);
+
+        });
+      } else {
+        console.log('No hay un entity');
+      }
+    // ***********************************************************************
+
+
+
+
+      // if (params.dates.length > 0) {
+      //   accountsHelper.getExpensesOnTime(uid, resolve, reject, params);
+      // } else {
+      //   reject({ code: 400, reason: 'The question has a bad format. Please rephrase your question' });
+      // }
     }
   });
 };
+
+
 
 router.get('/messages', function(req, res) {
   var uid = req.query.uid;
@@ -70,8 +114,8 @@ var getContext = function(req){
 router.post('/start', function(req, res) {
   var uid          = req.query.uid;
   var locale       = requestLocale(req.headers['accept-language']);
-  var workspace_id = locale === 'es' ? envvar.string('WATSON_ES_WORKSPACE_ID')
-                                     : envvar.string('WATSON_EN_WORKSPACE_ID');
+  var workspace_id = /*locale === 'es' ? envvar.string('WATSON_ES_WORKSPACE_ID')
+                                     :*/ envvar.string('WATSON_EN_WORKSPACE_ID');
   var message = {
     input: {},
     context: getContext(req),
@@ -85,7 +129,7 @@ router.post('/start', function(req, res) {
       });
     }
     var context = response.context;
-    var output  = response.output.text;
+    var output  = response.output.text.join('');
     storeWatsonOutput(uid, output, context, res);
   });
 });
@@ -101,8 +145,8 @@ router.post('/', function(req, res) {
   var uid = req.query.uid;
   messagesHelper.pushMessage(uid, message, true, function() {
     var locale = requestLocale(req.headers['accept-language']);
-    var workspace_id = locale === 'es' ? envvar.string('WATSON_ES_WORKSPACE_ID')
-                                       : envvar.string('WATSON_EN_WORKSPACE_ID');
+    var workspace_id = /*locale === 'es' ? envvar.string('WATSON_ES_WORKSPACE_ID')
+                                       :*/ envvar.string('WATSON_EN_WORKSPACE_ID');
     // CREATE AND SEND MESSAGE TO WATSON
     var data = {
       input: { text: message },
@@ -116,10 +160,11 @@ router.post('/', function(req, res) {
           reason: 'Watson Conversation says: ' + error.error
         });
       }
+console.log(response);
       var context = response.context;
       var action  = response.output.action;
       if (!action) {
-        storeWatsonOutput(uid, response.output.text, context, res);
+        storeWatsonOutput(uid, response.output.text.join(''), context, res);
       } else {
         bankRequest(uid, action, response.entities).then(function(result) {
           storeWatsonOutput(uid, result, context, res);

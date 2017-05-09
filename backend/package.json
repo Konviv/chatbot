@@ -33,7 +33,7 @@
     "i18n": "^0.8.3",
     "moment": "^2.18.1",
     "plaid": "^2.0.3",
-    "watson-developer-cloud": "^2.28.1"
+    "watson-developer-cloud": "^2.31.1"
   },
   "devDependencies": {
     "nodemon": "^1.11.0"

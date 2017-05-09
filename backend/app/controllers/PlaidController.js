@@ -57,4 +57,20 @@ router.get('/accounts', function(req, res) {
   });
 });
 
+router.get('/account_history/:account_id', function(req, res) {
+  var accountId = req.params.account_id;
+  if (!accountId) {
+    res.status(400).json({ code: 400, reason: 'No account id found' });
+  }
+  var uid = req.query.uid;
+  var promise = new Promise(function(resolve, reject) {
+    accountsHelper.getAccountHistory(uid, accountId, resolve, reject);
+  });
+  promise.then(function(result) {
+    res.json(result);
+  }, function(error) {
+    res.status(error.code).json(error);
+  });
+});
+
 module.exports = router;

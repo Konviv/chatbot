@@ -7,7 +7,7 @@ exports.Client = function() {
     watsonClient = new watsonConversation({
       username: envvar.string('WATSON_USERNAME'),
       password: envvar.string('WATSON_PASSWORD'),
-      version_date: watsonConversation.VERSION_DATE_2017_02_03
+      version_date: watsonConversation.VERSION_DATE_2017_04_21
     });
   }
   return watsonClient;

@@ -75,6 +75,30 @@ exports.getAccounts = function(plaidClient, accessToken, institutionName) {
   });
 };
 
+exports.getAccountHistory = function(plaidClient, accessToken, institutionName, params) {
+  return new Promise(function(resolve, reject) {
+    plaidClient.getTransactions(accessToken, params.start_date, params.end_date, params.options, function(error, result) {
+      if (error !== null) {
+        reject({ code: 500, reason: 'Impossible to stablish connection with the bank in this moment. Please try again later' });
+      } else {
+        if (result.accounts.length === 0) {
+          resolve(null);
+        } else {
+          var transactions = [];
+          var accountId = params.options.account_ids[0];
+          result.transactions.forEach(function(transaction) {
+            if (transaction.account_id === accountId) {
+              transactions.push({ amount: transaction.amount, date: transaction.date, name: transaction.name });
+            }
+          });
+          var accounts = transformAccounts(result.accounts);
+          resolve({ bank: institutionName, account: { id: accountId, name: accounts[accountId].name, transactions: transactions }});
+        }
+      }
+    });
+  });
+};
+
 exports.getAccountsBalance = function(plaidClient, accessToken, institutionName) {
   return new Promise(function(resolve, reject) {
     plaidClient.getBalance(accessToken, function(error, result) {
@@ -209,6 +233,56 @@ exports.getFeaturedBill = function(plaidClient, accessToken, institutionName, pa
         } else {
           resolve(institutionName + '\nNo transactions registered.');
         }
+      }
+    });
+  });
+};
+
+exports.getAccountMoney = function(plaidClient, accessToken, institutionName, accountType) {
+  return new Promise(function(resolve, reject) {
+    plaidClient.getBalance(accessToken, function(error, result) {
+      if (error !== null) {
+        reject({ code: 500, reason: 'Impossible to stablish connection with the bank in this moment. Please try again later' });
+      } else {
+        if (result.accounts.length > 0) {
+          var details = [];
+          result.accounts.forEach(function(account) {
+            if (account.type === accountType || account.subtype === accountType || account.name.toLowerCase().includes(accountType)) {
+              var accountMoney = account.balances.available !== null ? account.balances.available : account.balances.current;
+              details.push(util.format('You have $%d in your %s account $s', accountMoney, accountType, account.name));
+            }
+          });
+          if (details.length > 0) {
+            resolve(util.format('%s\n%s.', institutionName, details.join(', ')));
+          } else {
+            resolve(util.format("%s\nYou don't have %s accounts in the bank.", institutionName, accountType));
+          }
+        } else {
+          resolve(institutionName + '\nNo accounts registered in this bank.');
+        }
+      }
+    });
+  });
+};
+
+exports.getExpensesOnTime = function(plaidClient, accessToken, institutionName, params) {
+  return new Promise(function(resolve, reject) {
+    plaidClient.getTransactions(accessToken, params.start_date, params.end_date, params.options, function(error, result) {
+      if (error !== null) {
+        reject({ code: 500, reason: 'Impossible to stablish connection with the bank in this moment. Please try again later' });
+      } else {
+        var amount = 0;
+        if (result.transactions.length > 0) {
+          result.transactions.forEach(function(transaction) {
+
+            if (params.shoppingCategory === '' || transaction.name.toLowerCase().includes(params.shoppingCategory)) {
+              amount += transaction.amount;
+            }
+
+          });
+        }
+        var shopping = params.shoppingCategory === '' ? '' : (' on ' + params.shoppingCategory);
+        resolve(util.format('%s\n%s, you spent $%d%s.', institutionName, params.period, amount, shopping));
       }
     });
   });
