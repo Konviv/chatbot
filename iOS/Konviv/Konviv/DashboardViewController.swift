@@ -109,7 +109,7 @@ class DashboardViewController: UIViewController {
         let convertedString = String(data: json!, encoding: String.Encoding.utf8) // the data will be converted to the string
         NSLog(convertedString!)
         print(json as! NSData)
-        let endpoint = "http://192.168.1.9:8080/api/v1/plaid/authenticate";
+        let endpoint = "http://192.168.1.8:8080/api/v1/plaid/authenticate";
         let url = URL(string: endpoint)!
         let session = URLSession.shared
         let request = NSMutableURLRequest(url: url)

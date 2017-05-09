@@ -26,6 +26,10 @@
 		B86F39291E984D8500FD3A57 /* ChatViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B86F39281E984D8500FD3A57 /* ChatViewController.swift */; };
 		B8884F981EBBCDED00050DE1 /* UserAccountsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B8884F971EBBCDED00050DE1 /* UserAccountsViewController.swift */; };
 		B8886D041EB2362D00FBAB21 /* AddBankViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B8886D031EB2362D00FBAB21 /* AddBankViewController.swift */; };
+		B89875E01EC0B79700EA25B4 /* UserAccountsTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = B89875DF1EC0B79700EA25B4 /* UserAccountsTableViewCell.swift */; };
+		B8C21CD51EC0DACF00979301 /* UserAccounts.swift in Sources */ = {isa = PBXBuildFile; fileRef = B8C21CD41EC0DACF00979301 /* UserAccounts.swift */; };
+		B8C21CD71EC0FED900979301 /* ChatTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = B8C21CD61EC0FED900979301 /* ChatTableViewCell.swift */; };
+		B8C21CD91EC104F800979301 /* Message.swift in Sources */ = {isa = PBXBuildFile; fileRef = B8C21CD81EC104F800979301 /* Message.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -52,6 +56,10 @@
 		B87D1A841EB0E4A50047617D /* Konviv.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = Konviv.entitlements; sourceTree = "<group>"; };
 		B8884F971EBBCDED00050DE1 /* UserAccountsViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UserAccountsViewController.swift; sourceTree = "<group>"; };
 		B8886D031EB2362D00FBAB21 /* AddBankViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AddBankViewController.swift; sourceTree = "<group>"; };
+		B89875DF1EC0B79700EA25B4 /* UserAccountsTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UserAccountsTableViewCell.swift; sourceTree = "<group>"; };
+		B8C21CD41EC0DACF00979301 /* UserAccounts.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UserAccounts.swift; sourceTree = "<group>"; };
+		B8C21CD61EC0FED900979301 /* ChatTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ChatTableViewCell.swift; sourceTree = "<group>"; };
+		B8C21CD81EC104F800979301 /* Message.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Message.swift; sourceTree = "<group>"; };
 		E6C43E009F189BA6C18EE32D /* Pods-Konviv.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Konviv.release.xcconfig"; path = "Pods/Target Support Files/Pods-Konviv/Pods-Konviv.release.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -105,6 +113,8 @@
 		B86F39041E97F8A900FD3A57 /* Konviv */ = {
 			isa = PBXGroup;
 			children = (
+				B8C21CD31EC0D9D200979301 /* Models */,
+				B89875DE1EC0B76100EA25B4 /* Views */,
 				B87D1A841EB0E4A50047617D /* Konviv.entitlements */,
 				B867675B1EAFE62C0067CAAC /* GoogleService-Info.plist */,
 				B86F39051E97F8AA00FD3A57 /* AppDelegate.swift */,
@@ -127,6 +137,24 @@
 				B8884F971EBBCDED00050DE1 /* UserAccountsViewController.swift */,
 			);
 			path = Konviv;
+			sourceTree = "<group>";
+		};
+		B89875DE1EC0B76100EA25B4 /* Views */ = {
+			isa = PBXGroup;
+			children = (
+				B89875DF1EC0B79700EA25B4 /* UserAccountsTableViewCell.swift */,
+				B8C21CD61EC0FED900979301 /* ChatTableViewCell.swift */,
+			);
+			name = Views;
+			sourceTree = "<group>";
+		};
+		B8C21CD31EC0D9D200979301 /* Models */ = {
+			isa = PBXGroup;
+			children = (
+				B8C21CD41EC0DACF00979301 /* UserAccounts.swift */,
+				B8C21CD81EC104F800979301 /* Message.swift */,
+			);
+			name = Models;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -262,14 +290,18 @@
 				B86F39081E97F8AA00FD3A57 /* ViewController.swift in Sources */,
 				B86F39251E984D6E00FD3A57 /* DashboardViewController.swift in Sources */,
 				B82893E41EAE72D400527C08 /* PageViewController.swift in Sources */,
+				B8C21CD91EC104F800979301 /* Message.swift in Sources */,
 				B86F391F1E98067A00FD3A57 /* RegisterViewController.swift in Sources */,
 				B86F39211E98068700FD3A57 /* SignInViewController.swift in Sources */,
 				B86F39271E984D7A00FD3A57 /* ToolsViewController.swift in Sources */,
 				B86AB1451EBD13DA00320DB9 /* UserAccountsTableViewController.swift in Sources */,
+				B89875E01EC0B79700EA25B4 /* UserAccountsTableViewCell.swift in Sources */,
 				B86F39061E97F8AA00FD3A57 /* AppDelegate.swift in Sources */,
 				B86F390E1E97F8AA00FD3A57 /* Konviv.xcdatamodeld in Sources */,
 				B86F39291E984D8500FD3A57 /* ChatViewController.swift in Sources */,
 				B86F391D1E98066700FD3A57 /* HomeViewController.swift in Sources */,
+				B8C21CD71EC0FED900979301 /* ChatTableViewCell.swift in Sources */,
+				B8C21CD51EC0DACF00979301 /* UserAccounts.swift in Sources */,
 				B8884F981EBBCDED00050DE1 /* UserAccountsViewController.swift in Sources */,
 				B8886D041EB2362D00FBAB21 /* AddBankViewController.swift in Sources */,
 				B82893F01EAEA82300527C08 /* LandingViewController.swift in Sources */,
