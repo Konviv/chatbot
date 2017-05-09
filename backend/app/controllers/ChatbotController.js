@@ -8,6 +8,8 @@ var accountsHelper   = require('../helpers/AccountsHelper');
 // SET MIDDLEWARES
 router.use(require('../middlewares/firebase_auth'));
 
+// TODO. Enable workspace selector again
+
 // GET ACCEPT-LANGUAGE TO SELECT THE RIGHT WORKSPACE TO USE
 var requestLocale = function(acceptLanguage) {
   var regex = /[a-z]{2,}/;
@@ -52,46 +54,38 @@ var bankRequest = function(uid, action, entities) {
         reject({ code: 400, reason: 'The question has a bad format. Please rephrase your question' });
       }
     } else if (action === 'expenses_on_time') {
-      var params = { dates: [], shoppingCategory: '' };
+      var params = { dates: [], shoppingCategories: [] };
       entities.forEach(function(entity) {
         if (entity.entity === 'sys-date') {
           params.dates.push(entity.value);
         } else if (entity.entity === 'shopping_category') {
-          params.shoppingCategory = entity.value;
+          params.shoppingCategories.push(entity.value);
         }
       });
-
-
-      // ***********************************************************************
-      if (params.shoppingCategory !== '') {
-        var workspace_id = /*locale === 'es' ? envvar.string('WATSON_ES_WORKSPACE_ID')
-                                           :*/ envvar.string('WATSON_EN_WORKSPACE_ID');
-        var options = { workspace_id: workspace_id, entity: 'shopping_category', value: params.shoppingCategory };
-        watsonClient.getSynonyms(options, function(error, result) {
-
-          console.log("error: " + JSON.stringify(error));
-          console.log("Synonyms: " + JSON.stringify(result));
-          resolve(result);
-
-        });
+      if (params.dates.length === 0) {
+        reject({ code: 400, reason: 'The question has a bad format. Please rephrase your question' });
       } else {
-        console.log('No hay un entity');
+        if (params.shoppingCategories.length > 0) {
+          var workspace_id = /*locale === 'es' ? envvar.string('WATSON_ES_WORKSPACE_ID')
+                                             :*/ envvar.string('WATSON_EN_WORKSPACE_ID');
+          var options = { workspace_id: workspace_id, entity: 'shopping_category', value: params.shoppingCategories[0] };
+          watsonClient.getSynonyms(options, function(error, result) {
+            if (error !== null) {
+              accountsHelper.getExpensesOnTime(uid, resolve, reject, params);
+            } else {
+              result.synonyms.forEach(function(synonym) {
+                params.shoppingCategories.push(synonym.synonym);
+              });
+              accountsHelper.getExpensesOnTime(uid, resolve, reject, params);
+            }
+          });
+        } else {
+          accountsHelper.getExpensesOnTime(uid, resolve, reject, params);
+        }
       }
-    // ***********************************************************************
-
-
-
-
-      // if (params.dates.length > 0) {
-      //   accountsHelper.getExpensesOnTime(uid, resolve, reject, params);
-      // } else {
-      //   reject({ code: 400, reason: 'The question has a bad format. Please rephrase your question' });
-      // }
     }
   });
 };
-
-
 
 router.get('/messages', function(req, res) {
   var uid = req.query.uid;
@@ -160,7 +154,6 @@ router.post('/', function(req, res) {
           reason: 'Watson Conversation says: ' + error.error
         });
       }
-console.log(response);
       var context = response.context;
       var action  = response.output.action;
       if (!action) {

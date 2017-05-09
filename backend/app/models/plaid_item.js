@@ -274,14 +274,12 @@ exports.getExpensesOnTime = function(plaidClient, accessToken, institutionName, 
         var amount = 0;
         if (result.transactions.length > 0) {
           result.transactions.forEach(function(transaction) {
-
-            if (params.shoppingCategory === '' || transaction.name.toLowerCase().includes(params.shoppingCategory)) {
+            if (params.shoppingCategories.length === 0 || params.shoppingCategories.some(function(category) { return transaction.name.toLowerCase().includes(category); })) {
               amount += transaction.amount;
             }
-
           });
         }
-        var shopping = params.shoppingCategory === '' ? '' : (' on ' + params.shoppingCategory);
+        var shopping = params.shoppingCategories.length === 0 ? '' : (' on ' + params.shoppingCategories[0]);
         resolve(util.format('%s\n%s, you spent $%d%s.', institutionName, params.period, amount, shopping));
       }
     });
