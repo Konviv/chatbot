@@ -10,7 +10,9 @@ import UIKit
 
 class ChatTableViewCell: UITableViewCell {
 
-    @IBOutlet weak var chatMessageBox: UILabel!
+    @IBOutlet weak var bubbleReceiveTextView: UITextView!
+    @IBOutlet weak var bubbleSendTextView: UITextView!
+    
     override func awakeFromNib() {
         super.awakeFromNib()
                // Initialization code

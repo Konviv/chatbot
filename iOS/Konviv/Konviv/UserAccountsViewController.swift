@@ -106,7 +106,9 @@ class UserAccountsViewController: UIViewController,  UITableViewDataSource, UITa
                     }
                     self.bankAccounts.append(bank)
                 }
-                self.accountsTableView.reloadData()
+                DispatchQueue.main.async(execute: {
+                    self.accountsTableView.reloadData()
+                })
        //     }
        // }catch let myJSONError {
           //  print(myJSONError)
