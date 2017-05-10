@@ -10,6 +10,7 @@ import Foundation
 class Bank: NSObject {
     var name:String = ""
     var accounts:[Account] = []
+    var transactions: [Transaction] = []
 }
 class Account: NSObject{
     var id:String = ""

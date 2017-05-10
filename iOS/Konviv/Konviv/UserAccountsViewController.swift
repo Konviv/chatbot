@@ -56,11 +56,15 @@ class UserAccountsViewController: UIViewController,  UITableViewDataSource, UITa
     }
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        print(self.bankAccounts[indexPath.section].accounts[indexPath.row].id)
+        //print(self.bankAccounts[indexPath.section].accounts[indexPath.row].id)
+        let vc = storyboard?.instantiateViewController(withIdentifier: "AccountHistory") as! AccountHistoryViewController
+        vc.idAccount = self.bankAccounts[indexPath.section].accounts[indexPath.row].id
+        
+        navigationController?.pushViewController(vc, animated: true)
     }
     
     func getUserBankAccounts() -> Void {
-        let endpoint = "http://192.168.1.8:8080/api/v1/plaid/accounts";
+        let endpoint = "http://192.168.1.9:8080/api/v1/plaid/accounts";
         let url = URL(string: endpoint)!
         let session = URLSession.shared
         let request = NSMutableURLRequest(url: url)

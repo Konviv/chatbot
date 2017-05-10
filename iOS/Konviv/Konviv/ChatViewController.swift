@@ -12,17 +12,33 @@ import Messages
 class ChatViewController: UIViewController, UITableViewDelegate, UITableViewDataSource {
     
     var messages : [Message] = [Message()]
-    @IBOutlet weak var messageTxt: UITextField!
     @IBOutlet weak var chatTableView: UITableView!
+    @IBOutlet weak var messageTxt: UITextView!
+    @IBOutlet weak var typingLbl: UILabel!
     var context: AnyObject? = nil
     
     override func viewDidLoad() {
         super.viewDidLoad()
         self.view.addGestureRecognizer(UITapGestureRecognizer(target:self.view, action: #selector(UIView.endEditing(_:))))
         self.navigationItem.setHidesBackButton(true, animated: false)
+        messageTxt.layer.cornerRadius = 20
+        messageTxt.textContainerInset = UIEdgeInsetsMake(20.0, 20.0, 20.0, 50.0)
+        messageTxt.layer.backgroundColor = UIColor.white.cgColor
+        messageTxt.layer.borderWidth = 0.5
+        messageTxt.layer.borderColor = UIColor.lightGray.cgColor
+        /*let image = #imageLiteral(resourceName: "logo")
+        let imageView = UIImageView(image: image)
+        let bannerWidth = navigationController?.navigationBar.frame.width
+        let bannerHeigth = navigationController?.navigationBar.frame.height
+        let x = bannerWidth! / 2 - image.size.width / 2
+        let y = bannerHeigth! / 2 - image.size.height / 2
+        imageView.frame = CGRect(x: x, y: y, width: bannerWidth!-100, height: bannerHeigth!-100)
+        navigationItem.titleView = imageView
+        */
         // Do any additional setup after loading the view.
     }
     override func viewWillAppear(_ animated: Bool) {
+        typingLbl.isHidden = true
         self.startChat()
     }
 
@@ -58,17 +74,21 @@ class ChatViewController: UIViewController, UITableViewDelegate, UITableViewData
         
         let size = CGSize(width: 250, height: 1000)
         let options = NSStringDrawingOptions.usesFontLeading.union(.usesLineFragmentOrigin)
-        let estimatedFrame = NSString(string :messages[indexPath.row].message).boundingRect(with: size, options: options, attributes: [NSFontAttributeName:UIFont.systemFont(ofSize: 18)], context: nil)
+        let estimatedFrame = NSString(string :messages[indexPath.row].message).boundingRect(with: size, options: options, attributes: [NSFontAttributeName:UIFont.systemFont(ofSize: 14)], context: nil)
         if(messages[indexPath.row].message == ""){
             cell.bubbleReceiveTextView.layer.isHidden = true
             cell.bubbleSendTextView.layer.isHidden = true
             return cell
         }
-        tableView.rowHeight = estimatedFrame.height + 15
+        
+        tableView.rowHeight = estimatedFrame.height + 20
+        cell.bubbleSendTextView.isEditable = false
+        cell.bubbleReceiveTextView.isEditable = false
+        
         if(messages[indexPath.row].sendByUser){
     
             cell.bubbleSendTextView.text = messages[indexPath.row].message
-            cell.bubbleSendTextView.frame = CGRect(x: CGFloat(view.frame.width - estimatedFrame.width - 50), y: 0, width: estimatedFrame.width + 10, height:estimatedFrame.height + 10);
+            cell.bubbleSendTextView.frame = CGRect(x: CGFloat(view.frame.width - estimatedFrame.width - 35), y: 0, width: estimatedFrame.width+50, height: estimatedFrame.height + 15);
             cell.bubbleSendTextView.layer.cornerRadius = 8
             cell.bubbleSendTextView.layer.masksToBounds = true
             cell.bubbleSendTextView.layer.isHidden = false
@@ -76,11 +96,12 @@ class ChatViewController: UIViewController, UITableViewDelegate, UITableViewData
     
         }else{
             cell.bubbleReceiveTextView.text = messages[indexPath.row].message
-            cell.bubbleReceiveTextView.frame = CGRect(x: CGFloat(48.0 + 8.0), y: 0, width: estimatedFrame.width + 10, height: estimatedFrame.height + 10);
+            cell.bubbleReceiveTextView.frame = CGRect(x: CGFloat(48.0+8.0), y: 0, width: estimatedFrame.width + 20, height: estimatedFrame.height + 15);
             cell.bubbleReceiveTextView.layer.cornerRadius = 8
             cell.bubbleReceiveTextView.layer.masksToBounds = true
             cell.bubbleReceiveTextView.isHidden=false
             cell.bubbleSendTextView.layer.isHidden = true
+            self.typingLbl.isHidden = true
         }
         
         //self.chatTableView.scrollToRow(at: NSIndexPath(row: messages.count-1, section: 0) as IndexPath, at: .bottom, animated: true)
@@ -90,13 +111,15 @@ class ChatViewController: UIViewController, UITableViewDelegate, UITableViewData
     
     
     @IBAction func tabOnSendBtn(_ sender: Any) {
-        let text = self.messageTxt.text
-        if (!((text?.isEmpty)!)){
+        let text = self.messageTxt.text!
+        if (!((text.isEmpty))){
             let message = Message()
             message.sendByUser = true
-            message.message = text!
+            message.message = text
             messages.append(message)
-            self.sendMessage(text: text!)
+            self.chatTableView.reloadData()
+            print(self.typingLbl.isHidden)
+            self.sendMessage(text: text)
         }
     }
     
@@ -112,6 +135,7 @@ class ChatViewController: UIViewController, UITableViewDelegate, UITableViewData
         
         request.httpMethod = "POST"
         request.httpBody = json
+        self.typingLbl.isHidden = false
         self.sendRequest(request: self.createHeaders(request: request))
     }
     
@@ -122,6 +146,7 @@ class ChatViewController: UIViewController, UITableViewDelegate, UITableViewData
         
         request.httpMethod = "POST"
         self.sendRequest(request: self.createHeaders(request:request))
+        
     }
     
     func createHeaders(request:NSMutableURLRequest) -> NSMutableURLRequest {
@@ -134,10 +159,12 @@ class ChatViewController: UIViewController, UITableViewDelegate, UITableViewData
     }
     
     func sendRequest(request :NSMutableURLRequest) -> Void {
+        self.typingLbl.isHidden = false
         let task = URLSession.shared.dataTask(with: request as URLRequest) { (data: Data?, response: URLResponse?, error: Error?) in
+            
             if error != nil
             {
-                self.handleError(error: error!, response: response!)
+               // self.handleError(error: error!, response: response!)
                 return
             }
             self.response(response: response!, data: data!)
@@ -146,13 +173,9 @@ class ChatViewController: UIViewController, UITableViewDelegate, UITableViewData
     }
     
     func response(response: URLResponse, data: Data) -> Void {
-        print("response = \(response)")
-        let res = String(data: data, encoding: String.Encoding.utf8)
-        print(res!)
         
         let jsonObject = try! JSONSerialization.jsonObject(with: data, options: .allowFragments)
         if let dictionary = jsonObject as? [String: Any] {
-            print(dictionary["context"])
             self.context = dictionary["context"] as AnyObject? //TODO
             self.createMessage(dictionary: dictionary)
         }
@@ -160,7 +183,7 @@ class ChatViewController: UIViewController, UITableViewDelegate, UITableViewData
     
     func handleError(error:Error, response: URLResponse) -> Void {
         if let httpResponse = response as? HTTPURLResponse {
-            print(httpResponse.statusCode)
+            print(httpResponse.statusCode) //todo
         }
     }
     

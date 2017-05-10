@@ -9,6 +9,5 @@
 import Foundation
 class Message: NSObject {
     var message:String = ""
-    var date:Date = Date()
     var sendByUser:Bool = false
 }

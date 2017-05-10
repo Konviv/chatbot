@@ -55,13 +55,11 @@ class SignInViewController: UIViewController {
         UIView.commitAnimations()
     }
     @IBAction func didTabOnSigIn(_ sender: Any) {
-        let email = emailTxtField.text
-        let password  = passwordTxtField.text
+        let email = emailTxtField.text?.trimmingCharacters(in: NSCharacterSet.whitespaces)
+        let password  = passwordTxtField.text?.trimmingCharacters(in: NSCharacterSet.whitespaces)
         self.view.endEditing(true)
         FIRAuth.auth()?.signIn(withEmail: email!, password: password!) { (user, error) in
-            print(error)
             if (error != nil){
-                
                 self.prensetAler(msg: self.handleError(error: error as! NSError))
                 return;
             }
@@ -104,12 +102,12 @@ class SignInViewController: UIViewController {
     
     func prensetAler(msg:String) -> Void {
         
-        let alert = UIAlertController(title: "Error", message: msg, preferredStyle: .actionSheet)
+        let alert = UIAlertController(title: "Error", message: msg, preferredStyle: UIAlertControllerStyle.alert)
         let okAction = UIAlertAction(title: "OK", style: .default) { action in
             alert.dismiss(animated: true, completion: nil)
         }
         alert.addAction(okAction)
-        self.present(alert,animated: true)
+        self.present(alert,animated: true, completion: nil)
     }
     
     @IBAction func didTabOnResetPassword(_ sender: Any) {
