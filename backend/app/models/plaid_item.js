@@ -99,6 +99,27 @@ exports.getAccountHistory = function(plaidClient, accessToken, institutionName, 
   });
 };
 
+exports.getTotalOnBank = function(plaidClient, accessToken, institutionName) {
+  return new Promise(function(resolve, reject) {
+    plaidClient.getBalance(accessToken, function(error, result) {
+      if (error !== null) {
+        reject({ code: 500, reason: 'Impossible to stablish connection with the bank in this moment. Please try again later' });
+      } else {
+        if (result.accounts.length > 0) {
+          var bankTotal = 0;
+          result.accounts.forEach(function(account) {
+            var accountMoney = account.balances.available !== null ? account.balances.available : account.balances.current;
+            bankTotal += accountMoney;
+          });
+          resolve(util.format('%s\nThe total you have in all of your accounts is: $%d', institutionName, bankTotal));
+        } else {
+          resolve(institutionName + '\nNo accounts registered in this bank.');
+        }
+      }
+    });
+  });
+};
+
 exports.getAccountsBalance = function(plaidClient, accessToken, institutionName) {
   return new Promise(function(resolve, reject) {
     plaidClient.getBalance(accessToken, function(error, result) {
@@ -113,27 +134,6 @@ exports.getAccountsBalance = function(plaidClient, accessToken, institutionName)
             summary.push(util.format('Your %s account has $%d in it', accountName, accountMoney));
           });
           resolve(institutionName + '\n' + summary.join(', '));
-        } else {
-          resolve(institutionName + '\nNo accounts registered in this bank.');
-        }
-      }
-    });
-  });
-};
-
-exports.getTotalOnBank = function(plaidClient, accessToken, institutionName) {
-  return new Promise(function(resolve, reject) {
-    plaidClient.getBalance(accessToken, function(error, result) {
-      if (error !== null) {
-        reject({ code: 500, reason: 'Impossible to stablish connection with the bank in this moment. Please try again later' });
-      } else {
-        if (result.accounts.length > 0) {
-          var bankTotal = 0;
-          result.accounts.forEach(function(account) {
-            var accountMoney = account.balances.available !== null ? account.balances.available : account.balances.current;
-            bankTotal += accountMoney;
-          });
-          resolve(institutionName + util.format('\nThe total you have in all of your accounts is: $%d', bankTotal));
         } else {
           resolve(institutionName + '\nNo accounts registered in this bank.');
         }
@@ -202,7 +202,9 @@ exports.getSpendingAvg = function(plaidClient, accessToken, institutionName, par
         if (result.transactions.length > 0) {
           var transactionsAmount = 0;
           result.transactions.forEach(function(transaction) {
-            transactionsAmount += transaction.amount;
+            if (transaction.amount > 0) {
+              transactionsAmount += transaction.amount;
+            }
           });
           resolve(util.format('%s\nYour daily average for spending is $%d.', institutionName, (transactionsAmount / params.days)));
         } else {
@@ -220,16 +222,25 @@ exports.getFeaturedBill = function(plaidClient, accessToken, institutionName, pa
         reject({ code: 500, reason: 'Impossible to stablish connection with the bank in this moment. Please try again later' });
       } else {
         if (result.transactions.length > 0) {
-          result.transactions.sort(function(transactionA, transactionB) {
-            return transactionA.amount - transactionB.amount;
+          // Remove all the transactions where money is flowing into the account
+          var transactions = result.transactions.filter(function(transaction) {
+            return transaction.amount > 0;
           });
-          var transaction = null;
-          if (params.action === 'most_expensive_bill') {
-            transaction = result.transactions[result.transactions.length - 1];
+          if (transactions.length === 0) {
+            resolve(institutionName + '\nNo bills registered.');
           } else {
-            transaction = result.transactions[0];
+            // Sort transactions by amount from cheapest to most expensive
+            transactions.sort(function(transactionA, transactionB) {
+              return transactionA.amount - transactionB.amount;
+            });
+            var transaction = null;
+            if (params.action === 'most_expensive_bill') {
+              transaction = transactions[transactions.length - 1];
+            } else {
+              transaction = transactions[0];
+            }
+            resolve(util.format('%s\nYour %s bill this month was $%d on %s.', institutionName, params.feature, transaction.amount, transaction.name));
           }
-          resolve(util.format('%s\nYour %s bill this month was $%d on %s.', institutionName, params.feature, transaction.amount, transaction.name));
         } else {
           resolve(institutionName + '\nNo transactions registered.');
         }
@@ -238,7 +249,7 @@ exports.getFeaturedBill = function(plaidClient, accessToken, institutionName, pa
   });
 };
 
-exports.getAccountMoney = function(plaidClient, accessToken, institutionName, accountType) {
+exports.getAccountMoney = function(plaidClient, accessToken, institutionName, accountTypes) {
   return new Promise(function(resolve, reject) {
     plaidClient.getBalance(accessToken, function(error, result) {
       if (error !== null) {
@@ -247,15 +258,15 @@ exports.getAccountMoney = function(plaidClient, accessToken, institutionName, ac
         if (result.accounts.length > 0) {
           var details = [];
           result.accounts.forEach(function(account) {
-            if (account.type === accountType || account.subtype === accountType || account.name.toLowerCase().includes(accountType)) {
+            if (accountTypes.some(function(type) { return type === account.type || type === account.subtype || account.name.toLowerCase().includes(type); })) {
               var accountMoney = account.balances.available !== null ? account.balances.available : account.balances.current;
-              details.push(util.format('You have $%d in your %s account $s', accountMoney, accountType, account.name));
+              details.push(util.format('You have $%d in your %s account %s', accountMoney, accountTypes[0], account.name));
             }
           });
           if (details.length > 0) {
             resolve(util.format('%s\n%s.', institutionName, details.join(', ')));
           } else {
-            resolve(util.format("%s\nYou don't have %s accounts in the bank.", institutionName, accountType));
+            resolve(util.format("%s\nYou don't have %s accounts in the bank.", institutionName, accountTypes[0]));
           }
         } else {
           resolve(institutionName + '\nNo accounts registered in this bank.');
@@ -273,7 +284,11 @@ exports.getExpensesOnTime = function(plaidClient, accessToken, institutionName, 
       } else {
         var amount = 0;
         if (result.transactions.length > 0) {
-          result.transactions.forEach(function(transaction) {
+          // Remove all the transactions where money is flowing into the account
+          var transactions = result.transactions.filter(function(transaction) {
+            return transaction.amount > 0;
+          });
+          transactions.forEach(function(transaction) {
             if (params.shoppingCategories.length === 0 || params.shoppingCategories.some(function(category) { return transaction.name.toLowerCase().includes(category); })) {
               amount += transaction.amount;
             }

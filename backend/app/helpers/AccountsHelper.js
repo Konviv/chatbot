@@ -41,12 +41,12 @@ exports.getAccountHistory = function(uid, accountId, resolve, reject) {
   }, reject);
 };
 
-exports.getAccountsSummary = function(uid, resolve, reject) {
+exports.getAccountsTotal = function(uid, resolve, reject) {
   Item.getAll(uid, function(items) {
     if (items.length > 0) {
       var promises = [];
       items.forEach(function(item) {
-        promises.push(Item.getAccountsBalance(plaidClient, item.access_token, item.institution.name));
+        promises.push(Item.getTotalOnBank(plaidClient, item.access_token, item.institution.name));
       });
       Promise.all(promises).then(function(result) {
         resolve(result.join('\n\n'));
@@ -59,12 +59,12 @@ exports.getAccountsSummary = function(uid, resolve, reject) {
   }, reject);
 };
 
-exports.getAccountsTotal = function(uid, resolve, reject) {
+exports.getAccountsSummary = function(uid, resolve, reject) {
   Item.getAll(uid, function(items) {
     if (items.length > 0) {
       var promises = [];
       items.forEach(function(item) {
-        promises.push(Item.getTotalOnBank(plaidClient, item.access_token, item.institution.name));
+        promises.push(Item.getAccountsBalance(plaidClient, item.access_token, item.institution.name));
       });
       Promise.all(promises).then(function(result) {
         resolve(result.join('\n\n'));
@@ -167,12 +167,12 @@ exports.getFeaturedTransaction = function(uid, action, feature, resolve, reject)
   }, reject);
 };
 
-exports.getAccountFunds = function(uid, accountCategory, resolve, reject) {
+exports.getAccountFunds = function(uid, accountCategories, resolve, reject) {
   Item.getAll(uid, function(items) {
     if (items.length > 0) {
       var promises = [];
       items.forEach(function(item) {
-        promises.push(Item.getAccountMoney(plaidClient, item.access_token, item.institution.name, accountCategory));
+        promises.push(Item.getAccountMoney(plaidClient, item.access_token, item.institution.name, accountCategories));
       });
       Promise.all(promises).then(function(result) {
         resolve(result.join('\n\n'));

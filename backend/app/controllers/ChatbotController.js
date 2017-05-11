@@ -8,7 +8,9 @@ var accountsHelper   = require('../helpers/AccountsHelper');
 // SET MIDDLEWARES
 router.use(require('../middlewares/firebase_auth'));
 
-// TODO. Enable workspace selector again
+// TODO. I18n for messages.
+// TODO. Incluir variable timezone en el context de Watson
+// TODO. solucionar error cuando watsonClient falla y trae algo en la variable 'error'
 
 // GET ACCEPT-LANGUAGE TO SELECT THE RIGHT WORKSPACE TO USE
 var requestLocale = function(acceptLanguage) {
@@ -25,7 +27,7 @@ var storeWatsonOutput = function(uid, output, context, res) {
   });
 };
 
-var bankRequest = function(uid, action, entities) {
+var bankRequest = function(uid, action, entities, workspaceId) {
   return new Promise(function(resolve, reject) {
     if (action === 'total_money') {
       accountsHelper.getAccountsTotal(uid, resolve, reject);
@@ -33,14 +35,14 @@ var bankRequest = function(uid, action, entities) {
       accountsHelper.getAccountsSummary(uid, resolve, reject);
     } else if (action === 'last_affected_account') {
       accountsHelper.getLastAffectedAccount(uid, resolve, reject);
-    } else if (action === 'spending_avg') {
-      accountsHelper.getSpendingAvg(uid, resolve, reject);
     } else if (action === 'last_transactions') {
       if (entities[0].entity === 'sys-number') {
         accountsHelper.getLastTransactions(uid, parseInt(entities[0].value), resolve, reject);
       } else {
         reject({ code: 400, reason: 'The question has a bad format. Please rephrase your question' });
       }
+    } else if (action === 'spending_avg') {
+      accountsHelper.getSpendingAvg(uid, resolve, reject);
     } else if (action === 'most_expensive_bill' || action === 'cheapest_bill') {
       if (entities[0].entity === 'featured_bill') {
         accountsHelper.getFeaturedTransaction(uid, action, entities[0].value, resolve, reject);
@@ -49,7 +51,18 @@ var bankRequest = function(uid, action, entities) {
       }
     } else if (action === 'account_funds') {
       if (entities[0].entity === 'account_category') {
-        accountsHelper.getAccountFunds(uid, entities[0].value, resolve, reject);
+        var accountCategories = [ entities[0].value ];
+        var options = { workspace_id: workspaceId, entity: 'account_category', value: accountCategories[0] };
+        watsonClient.getSynonyms(options, function(error, result) {
+          if (error !== null) {
+            accountsHelper.getAccountFunds(uid, accountCategories, resolve, reject);
+          } else {
+            result.synonyms.forEach(function(synonym) {
+              accountCategories.push(synonym.synonym);
+            });
+            accountsHelper.getAccountFunds(uid, accountCategories, resolve, reject);
+          }
+        });
       } else {
         reject({ code: 400, reason: 'The question has a bad format. Please rephrase your question' });
       }
@@ -66,10 +79,8 @@ var bankRequest = function(uid, action, entities) {
         reject({ code: 400, reason: 'The question has a bad format. Please rephrase your question' });
       } else {
         if (params.shoppingCategories.length > 0) {
-          var workspace_id = /*locale === 'es' ? envvar.string('WATSON_ES_WORKSPACE_ID')
-                                             :*/ envvar.string('WATSON_EN_WORKSPACE_ID');
-          var options = { workspace_id: workspace_id, entity: 'shopping_category', value: params.shoppingCategories[0] };
-          watsonClient.getSynonyms(options, function(error, result) {
+          var option = { workspace_id: workspaceId, entity: 'shopping_category', value: params.shoppingCategories[0] };
+          watsonClient.getSynonyms(option, function(error, result) {
             if (error !== null) {
               accountsHelper.getExpensesOnTime(uid, resolve, reject, params);
             } else {
@@ -108,8 +119,8 @@ var getContext = function(req){
 router.post('/start', function(req, res) {
   var uid          = req.query.uid;
   var locale       = requestLocale(req.headers['accept-language']);
-  var workspace_id = /*locale === 'es' ? envvar.string('WATSON_ES_WORKSPACE_ID')
-                                     :*/ envvar.string('WATSON_EN_WORKSPACE_ID');
+  var workspace_id = locale === 'es' ? envvar.string('WATSON_ES_WORKSPACE_ID')
+                                     : envvar.string('WATSON_EN_WORKSPACE_ID');
   var message = {
     input: {},
     context: getContext(req),
@@ -138,17 +149,18 @@ router.post('/', function(req, res) {
   }
   var uid = req.query.uid;
   messagesHelper.pushMessage(uid, message, true, function() {
-    var locale = requestLocale(req.headers['accept-language']);
-    var workspace_id = /*locale === 'es' ? envvar.string('WATSON_ES_WORKSPACE_ID')
-                                       :*/ envvar.string('WATSON_EN_WORKSPACE_ID');
+    var locale      = requestLocale(req.headers['accept-language']);
+    var workspaceId = locale === 'es' ? envvar.string('WATSON_ES_WORKSPACE_ID')
+                                       : envvar.string('WATSON_EN_WORKSPACE_ID');
     // CREATE AND SEND MESSAGE TO WATSON
     var data = {
       input: { text: message },
       context: getContext(req),
-      workspace_id: workspace_id,
+      workspace_id: workspaceId,
     };
     watsonClient.message(data, function(error, response) {
       if (error) {
+        console.log(error);
         return res.status(error.code).json({
           code: error.code,
           reason: 'Watson Conversation says: ' + error.error
@@ -159,7 +171,7 @@ router.post('/', function(req, res) {
       if (!action) {
         storeWatsonOutput(uid, response.output.text.join(''), context, res);
       } else {
-        bankRequest(uid, action, response.entities).then(function(result) {
+        bankRequest(uid, action, response.entities, workspaceId).then(function(result) {
           storeWatsonOutput(uid, result, context, res);
         }, function(error) {
           res.status(error.code).json(error);
