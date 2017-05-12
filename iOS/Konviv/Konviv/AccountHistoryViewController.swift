@@ -33,7 +33,7 @@ class AccountHistoryViewController: UIViewController, UITableViewDelegate, UITab
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "HistoryCell", for: indexPath) as! HistoryItemTableViewCell
-        cell.lblAmount.text = String(self.bank.transactions[indexPath.row].amount)
+        cell.lblAmount.text = "$\(String(self.bank.transactions[indexPath.row].amount))"
         print(self.bank.transactions[indexPath.row].name)
         cell.lblDate.text = String(describing: self.bank.transactions[indexPath.row].date)
         cell.textViewDescription.text = self.bank.transactions[indexPath.row].name
@@ -43,7 +43,7 @@ class AccountHistoryViewController: UIViewController, UITableViewDelegate, UITab
     // MARK: - Request
     
     func getAccountHistory() -> Void {
-        let endpoint = "http://192.168.1.9:8080/api/v1/plaid/account_history/\(self.idAccount)";
+        let endpoint = "http://192.168.1.11:8080/api/v1/plaid/account_history/\(self.idAccount)";
         let url = URL(string: endpoint)!
         let request = NSMutableURLRequest(url: url)
         

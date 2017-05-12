@@ -7,7 +7,7 @@
 //
 
 import UIKit
-
+import Firebase
 class PageViewController: UIPageViewController, UIPageViewControllerDelegate, UIPageViewControllerDataSource{
     
     lazy var orderedViewControllers: [UIViewController] = {
@@ -18,7 +18,33 @@ class PageViewController: UIPageViewController, UIPageViewControllerDelegate, UI
     
     override func viewDidLoad() {
         super.viewDidLoad()
-       
+        print("*-*-*-*-*-*-*-*-*TOKEN*-*-*-*-*-*-*-*-*")
+        print(FIRAuth.auth()?.currentUser?.displayName)
+        print(UserDefaults.standard.string(forKey: "user_auth_token"))
+        if(UserDefaults.standard.string(forKey: "user_auth_token") != ""){
+            if(FIRAuth.auth()?.currentUser?.displayName != nil){
+                FIRAuth.auth()?.currentUser?.getTokenForcingRefresh(true) {idToken, err in
+                    
+                    if(err != nil){
+                        self.loadLanding()
+                    }
+                    
+                    UserDefaults.standard.setValue(idToken, forKey: "user_auth_token")
+                    let vc = self.storyboard?.instantiateViewController(withIdentifier: "dashboardNavController")
+                    let appDelegate = UIApplication.shared.delegate as! AppDelegate
+                    appDelegate.window?.rootViewController = vc
+                    
+                }
+            }else{
+                self.loadLanding()
+            }
+        }else{
+            self.loadLanding()
+        }
+                // Do any additional setup after loading the view.
+    }
+    
+    func loadLanding() -> Void {
         self.orderedViewControllers.first?.view.backgroundColor = UIColor(patternImage: UIImage(named:"blue-screen")!)
         self.orderedViewControllers[1].view.backgroundColor = UIColor(patternImage: UIImage(named:"gray-screen")!)
         self.orderedViewControllers[2].view.backgroundColor = UIColor(patternImage: UIImage(named:"orange-screen")!)
@@ -31,7 +57,7 @@ class PageViewController: UIPageViewController, UIPageViewControllerDelegate, UI
                                animated: true,
                                completion: nil)
         }
-        // Do any additional setup after loading the view.
+
     }
 
     override func didReceiveMemoryWarning() {

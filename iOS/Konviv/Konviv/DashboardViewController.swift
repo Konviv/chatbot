@@ -104,12 +104,8 @@ class DashboardViewController: UIViewController {
                     ]
             ]
         let json = try? JSONSerialization.data(withJSONObject: dictionary)
-        
-        print("-----------------------------R E Q U E S T-------------------------------")
-        let convertedString = String(data: json!, encoding: String.Encoding.utf8) // the data will be converted to the string
-        NSLog(convertedString!)
-        print(json as! NSData)
-        let endpoint = "http://192.168.1.8:8080/api/v1/plaid/authenticate";
+
+        let endpoint = "http://192.168.1.11:8080/api/v1/plaid/authenticate";
         let url = URL(string: endpoint)!
         let session = URLSession.shared
         let request = NSMutableURLRequest(url: url)
@@ -120,22 +116,16 @@ class DashboardViewController: UIViewController {
         request.addValue(auth_token!, forHTTPHeaderField: "Authorization")
         request.addValue("application/json", forHTTPHeaderField: "Content-Type")
         request.addValue("application/json", forHTTPHeaderField: "Accept")
-        print(request.allHTTPHeaderFields)
+
         let task = session.dataTask(with: request as URLRequest) { (data: Data?, response: URLResponse?, error: Error?) in
-            print("")
-            print("····················································R E S P O N S E ·······················································")
-            print("")
+          
             if error != nil
             {
                 print("error=\(error)")
                 return
             }
-            print("response = \(response!)")
-            self.handleResponse(respose: response!)
-            let res = String(data: data!, encoding: String.Encoding.utf8) // the data will be converted to the string
-            NSLog(res!)
-            print("response = \(data!  as! NSData)")
             
+            self.handleResponse(respose: response!)
             }
         task.resume()
         
@@ -169,6 +159,7 @@ class DashboardViewController: UIViewController {
     @IBAction func didTabOnLogout(_ sender: Any) {
         let vc = self.storyboard?.instantiateViewController(withIdentifier: "Landingscreen")
         UserDefaults.standard.set("", forKey: "user_auth_token")
+        try!FIRAuth.auth()?.signOut()
         self.present(vc!, animated: true)
     }
     

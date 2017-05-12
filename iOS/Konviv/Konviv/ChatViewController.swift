@@ -22,10 +22,14 @@ class ChatViewController: UIViewController, UITableViewDelegate, UITableViewData
         self.view.addGestureRecognizer(UITapGestureRecognizer(target:self.view, action: #selector(UIView.endEditing(_:))))
         self.navigationItem.setHidesBackButton(true, animated: false)
         messageTxt.layer.cornerRadius = 20
-        messageTxt.textContainerInset = UIEdgeInsetsMake(20.0, 20.0, 20.0, 50.0)
+        messageTxt.textContainerInset = UIEdgeInsetsMake(5.0, 20.0, 5.0, 50.0)
         messageTxt.layer.backgroundColor = UIColor.white.cgColor
         messageTxt.layer.borderWidth = 0.5
         messageTxt.layer.borderColor = UIColor.lightGray.cgColor
+        
+        //chatTableView.rowHeight = UITableViewAutomaticDimension
+        //chatTableView.estimatedRowHeight = 140
+        
         /*let image = #imageLiteral(resourceName: "logo")
         let imageView = UIImageView(image: image)
         let bannerWidth = navigationController?.navigationBar.frame.width
@@ -39,7 +43,9 @@ class ChatViewController: UIViewController, UITableViewDelegate, UITableViewData
     }
     override func viewWillAppear(_ animated: Bool) {
         typingLbl.isHidden = true
+        self.getAllMessages()
         self.startChat()
+        
     }
 
     override func didReceiveMemoryWarning() {
@@ -52,6 +58,15 @@ class ChatViewController: UIViewController, UITableViewDelegate, UITableViewData
     }
     @IBAction func BeginEditing(_ sender: Any) {
          animateViewMoving(up: false, moveValue: 150)
+    }
+    
+    func getAllMessages() -> Void {
+        let endpoint = "http://192.168.1.11:8080/api/v1/chatbot/messages";
+        let url = URL(string: endpoint)!
+        let request = NSMutableURLRequest(url: url)
+        request.httpMethod = "GET"
+        self.typingLbl.isHidden = false
+        self.sendRequest(request: self.createHeaders(request: request), isAllMessages: true)
     }
     
     func animateViewMoving (up:Bool, moveValue :CGFloat){
@@ -67,12 +82,12 @@ class ChatViewController: UIViewController, UITableViewDelegate, UITableViewData
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return messages.count
     }
-    
+   
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "chatCell", for: indexPath) as! ChatTableViewCell
         // Configure Cell
         
-        let size = CGSize(width: 250, height: 1000)
+        let size = CGSize(width: 200, height: 1000)
         let options = NSStringDrawingOptions.usesFontLeading.union(.usesLineFragmentOrigin)
         let estimatedFrame = NSString(string :messages[indexPath.row].message).boundingRect(with: size, options: options, attributes: [NSFontAttributeName:UIFont.systemFont(ofSize: 14)], context: nil)
         if(messages[indexPath.row].message == ""){
@@ -81,14 +96,15 @@ class ChatViewController: UIViewController, UITableViewDelegate, UITableViewData
             return cell
         }
         
-        tableView.rowHeight = estimatedFrame.height + 20
+        tableView.rowHeight = estimatedFrame.height + 25
         cell.bubbleSendTextView.isEditable = false
         cell.bubbleReceiveTextView.isEditable = false
         
         if(messages[indexPath.row].sendByUser){
-    
+            print(messages[indexPath.row].message)
             cell.bubbleSendTextView.text = messages[indexPath.row].message
-            cell.bubbleSendTextView.frame = CGRect(x: CGFloat(view.frame.width - estimatedFrame.width - 35), y: 0, width: estimatedFrame.width+50, height: estimatedFrame.height + 15);
+            cell.bubbleSendTextView.frame = CGRect(x: CGFloat(view.frame.width - estimatedFrame.width - 16-8-8), y: 0, width: estimatedFrame.width+16+8, height: estimatedFrame.height + 20);
+            
             cell.bubbleSendTextView.layer.cornerRadius = 8
             cell.bubbleSendTextView.layer.masksToBounds = true
             cell.bubbleSendTextView.layer.isHidden = false
@@ -96,15 +112,13 @@ class ChatViewController: UIViewController, UITableViewDelegate, UITableViewData
     
         }else{
             cell.bubbleReceiveTextView.text = messages[indexPath.row].message
-            cell.bubbleReceiveTextView.frame = CGRect(x: CGFloat(48.0+8.0), y: 0, width: estimatedFrame.width + 20, height: estimatedFrame.height + 15);
+            cell.bubbleReceiveTextView.frame = CGRect(x: CGFloat(48.0+8.0), y: 0, width: estimatedFrame.width + 16+8, height: estimatedFrame.height + 20);
             cell.bubbleReceiveTextView.layer.cornerRadius = 8
             cell.bubbleReceiveTextView.layer.masksToBounds = true
             cell.bubbleReceiveTextView.isHidden=false
             cell.bubbleSendTextView.layer.isHidden = true
             self.typingLbl.isHidden = true
         }
-        
-        //self.chatTableView.scrollToRow(at: NSIndexPath(row: messages.count-1, section: 0) as IndexPath, at: .bottom, animated: true)
         
         return cell
     }
@@ -113,39 +127,33 @@ class ChatViewController: UIViewController, UITableViewDelegate, UITableViewData
     @IBAction func tabOnSendBtn(_ sender: Any) {
         let text = self.messageTxt.text!
         if (!((text.isEmpty))){
-            let message = Message()
-            message.sendByUser = true
-            message.message = text
-            messages.append(message)
-            self.chatTableView.reloadData()
-            print(self.typingLbl.isHidden)
+            self.createMessage(messageText: text,isUser:true)
+            //self.chatTableView.reloadData()
             self.sendMessage(text: text)
         }
     }
     
     func sendMessage(text: String) -> Void {
-        let endpoint = "http://192.168.1.9:8080/api/v1/chatbot";
+        let endpoint = "http://192.168.1.11:8080/api/v1/chatbot";
         let url = URL(string: endpoint)!
         let request = NSMutableURLRequest(url: url)
         let dic :[String:AnyObject] = ["message" : messageTxt.text as AnyObject, "context" : self.context!]// TODO
         let json = try? JSONSerialization.data(withJSONObject: dic)
-        //let convertedString = String(data: json!, encoding: String.Encoding.utf8) // the data will be converted to the string
-        //NSLog(convertedString!)
-        //print(json as! NSData)
         
+        //self.chatTableView.scrollToRow(at: NSIndexPath(row: self.chatTableView.numberOfRows(inSection: 0) - 1, section: 0) as IndexPath, at: .bottom, animated: true)
         request.httpMethod = "POST"
         request.httpBody = json
         self.typingLbl.isHidden = false
-        self.sendRequest(request: self.createHeaders(request: request))
+        self.sendRequest(request: self.createHeaders(request: request),isAllMessages:false)
     }
     
     func startChat() -> Void {
-        let endpoint = "http://192.168.1.9:8080/api/v1/chatbot/start";
+        let endpoint = "http://192.168.1.11:8080/api/v1/chatbot/start";
         let url = URL(string: endpoint)!
         let request = NSMutableURLRequest(url: url)
         
         request.httpMethod = "POST"
-        self.sendRequest(request: self.createHeaders(request:request))
+        self.sendRequest(request: self.createHeaders(request:request),isAllMessages:false)
         
     }
     
@@ -158,27 +166,46 @@ class ChatViewController: UIViewController, UITableViewDelegate, UITableViewData
         return request
     }
     
-    func sendRequest(request :NSMutableURLRequest) -> Void {
+    func sendRequest(request :NSMutableURLRequest, isAllMessages:Bool) -> Void {
         self.typingLbl.isHidden = false
         let task = URLSession.shared.dataTask(with: request as URLRequest) { (data: Data?, response: URLResponse?, error: Error?) in
             
             if error != nil
             {
-               // self.handleError(error: error!, response: response!)
+                print(error)
+                self.handleError(error: error!, response: response!)
                 return
             }
-            self.response(response: response!, data: data!)
+            
+            self.response(response: response!, data: data!, isAllMessages:isAllMessages)
         }
         task.resume()
     }
     
-    func response(response: URLResponse, data: Data) -> Void {
+    func response(response: URLResponse, data: Data, isAllMessages:Bool) -> Void {
+        print(data)
         
         let jsonObject = try! JSONSerialization.jsonObject(with: data, options: .allowFragments)
+        if(isAllMessages){
+            self.allMessages(arrOfMessages: jsonObject as! [String: Any])
+            return
+        }
         if let dictionary = jsonObject as? [String: Any] {
             self.context = dictionary["context"] as AnyObject? //TODO
-            self.createMessage(dictionary: dictionary)
+            self.createMessage(messageText: dictionary["output"] as! String,isUser: false)
+            self.reloadTable()
         }
+    }
+    
+    func allMessages(arrOfMessages:[String: Any]) -> Void {
+        let messages = arrOfMessages["messages"] as! [[String:Any]]
+        print("--------M E S S A G E--------")
+        print(messages)
+        
+        for msg in messages{
+            self.createMessage(messageText: msg["message"] as! String, isUser: msg["sent_by_user"] as! Bool)
+        }
+        self.reloadTable()
     }
     
     func handleError(error:Error, response: URLResponse) -> Void {
@@ -187,14 +214,27 @@ class ChatViewController: UIViewController, UITableViewDelegate, UITableViewData
         }
     }
     
-    func createMessage(dictionary:[String:Any]) -> Void {
+    func createMessage(messageText:String, isUser :Bool) -> Void {
         let message = Message()
-        message.message = dictionary["output"] as! String
-        message.sendByUser = false
+        message.message = messageText
+        message.sendByUser = isUser
         self.messages.append(message)
         
+    }
+    
+    func reloadTable() -> Void {
         DispatchQueue.main.async(execute: {
             self.chatTableView.reloadData()
+            
+            DispatchQueue.main.asyncAfter(deadline: .now() + .milliseconds(100)) {
+                let numberOfSections = self.chatTableView.numberOfSections
+                let numberOfRows = self.chatTableView.numberOfRows(inSection: numberOfSections-1)
+                
+                if numberOfRows > 0 {
+                    let indexPath = IndexPath(row: numberOfRows-1, section: (numberOfSections-1))
+                    self.chatTableView.scrollToRow(at: indexPath, at: .none, animated: false)
+                }
+            }
         })
     }
     

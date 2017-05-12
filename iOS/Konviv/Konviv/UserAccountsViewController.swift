@@ -64,7 +64,7 @@ class UserAccountsViewController: UIViewController,  UITableViewDataSource, UITa
     }
     
     func getUserBankAccounts() -> Void {
-        let endpoint = "http://192.168.1.9:8080/api/v1/plaid/accounts";
+        let endpoint = "http://192.168.1.11:8080/api/v1/plaid/accounts";
         let url = URL(string: endpoint)!
         let session = URLSession.shared
         let request = NSMutableURLRequest(url: url)
