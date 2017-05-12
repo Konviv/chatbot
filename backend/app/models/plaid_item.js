@@ -61,6 +61,23 @@ exports.getAccounts = function(plaidClient, accessToken, institutionName, i18n) 
   });
 };
 
+exports.getLastTransaction = function(plaidClient, accessToken, institutionName, params) {
+  return new Promise(function(resolve, reject) {
+    plaidClient.getTransactions(accessToken, params.start_date, params.end_date, params.options, function(error, result) {
+      if (error !== null) {
+        resolve(null);
+      } else {
+        if (result.transactions.length > 0) {
+          var transaction = result.transactions[0];
+          resolve({ amount: transaction.amount, date: transaction.date });
+        } else {
+          resolve(null);
+        }
+      }
+    });
+  });
+};
+
 exports.getAccountHistory = function(plaidClient, accessToken, institutionName, params, i18n) {
   return new Promise(function(resolve, reject) {
     plaidClient.getTransactions(accessToken, params.start_date, params.end_date, params.options, function(error, result) {
@@ -140,7 +157,7 @@ var transformAccounts = function(accountsJSON) {
   return accounts;
 };
 
-exports.getLastTransaction = function(plaidClient, accessToken, institutionName, i18n, params) {
+exports.getLastAffectedAccount = function(plaidClient, accessToken, institutionName, i18n, params) {
   return new Promise(function(resolve, reject) {
     plaidClient.getTransactions(accessToken, params.start_date, params.end_date, params.options, function(error, result) {
       if (error !== null) {

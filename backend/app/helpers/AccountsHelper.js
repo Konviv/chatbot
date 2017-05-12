@@ -20,6 +20,33 @@ exports.getAccounts = function(uid, i18n, resolve, reject) {
   }, reject);
 };
 
+exports.getLastTransaction = function(uid, i18n, resolve, reject) {
+  Item.getAll(uid, i18n, function(items) {
+    if (items.length > 0) {
+      var params = getTransactionsParams(1);
+      var promises = [];
+      items.forEach(function(item) {
+        promises.push(Item.getLastTransaction(plaidClient, item.access_token, item.institution.name, params));
+      });
+      Promise.all(promises).then(function(result) {
+        result = result.filter(function(value){ return value; });
+        if (result.length === 0) {
+          resolve('$0');
+        } else {
+          result.sort(function(transactionA, transactionB) {
+            return moment(transactionA.date).isBefore(moment(transactionB.date)) ? -1 : 1;
+          });
+          resolve('$' + result[0].amount);
+        }
+      }, function(error) {
+        reject(error);
+      });
+    } else {
+      resolve(i18n('no_banks_registered'));
+    }
+  }, reject);
+};
+
 exports.getAccountHistory = function(uid, accountId, i18n, resolve, reject) {
   Item.getAll(uid, i18n, function(items) {
     if (items.length > 0) {
@@ -98,7 +125,7 @@ exports.getLastAffectedAccount = function(uid, i18n, resolve, reject) {
       var params = getTransactionsParams(1);
       var promises = [];
       items.forEach(function(item) {
-        promises.push(Item.getLastTransaction(plaidClient, item.access_token, item.institution.name, i18n, params));
+        promises.push(Item.getLastAffectedAccount(plaidClient, item.access_token, item.institution.name, i18n, params));
       });
       Promise.all(promises).then(function(result) {
         resolve(result.join('\n\n'));

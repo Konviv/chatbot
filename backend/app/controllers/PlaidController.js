@@ -50,6 +50,18 @@ router.get('/accounts', function(req, res) {
   });
 });
 
+router.get('/last_transaction', function(req, res) {
+  var uid = req.query.uid;
+  var promise = new Promise(function(resolve, reject) {
+    accountsHelper.getLastTransaction(uid, res.__, resolve, reject);
+  });
+  promise.then(function(result) {
+    res.json(result);
+  }, function(error) {
+    res.status(error.code).json(error);
+  });
+});
+
 router.get('/account_history/:account_id', function(req, res) {
   var accountId = req.params.account_id;
   if (!accountId) {
