@@ -30,17 +30,6 @@ exports.getByInstitutionId = function(uid, institutionId, successCallback, error
   });
 };
 
-// exports.update = function(uid, institutionId, values, successCallback, errorCallback) {
-//   var itemsRef = usersRef.child(util.format('%s/items', uid));
-//   itemsRef.update(values, function(error) {
-//     if (error) {
-//       errorCallback(error);
-//     } else {
-//       successCallback();
-//     }
-//   });
-// };
-
 exports.getAll = function(uid, i18n, successCallback, errorCallback) {
   var itemsRef = usersRef.child(util.format('%s/items', uid));
   itemsRef.once('value', function(result) {
