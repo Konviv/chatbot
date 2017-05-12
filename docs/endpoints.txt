@@ -3,6 +3,11 @@ Get accounts
   - URL     -> http://192.168.1.9:8080/api/v1/plaid/accounts
   - HEADERS -> Authorization: [firebase_auth_token]
 
+  Get last transaction amount
+    - Method  -> GET
+    - URL     -> http://192.168.1.9:8080/api/v1/plaid/last_transaction
+    - HEADERS -> Authorization: [firebase_auth_token]
+
 Get account transactions
   - Method  -> GET
   - URL     -> http://192.168.1.9:8080/api/v1/plaid/account_history/:account_id
