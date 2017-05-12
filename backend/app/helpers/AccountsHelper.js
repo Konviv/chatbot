@@ -42,7 +42,7 @@ exports.getLastTransaction = function(uid, i18n, resolve, reject) {
         reject(error);
       });
     } else {
-      resolve(i18n('no_banks_registered'));
+      resolve('$0');
     }
   }, reject);
 };
