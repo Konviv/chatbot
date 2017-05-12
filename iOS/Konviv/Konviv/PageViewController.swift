@@ -18,9 +18,6 @@ class PageViewController: UIPageViewController, UIPageViewControllerDelegate, UI
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        print("*-*-*-*-*-*-*-*-*TOKEN*-*-*-*-*-*-*-*-*")
-        print(FIRAuth.auth()?.currentUser?.displayName)
-        print(UserDefaults.standard.string(forKey: "user_auth_token"))
         if(UserDefaults.standard.string(forKey: "user_auth_token") != ""){
             if(FIRAuth.auth()?.currentUser?.displayName != nil){
                 FIRAuth.auth()?.currentUser?.getTokenForcingRefresh(true) {idToken, err in
@@ -30,7 +27,7 @@ class PageViewController: UIPageViewController, UIPageViewControllerDelegate, UI
                     }
                     
                     UserDefaults.standard.setValue(idToken, forKey: "user_auth_token")
-                    let vc = self.storyboard?.instantiateViewController(withIdentifier: "dashboardNavController")
+                    let vc = self.storyboard?.instantiateViewController(withIdentifier: "DashboardNavController")
                     let appDelegate = UIApplication.shared.delegate as! AppDelegate
                     appDelegate.window?.rootViewController = vc
                     
@@ -45,6 +42,8 @@ class PageViewController: UIPageViewController, UIPageViewControllerDelegate, UI
     }
     
     func loadLanding() -> Void {
+        
+        UserDefaults.standard.set(false, forKey: "hasAccounts")
         self.orderedViewControllers.first?.view.backgroundColor = UIColor(patternImage: UIImage(named:"blue-screen")!)
         self.orderedViewControllers[1].view.backgroundColor = UIColor(patternImage: UIImage(named:"gray-screen")!)
         self.orderedViewControllers[2].view.backgroundColor = UIColor(patternImage: UIImage(named:"orange-screen")!)

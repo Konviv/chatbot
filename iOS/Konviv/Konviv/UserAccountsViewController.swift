@@ -7,7 +7,7 @@
 //
 
 import UIKit
-
+import Firebase
 class UserAccountsViewController: UIViewController,  UITableViewDataSource, UITableViewDelegate {
 
     @IBOutlet weak var accountsTableView: UITableView!
@@ -18,13 +18,17 @@ class UserAccountsViewController: UIViewController,  UITableViewDataSource, UITa
         
         super.viewDidLoad()
        // self.tableView.register(UITableViewCell.self, forCellReuseIdentifier: "menuItem")
-        self.getUserBankAccounts()
         
         // Uncomment the following line to preserve selection between presentations
         // self.clearsSelectionOnViewWillAppear = false
         
         // Uncomment the following line to display an Edit button in the navigation bar for this view controller.
         // self.navigationItem.rightBarButtonItem = self.editButtonItem()
+    }
+    override func viewWillAppear(_ animated: Bool) {
+        self.bankAccounts = []
+        self.getUserBankAccounts()
+        //self.noHasBankAccounts()
     }
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
@@ -56,70 +60,72 @@ class UserAccountsViewController: UIViewController,  UITableViewDataSource, UITa
     }
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        //print(self.bankAccounts[indexPath.section].accounts[indexPath.row].id)
         let vc = storyboard?.instantiateViewController(withIdentifier: "AccountHistory") as! AccountHistoryViewController
         vc.idAccount = self.bankAccounts[indexPath.section].accounts[indexPath.row].id
         
         navigationController?.pushViewController(vc, animated: true)
     }
     
+    func noHasBankAccounts() -> Void {
+        let vc = self.storyboard?.instantiateViewController(withIdentifier: "DashboardWelcomeNavController")
+        self.present(vc!, animated: true, completion: nil)
+        let appDelegate = UIApplication.shared.delegate as! AppDelegate
+        appDelegate.window?.rootViewController = vc
+        UserDefaults.standard.set(false, forKey: "hasAccounts")
+    }
+    
     func getUserBankAccounts() -> Void {
-        let endpoint = "http://192.168.1.11:8080/api/v1/plaid/accounts";
-        let url = URL(string: endpoint)!
-        let session = URLSession.shared
-        let request = NSMutableURLRequest(url: url)
-        
-        request.httpMethod = "GET"
-        let auth_token = UserDefaults.standard.string(forKey: "user_auth_token")
-        request.addValue(auth_token!, forHTTPHeaderField: "Authorization")
-        request.addValue("application/json", forHTTPHeaderField: "Content-Type")
-        request.addValue("application/json", forHTTPHeaderField: "Accept")
-        let task = session.dataTask(with: request as URLRequest) { (data: Data?, response: URLResponse?, error: Error?) in
+        self.sendRequest(request: Request().createRequest(endPoint: Constants.BANK_ACCOUNTS, method: "GET"))
+    }
+    
+    func sendRequest(request: NSMutableURLRequest) -> Void {
+        let task = URLSession.shared.dataTask(with: request as URLRequest) { (data: Data?, response: URLResponse?, error: Error?) in
             if error != nil
             {
                 print("error=\(error)")
                 return
             }
-            print("response = \(response!)")
-            let res = String(data: data!, encoding: String.Encoding.utf8)
-            print(res!)
-            self.getResponseData(data: data!)
+            if(JSONSerialization.isValidJSONObject(try!JSONSerialization.jsonObject(with: data!, options: .allowFragments))){
+                self.getResponseData(data: data!)
+                return
+            }
+            self.noHasBankAccounts()
         }
         task.resume()
     }
     func getResponseData(data:Data) -> Void {
-        //do{
-            let object = try? JSONSerialization.jsonObject(with: data, options: .allowFragments)
-            if let dictionary = object as? [String: AnyObject] {
-                
-                let b = dictionary["banks"] as? [[String: AnyObject]]
-                
-                for banks in b! {
-                    
-                    let bank = Bank()
-                    bank.name = banks["bank_name"] as! String
-                    let accounts = banks["accounts"] as? [[String:AnyObject]]
-                    
-                    for account in accounts!{
-                        
-                        let ac = Account()
-                        ac.id = account["id"] as! String
-                        ac.name = account["name"] as! String
-                        ac.balances = account["balances"] as! [String:Any]
-                        bank.accounts.append(ac)
-                    }
-                    self.bankAccounts.append(bank)
+        let object = try? JSONSerialization.jsonObject(with: data, options: .allowFragments)
+        if let dictionary = object as? [String: AnyObject] {
+            let b = dictionary["banks"] as? [[String: AnyObject]]
+            for banks in b! {
+                let bank = Bank()
+                bank.name = banks["bank_name"] as! String
+                let accounts = banks["accounts"] as? [[String:AnyObject]]
+                if((accounts?.count)! == 0){
+                    self.noHasBankAccounts()
+                    return
                 }
-                DispatchQueue.main.async(execute: {
-                    self.accountsTableView.reloadData()
-                })
-       //     }
-       // }catch let myJSONError {
-          //  print(myJSONError)
-       // }
+                UserDefaults.standard.setValue(true, forKey: "hasAccounts")
+                for account in accounts!{
+                    let ac = Account()
+                    ac.id = account["id"] as! String
+                    ac.name = account["name"] as! String
+                    ac.balances = account["balances"] as! [String:Any]
+                    bank.accounts.append(ac)
+                }
+                self.bankAccounts.append(bank)
+            }
+            DispatchQueue.main.async(execute: {
+                self.accountsTableView.reloadData()
+            })
         }
     }
     
+    @IBAction func didTabOnLogout(_ sender: Any) {
+        let vc = self.storyboard?.instantiateViewController(withIdentifier: "Landingscreen")
+        AuthUserActions().signOut()
+        self.present(vc!, animated: true)
+    }
     /*
     // MARK: - Navigation
 

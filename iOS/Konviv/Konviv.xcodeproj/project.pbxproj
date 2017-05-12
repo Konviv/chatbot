@@ -29,6 +29,9 @@
 		B8884F981EBBCDED00050DE1 /* UserAccountsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B8884F971EBBCDED00050DE1 /* UserAccountsViewController.swift */; };
 		B8886D041EB2362D00FBAB21 /* AddBankViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B8886D031EB2362D00FBAB21 /* AddBankViewController.swift */; };
 		B89875E01EC0B79700EA25B4 /* UserAccountsTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = B89875DF1EC0B79700EA25B4 /* UserAccountsTableViewCell.swift */; };
+		B89BE6AD1EC60B2900559393 /* AuthUserActions.swift in Sources */ = {isa = PBXBuildFile; fileRef = B89BE6AC1EC60B2900559393 /* AuthUserActions.swift */; };
+		B89BE6AF1EC61FD600559393 /* Request.swift in Sources */ = {isa = PBXBuildFile; fileRef = B89BE6AE1EC61FD600559393 /* Request.swift */; };
+		B89BE6B31EC6741900559393 /* Constants.swift in Sources */ = {isa = PBXBuildFile; fileRef = B89BE6B21EC6741900559393 /* Constants.swift */; };
 		B8C21CD51EC0DACF00979301 /* UserAccounts.swift in Sources */ = {isa = PBXBuildFile; fileRef = B8C21CD41EC0DACF00979301 /* UserAccounts.swift */; };
 		B8C21CD71EC0FED900979301 /* ChatTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = B8C21CD61EC0FED900979301 /* ChatTableViewCell.swift */; };
 		B8C21CD91EC104F800979301 /* Message.swift in Sources */ = {isa = PBXBuildFile; fileRef = B8C21CD81EC104F800979301 /* Message.swift */; };
@@ -61,6 +64,9 @@
 		B8884F971EBBCDED00050DE1 /* UserAccountsViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UserAccountsViewController.swift; sourceTree = "<group>"; };
 		B8886D031EB2362D00FBAB21 /* AddBankViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AddBankViewController.swift; sourceTree = "<group>"; };
 		B89875DF1EC0B79700EA25B4 /* UserAccountsTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UserAccountsTableViewCell.swift; sourceTree = "<group>"; };
+		B89BE6AC1EC60B2900559393 /* AuthUserActions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AuthUserActions.swift; sourceTree = "<group>"; };
+		B89BE6AE1EC61FD600559393 /* Request.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Request.swift; sourceTree = "<group>"; };
+		B89BE6B21EC6741900559393 /* Constants.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Constants.swift; sourceTree = "<group>"; };
 		B8C21CD41EC0DACF00979301 /* UserAccounts.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UserAccounts.swift; sourceTree = "<group>"; };
 		B8C21CD61EC0FED900979301 /* ChatTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ChatTableViewCell.swift; sourceTree = "<group>"; };
 		B8C21CD81EC104F800979301 /* Message.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Message.swift; sourceTree = "<group>"; };
@@ -117,6 +123,7 @@
 		B86F39041E97F8A900FD3A57 /* Konviv */ = {
 			isa = PBXGroup;
 			children = (
+				B89BE6AB1EC60B0800559393 /* helpers */,
 				B8C21CD31EC0D9D200979301 /* Models */,
 				B89875DE1EC0B76100EA25B4 /* Views */,
 				B87D1A841EB0E4A50047617D /* Konviv.entitlements */,
@@ -159,6 +166,16 @@
 				B877FE4F1EC3BFC1001CFCB2 /* HistoryItemTableViewCell.swift */,
 			);
 			name = Views;
+			sourceTree = "<group>";
+		};
+		B89BE6AB1EC60B0800559393 /* helpers */ = {
+			isa = PBXGroup;
+			children = (
+				B89BE6AC1EC60B2900559393 /* AuthUserActions.swift */,
+				B89BE6AE1EC61FD600559393 /* Request.swift */,
+				B89BE6B21EC6741900559393 /* Constants.swift */,
+			);
+			name = helpers;
 			sourceTree = "<group>";
 		};
 		B8C21CD31EC0D9D200979301 /* Models */ = {
@@ -307,6 +324,8 @@
 				B82893E41EAE72D400527C08 /* PageViewController.swift in Sources */,
 				B8C21CD91EC104F800979301 /* Message.swift in Sources */,
 				B86F391F1E98067A00FD3A57 /* RegisterViewController.swift in Sources */,
+				B89BE6B31EC6741900559393 /* Constants.swift in Sources */,
+				B89BE6AD1EC60B2900559393 /* AuthUserActions.swift in Sources */,
 				B86F39211E98068700FD3A57 /* SignInViewController.swift in Sources */,
 				B86F39271E984D7A00FD3A57 /* ToolsViewController.swift in Sources */,
 				B86AB1451EBD13DA00320DB9 /* UserAccountsTableViewController.swift in Sources */,
@@ -315,6 +334,7 @@
 				B86F390E1E97F8AA00FD3A57 /* Konviv.xcdatamodeld in Sources */,
 				B86F39291E984D8500FD3A57 /* ChatViewController.swift in Sources */,
 				B8C21CD71EC0FED900979301 /* ChatTableViewCell.swift in Sources */,
+				B89BE6AF1EC61FD600559393 /* Request.swift in Sources */,
 				B8C21CD51EC0DACF00979301 /* UserAccounts.swift in Sources */,
 				B877FE4C1EC3B662001CFCB2 /* Transactions.swift in Sources */,
 				B8884F981EBBCDED00050DE1 /* UserAccountsViewController.swift in Sources */,

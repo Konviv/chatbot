@@ -44,8 +44,6 @@ class ChatViewController: UIViewController, UITableViewDelegate, UITableViewData
     override func viewWillAppear(_ animated: Bool) {
         typingLbl.isHidden = true
         self.getAllMessages()
-        self.startChat()
-        
     }
 
     override func didReceiveMemoryWarning() {
@@ -58,15 +56,6 @@ class ChatViewController: UIViewController, UITableViewDelegate, UITableViewData
     }
     @IBAction func BeginEditing(_ sender: Any) {
          animateViewMoving(up: false, moveValue: 150)
-    }
-    
-    func getAllMessages() -> Void {
-        let endpoint = "http://192.168.1.11:8080/api/v1/chatbot/messages";
-        let url = URL(string: endpoint)!
-        let request = NSMutableURLRequest(url: url)
-        request.httpMethod = "GET"
-        self.typingLbl.isHidden = false
-        self.sendRequest(request: self.createHeaders(request: request), isAllMessages: true)
     }
     
     func animateViewMoving (up:Bool, moveValue :CGFloat){
@@ -93,6 +82,7 @@ class ChatViewController: UIViewController, UITableViewDelegate, UITableViewData
         if(messages[indexPath.row].message == ""){
             cell.bubbleReceiveTextView.layer.isHidden = true
             cell.bubbleSendTextView.layer.isHidden = true
+            cell.bubbleReceiveTextView.frame = CGRect(x: CGFloat(48.0+8.0), y: 0, width: estimatedFrame.width + 16+8, height: estimatedFrame.height-10);
             return cell
         }
         
@@ -128,42 +118,33 @@ class ChatViewController: UIViewController, UITableViewDelegate, UITableViewData
         let text = self.messageTxt.text!
         if (!((text.isEmpty))){
             self.createMessage(messageText: text,isUser:true)
-            //self.chatTableView.reloadData()
+            self.reloadTable()
             self.sendMessage(text: text)
+            self.messageTxt.text = ""
         }
     }
     
     func sendMessage(text: String) -> Void {
-        let endpoint = "http://192.168.1.11:8080/api/v1/chatbot";
-        let url = URL(string: endpoint)!
-        let request = NSMutableURLRequest(url: url)
-        let dic :[String:AnyObject] = ["message" : messageTxt.text as AnyObject, "context" : self.context!]// TODO
+        let request = Request().createRequest(endPoint:Constants.CHAT_SEND_MESSAGE, method: "POST")
+       // print(UserDefaults.standard.object(forKey: "context"))
+        let dic :[String:AnyObject] = ["message" : messageTxt.text as AnyObject, "context" : UserDefaults.standard.object(forKey: "context") as AnyObject]// TODO
         let json = try? JSONSerialization.data(withJSONObject: dic)
-        
-        //self.chatTableView.scrollToRow(at: NSIndexPath(row: self.chatTableView.numberOfRows(inSection: 0) - 1, section: 0) as IndexPath, at: .bottom, animated: true)
-        request.httpMethod = "POST"
         request.httpBody = json
         self.typingLbl.isHidden = false
-        self.sendRequest(request: self.createHeaders(request: request),isAllMessages:false)
+        self.sendRequest(request: request,isAllMessages:false)
+    }
+    
+    func getAllMessages() -> Void {
+        
+      //  print(UserDefaults.standard.object(forKey: "context"))
+        self.typingLbl.isHidden = false
+        self.sendRequest(request: Request().createRequest(endPoint: Constants.CHAT_ALL_MESSAGES, method: "GET"), isAllMessages: true)
     }
     
     func startChat() -> Void {
-        let endpoint = "http://192.168.1.11:8080/api/v1/chatbot/start";
-        let url = URL(string: endpoint)!
-        let request = NSMutableURLRequest(url: url)
+        self.typingLbl.isHidden = false
+        self.sendRequest(request: Request().createRequest(endPoint: Constants.CHAT_START, method: "POST"),isAllMessages:false)
         
-        request.httpMethod = "POST"
-        self.sendRequest(request: self.createHeaders(request:request),isAllMessages:false)
-        
-    }
-    
-    func createHeaders(request:NSMutableURLRequest) -> NSMutableURLRequest {
-        let auth_token = UserDefaults.standard.string(forKey: "user_auth_token")
-        request.addValue(auth_token!, forHTTPHeaderField: "Authorization")
-        request.addValue("application/json", forHTTPHeaderField: "Content-Type")
-        request.addValue("application/json", forHTTPHeaderField: "Accept")
-        
-        return request
     }
     
     func sendRequest(request :NSMutableURLRequest, isAllMessages:Bool) -> Void {
@@ -192,6 +173,10 @@ class ChatViewController: UIViewController, UITableViewDelegate, UITableViewData
         }
         if let dictionary = jsonObject as? [String: Any] {
             self.context = dictionary["context"] as AnyObject? //TODO
+           // print(context)
+            
+            UserDefaults.standard.setValue(self.context, forKey: "context")
+            print(UserDefaults.standard.object(forKey: "context"))
             self.createMessage(messageText: dictionary["output"] as! String,isUser: false)
             self.reloadTable()
         }
@@ -201,7 +186,9 @@ class ChatViewController: UIViewController, UITableViewDelegate, UITableViewData
         let messages = arrOfMessages["messages"] as! [[String:Any]]
         print("--------M E S S A G E--------")
         print(messages)
-        
+        if(messages.count == 0){
+            self.startChat()
+        }
         for msg in messages{
             self.createMessage(messageText: msg["message"] as! String, isUser: msg["sent_by_user"] as! Bool)
         }
@@ -226,7 +213,7 @@ class ChatViewController: UIViewController, UITableViewDelegate, UITableViewData
         DispatchQueue.main.async(execute: {
             self.chatTableView.reloadData()
             
-            DispatchQueue.main.asyncAfter(deadline: .now() + .milliseconds(100)) {
+            DispatchQueue.main.asyncAfter(deadline: .now() + .milliseconds(25)) {
                 let numberOfSections = self.chatTableView.numberOfSections
                 let numberOfRows = self.chatTableView.numberOfRows(inSection: numberOfSections-1)
                 

@@ -66,7 +66,7 @@ class SignInViewController: UIViewController {
             user?.getTokenForcingRefresh(true) {idToken, err in
                 
                 UserDefaults.standard.setValue(idToken, forKey: "user_auth_token")
-                let vc = self.storyboard?.instantiateViewController(withIdentifier: "dashboardNavController")
+                let vc = self.storyboard?.instantiateViewController(withIdentifier: "DashboardNavController")
                 let appDelegate = UIApplication.shared.delegate as! AppDelegate
                 appDelegate.window?.rootViewController = vc
                 

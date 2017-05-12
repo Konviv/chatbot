@@ -43,21 +43,7 @@ class AccountHistoryViewController: UIViewController, UITableViewDelegate, UITab
     // MARK: - Request
     
     func getAccountHistory() -> Void {
-        let endpoint = "http://192.168.1.11:8080/api/v1/plaid/account_history/\(self.idAccount)";
-        let url = URL(string: endpoint)!
-        let request = NSMutableURLRequest(url: url)
-        
-        request.httpMethod = "GET"
-        self.sendRequest(request: self.createHeaders(request: request))
-    }
-    
-    func createHeaders(request:NSMutableURLRequest) -> NSMutableURLRequest {
-        let auth_token = UserDefaults.standard.string(forKey: "user_auth_token")
-        request.addValue(auth_token!, forHTTPHeaderField: "Authorization")
-        request.addValue("application/json", forHTTPHeaderField: "Content-Type")
-        request.addValue("application/json", forHTTPHeaderField: "Accept")
-        
-        return request
+        self.sendRequest(request: Request().createRequest(endPoint: "\(Constants.HISTORY_BANK_ACCOUNT)\(self.idAccount)", method: "GET"))
     }
     
     func sendRequest(request :NSMutableURLRequest) -> Void {
@@ -79,17 +65,37 @@ class AccountHistoryViewController: UIViewController, UITableViewDelegate, UITab
             self.bank.name = dictionary["bank"] as! String
             let transactions :[[String:AnyObject]] = dictionary["account"]!["transactions"] as! [[String : AnyObject]]
             
-            for transaction in transactions {
-                let tran = Transaction()
-                tran.amount = transaction["amount"] as! Double
-                tran.date = transaction["date"] as! String
-                tran.name = transaction["name"] as! String
-                self.bank.transactions.append(tran)
-            }
-            DispatchQueue.main.async {
-                self.accountHistoryTableView.reloadData()
+            if(JSONSerialization.isValidJSONObject(transactions) && transactions.count > 0){
+                print("IS VALID")
+                self.getResponseData(transactions: transactions)
+                return
+            }else{
+                self.noHasHistoryAccount()
             }
         }
+    }
+    
+    func getResponseData(transactions:[[String : AnyObject]]) -> Void {
+        for transaction in transactions {
+            let tran = Transaction()
+            tran.amount = transaction["amount"] as! Double
+            tran.date = transaction["date"] as! String
+            tran.name = transaction["name"] as! String
+            self.bank.transactions.append(tran)
+        }
+        DispatchQueue.main.async {
+            self.accountHistoryTableView.reloadData()
+        }
+
+    }
+    
+    func noHasHistoryAccount() -> Void {
+        let alert = UIAlertController(title: "Error", message: "This account doesn't have history.", preferredStyle: UIAlertControllerStyle.alert)
+        let actionOk = UIAlertAction(title: "Ok", style: UIAlertActionStyle.default){ (action:UIAlertAction) in
+       _ = self.navigationController?.popViewController(animated: true)
+        }
+        alert.addAction(actionOk)
+        self.present(alert, animated: true, completion: nil)
     }
     
     func handleError(error:Error, response: URLResponse) -> Void {

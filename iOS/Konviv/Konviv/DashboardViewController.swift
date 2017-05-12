@@ -21,6 +21,7 @@ class DashboardViewController: UIViewController {
         super.viewDidLoad()
         let btnRadious = 20
         addBankAccountBtn?.layer.cornerRadius = CGFloat(btnRadious)
+        
     }
     
     override func didReceiveMemoryWarning() {
@@ -33,7 +34,7 @@ class DashboardViewController: UIViewController {
     }
     
     func configuration() {
-        let linkConfiguration = PLKConfiguration(key: "ebc098404b162edaadb2b8c6c45c8f", env: .sandbox, product: .auth)
+        let linkConfiguration = PLKConfiguration(key: Constants.PLAID_KEY, env: .sandbox, product: .auth)
         linkConfiguration.clientName = "Konviv"
         PLKPlaidLink.setup(with: linkConfiguration) { (success, error) in
             if (success) {
@@ -53,8 +54,7 @@ class DashboardViewController: UIViewController {
     }
     
     func presentPlaidLinkWithCustomConfiguration() {
-        print("----LINKVIEWCONTROLLER-----")
-        let linkConfiguration = PLKConfiguration(key: "ebc098404b162edaadb2b8c6c45c8f", env: .sandbox, product: .auth)
+        let linkConfiguration = PLKConfiguration(key: Constants.PLAID_KEY, env: .sandbox, product: .auth)
         linkConfiguration.clientName = "Link Demo"
         let linkViewDelegate = self
         let linkViewController = PLKPlaidLinkViewController(configuration: linkConfiguration, delegate: linkViewDelegate)
@@ -67,10 +67,7 @@ class DashboardViewController: UIViewController {
         let instName = self.getValue(anyVal: inst["name"] as Any)
         let id = self.getValue(anyVal: inst["type"] as Any)
         if (!(instName == "" && id == "")) {
-            if (self.sendInfoAccount(token: publicToken,id: id, institution: instName)){
-            
-            }
-            return
+            self.sendInfoAccount(token: publicToken,id: id, institution: instName)
         }
     }
     
@@ -91,7 +88,7 @@ class DashboardViewController: UIViewController {
         print("Exit metadata: \(metadata)")
     }
     
-    func sendInfoAccount(token: String, id : String, institution: String ) -> Bool {
+    func sendInfoAccount(token: String, id : String, institution: String ) -> Void {
         let dictionary : [String:Any] =
             ["item":
                     [
@@ -103,22 +100,26 @@ class DashboardViewController: UIViewController {
                             ]
                     ]
             ]
-        let json = try? JSONSerialization.data(withJSONObject: dictionary)
 
-        let endpoint = "http://192.168.1.11:8080/api/v1/plaid/authenticate";
+        /*let endpoint = "http://192.168.1.117:8080/api/v1/plaid/authenticate";
         let url = URL(string: endpoint)!
-        let session = URLSession.shared
-        let request = NSMutableURLRequest(url: url)
+        let session = URLSession.shared*/
+        let request: NSMutableURLRequest = Request().createRequest(endPoint: Constants.REGISTER_BANK, method: "POST")
         
-        request.httpMethod = "POST"
+        //request.httpMethod = "POST"
+        let json = try? JSONSerialization.data(withJSONObject: dictionary)
         request.httpBody = json
-        let auth_token = UserDefaults.standard.string(forKey: "user_auth_token")
-        request.addValue(auth_token!, forHTTPHeaderField: "Authorization")
-        request.addValue("application/json", forHTTPHeaderField: "Content-Type")
-        request.addValue("application/json", forHTTPHeaderField: "Accept")
-
-        let task = session.dataTask(with: request as URLRequest) { (data: Data?, response: URLResponse?, error: Error?) in
-          
+        self.sendRequest(request: request)
+        //let auth_token = UserDefaults.standard.string(forKey: "user_auth_token")
+        //request.addValue(auth_token!, forHTTPHeaderField: "Authorization")
+        //request.addValue("application/json", forHTTPHeaderField: "Content-Type")
+        //request.addValue("application/json", forHTTPHeaderField: "Accept")
+        
+        
+    }
+    func sendRequest(request:NSMutableURLRequest) -> Void {
+        let task = URLSession.shared.dataTask(with: request as URLRequest) { (data: Data?, response: URLResponse?, error: Error?) in
+            
             if error != nil
             {
                 print("error=\(error)")
@@ -126,18 +127,22 @@ class DashboardViewController: UIViewController {
             }
             
             self.handleResponse(respose: response!)
-            }
+        }
         task.resume()
-        
-        return false
+
     }
-    
     func handleResponse(respose: URLResponse) -> Void {
         let res = respose as? HTTPURLResponse
         let status = res?.statusCode
         
         if (status! >= 200 && status! < 300) {
-            
+            UserDefaults.standard.setValue(true, forKey: "hasAccounts")
+            print(UserDefaults.standard.bool(forKey: "hasAccounts"))
+            let vc = self.storyboard?.instantiateViewController(withIdentifier: "DashboardNavController")
+            self.present(vc!, animated: true, completion: nil)
+            let appDelegate = UIApplication.shared.delegate as! AppDelegate
+            appDelegate.window?.rootViewController = vc
+
         }else if(status! >= 400) {
             if let user = FIRAuth.auth()?.currentUser {
                 
@@ -158,8 +163,7 @@ class DashboardViewController: UIViewController {
     }
     @IBAction func didTabOnLogout(_ sender: Any) {
         let vc = self.storyboard?.instantiateViewController(withIdentifier: "Landingscreen")
-        UserDefaults.standard.set("", forKey: "user_auth_token")
-        try!FIRAuth.auth()?.signOut()
+        AuthUserActions().signOut()
         self.present(vc!, animated: true)
     }
     
