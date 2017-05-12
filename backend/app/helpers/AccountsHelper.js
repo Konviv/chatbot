@@ -2,12 +2,12 @@ var moment      = require('moment');
 var Item        = require('../models/plaid_item');
 var plaidClient = require('../clients/plaid_client').Client();
 
-exports.getAccounts = function(uid, resolve, reject) {
-  Item.getAll(uid, function(items) {
+exports.getAccounts = function(uid, i18n, resolve, reject) {
+  Item.getAll(uid, i18n, function(items) {
     if (items.length > 0) {
       var promises = [];
       items.forEach(function(item) {
-        promises.push(Item.getAccounts(plaidClient, item.access_token, item.institution.name));
+        promises.push(Item.getAccounts(plaidClient, item.access_token, item.institution.name, i18n));
       });
       Promise.all(promises).then(function(result) {
         resolve({ banks: result });
@@ -15,38 +15,42 @@ exports.getAccounts = function(uid, resolve, reject) {
         reject(error);
       });
     } else {
-      resolve('You have not registered banks yet.');
+      resolve(i18n('no_banks_registered'));
     }
   }, reject);
 };
 
-exports.getAccountHistory = function(uid, accountId, resolve, reject) {
-  Item.getAll(uid, function(items) {
+exports.getAccountHistory = function(uid, accountId, i18n, resolve, reject) {
+  Item.getAll(uid, i18n, function(items) {
     if (items.length > 0) {
       var params = getTransactionsParams();
       params.options.account_ids = [ accountId ];
       var promises = [];
       items.forEach(function(item) {
-        promises.push(Item.getAccountHistory(plaidClient, item.access_token, item.institution.name, params));
+        promises.push(Item.getAccountHistory(plaidClient, item.access_token, item.institution.name, params, i18n));
       });
       Promise.all(promises).then(function(result) {
         result = result.filter(function(value){ return value; });
-        resolve(result[0]);
+        if (result.length === 0) {
+          resolve(i18n('account_history_error'));
+        } else {
+          resolve(result[0]);
+        }
       }, function(error) {
         reject(error);
       });
     } else {
-      resolve('You have not registered banks yet.');
+      resolve(i18n('no_banks_registered'));
     }
   }, reject);
 };
 
-exports.getAccountsTotal = function(uid, resolve, reject) {
-  Item.getAll(uid, function(items) {
+exports.getAccountsTotal = function(uid, i18n, resolve, reject) {
+  Item.getAll(uid, i18n, function(items) {
     if (items.length > 0) {
       var promises = [];
       items.forEach(function(item) {
-        promises.push(Item.getTotalOnBank(plaidClient, item.access_token, item.institution.name));
+        promises.push(Item.getTotalOnBank(plaidClient, item.access_token, item.institution.name, i18n));
       });
       Promise.all(promises).then(function(result) {
         resolve(result.join('\n\n'));
@@ -54,17 +58,17 @@ exports.getAccountsTotal = function(uid, resolve, reject) {
         reject(error);
       });
     } else {
-      resolve('You have not registered banks yet.');
+      resolve(i18n('no_banks_registered'));
     }
   }, reject);
 };
 
-exports.getAccountsSummary = function(uid, resolve, reject) {
-  Item.getAll(uid, function(items) {
+exports.getAccountsSummary = function(uid, i18n, resolve, reject) {
+  Item.getAll(uid, i18n, function(items) {
     if (items.length > 0) {
       var promises = [];
       items.forEach(function(item) {
-        promises.push(Item.getAccountsBalance(plaidClient, item.access_token, item.institution.name));
+        promises.push(Item.getAccountsBalance(plaidClient, item.access_token, item.institution.name, i18n));
       });
       Promise.all(promises).then(function(result) {
         resolve(result.join('\n\n'));
@@ -72,7 +76,7 @@ exports.getAccountsSummary = function(uid, resolve, reject) {
         reject(error);
       });
     } else {
-      resolve('You have not registered banks yet.');
+      resolve(i18n('no_banks_registered'));
     }
   }, reject);
 };
@@ -88,13 +92,13 @@ var getTransactionsParams = function(numberOfTransactions) {
   return params;
 };
 
-exports.getLastAffectedAccount = function(uid, resolve, reject) {
-  Item.getAll(uid, function(items) {
+exports.getLastAffectedAccount = function(uid, i18n, resolve, reject) {
+  Item.getAll(uid, i18n, function(items) {
     if (items.length > 0) {
       var params = getTransactionsParams(1);
       var promises = [];
       items.forEach(function(item) {
-        promises.push(Item.getLastTransaction(plaidClient, item.access_token, item.institution.name, params));
+        promises.push(Item.getLastTransaction(plaidClient, item.access_token, item.institution.name, i18n, params));
       });
       Promise.all(promises).then(function(result) {
         resolve(result.join('\n\n'));
@@ -102,18 +106,18 @@ exports.getLastAffectedAccount = function(uid, resolve, reject) {
         reject(error);
       });
     } else {
-      resolve('You have not registered banks yet.');
+      resolve(i18n('no_banks_registered'));
     }
   }, reject);
 };
 
-exports.getLastTransactions = function(uid, numberOfTransactions, resolve, reject) {
-  Item.getAll(uid, function(items) {
+exports.getLastTransactions = function(uid, numberOfTransactions, i18n, resolve, reject) {
+  Item.getAll(uid, i18n, function(items) {
     if (items.length > 0) {
       var params = getTransactionsParams(numberOfTransactions);
       var promises = [];
       items.forEach(function(item) {
-        promises.push(Item.getLastTransactions(plaidClient, item.access_token, item.institution.name, params));
+        promises.push(Item.getLastTransactions(plaidClient, item.access_token, item.institution.name, i18n, params));
       });
       Promise.all(promises).then(function(result) {
         resolve(result.join('\n\n'));
@@ -121,19 +125,19 @@ exports.getLastTransactions = function(uid, numberOfTransactions, resolve, rejec
         reject(error);
       });
     } else {
-      resolve('You have not registered banks yet.');
+      resolve(i18n('no_banks_registered'));
     }
   }, reject);
 };
 
-exports.getSpendingAvg = function(uid, resolve, reject) {
-  Item.getAll(uid, function(items) {
+exports.getSpendingAvg = function(uid, i18n, resolve, reject) {
+  Item.getAll(uid, i18n, function(items) {
     if (items.length > 0) {
       var params = getTransactionsParams();
       params.days = moment().add(1, 'days').diff(moment().startOf('month'), 'days');
       var promises = [];
       items.forEach(function(item) {
-        promises.push(Item.getSpendingAvg(plaidClient, item.access_token, item.institution.name, params));
+        promises.push(Item.getSpendingAvg(plaidClient, item.access_token, item.institution.name, i18n, params));
       });
       Promise.all(promises).then(function(result) {
         resolve(result.join('\n\n'));
@@ -141,20 +145,20 @@ exports.getSpendingAvg = function(uid, resolve, reject) {
         reject(error);
       });
     } else {
-      resolve('You have not registered banks yet.');
+      resolve(i18n('no_banks_registered'));
     }
   }, reject);
 };
 
-exports.getFeaturedTransaction = function(uid, action, feature, resolve, reject) {
-  Item.getAll(uid, function(items) {
+exports.getFeaturedTransaction = function(uid, action, feature, i18n, resolve, reject) {
+  Item.getAll(uid, i18n, function(items) {
     if (items.length > 0) {
       var params = getTransactionsParams();
       params.action  = action;
       params.feature = feature;
       var promises = [];
       items.forEach(function(item) {
-        promises.push(Item.getFeaturedBill(plaidClient, item.access_token, item.institution.name, params));
+        promises.push(Item.getFeaturedBill(plaidClient, item.access_token, item.institution.name, i18n, params));
       });
       Promise.all(promises).then(function(result) {
         resolve(result.join('\n\n'));
@@ -162,17 +166,17 @@ exports.getFeaturedTransaction = function(uid, action, feature, resolve, reject)
         reject(error);
       });
     } else {
-      resolve('You have not registered banks yet.');
+      resolve(i18n('no_banks_registered'));
     }
   }, reject);
 };
 
-exports.getAccountFunds = function(uid, accountCategories, resolve, reject) {
-  Item.getAll(uid, function(items) {
+exports.getAccountFunds = function(uid, accountCategories, i18n, resolve, reject) {
+  Item.getAll(uid, i18n, function(items) {
     if (items.length > 0) {
       var promises = [];
       items.forEach(function(item) {
-        promises.push(Item.getAccountMoney(plaidClient, item.access_token, item.institution.name, accountCategories));
+        promises.push(Item.getAccountMoney(plaidClient, item.access_token, item.institution.name, i18n, accountCategories));
       });
       Promise.all(promises).then(function(result) {
         resolve(result.join('\n\n'));
@@ -180,22 +184,22 @@ exports.getAccountFunds = function(uid, accountCategories, resolve, reject) {
         reject(error);
       });
     } else {
-      resolve('You have not registered banks yet.');
+      resolve(i18n('no_banks_registered'));
     }
   }, reject);
 };
 
-exports.getExpensesOnTime = function(uid, resolve, reject, params) {
-  Item.getAll(uid, function(items) {
+exports.getExpensesOnTime = function(uid, i18n, resolve, reject, params) {
+  Item.getAll(uid, i18n, function(items) {
     if (items.length > 0) {
       params.options    = {};
       params.start_date = params.dates[0];
       params.end_date   = params.dates.length === 1 ? params.dates[0] : params.dates[1];
-      params.period     = getPeriodOfTime(params.start_date, params.end_date);
+      params.period     = getPeriodOfTime(params.start_date, params.end_date, i18n);
       delete params.dates;
       var promises = [];
       items.forEach(function(item) {
-        promises.push(Item.getExpensesOnTime(plaidClient, item.access_token, item.institution.name, params));
+        promises.push(Item.getExpensesOnTime(plaidClient, item.access_token, item.institution.name, i18n, params));
       });
       Promise.all(promises).then(function(result) {
         resolve(result.join('\n\n'));
@@ -203,18 +207,18 @@ exports.getExpensesOnTime = function(uid, resolve, reject, params) {
         reject(error);
       });
     } else {
-      resolve('You have not registered banks yet.');
+      resolve(i18n('no_banks_registered'));
     }
   }, reject);
 };
 
-var getPeriodOfTime = function(startDate, endDate) {
+var getPeriodOfTime = function(startDate, endDate, i18n) {
   if (startDate === endDate) {
     if (startDate === moment().format('YYYY-MM-DD')) {
-      return 'Today';
+      return i18n('today');
     }
-    return 'On ' + moment(startDate, 'YYYY-MM-DD').format('ll');
+    return i18n('one_day_date', moment(startDate, 'YYYY-MM-DD').format('ll'));
   } else {
-    return 'From ' + moment(startDate, 'YYYY-MM-DD').format('ll') + ' to ' + moment(endDate, 'YYYY-MM-DD').format('ll');
+    return i18n('range_date', moment(startDate, 'YYYY-MM-DD').format('ll'), moment(endDate, 'YYYY-MM-DD').format('ll'));
   }
 };
