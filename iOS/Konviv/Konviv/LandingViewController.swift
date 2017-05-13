@@ -7,7 +7,7 @@
 //
 
 import UIKit
-
+import Firebase
 class LandingViewController: UIViewController {
 
     @IBOutlet weak var signInTab1: UIButton?
@@ -38,8 +38,7 @@ class LandingViewController: UIViewController {
         registerTab2?.backgroundColor = btnBackgroundColor
         registerTab3?.backgroundColor = btnBackgroundColor
         // Do any additional setup after loading the view.
-        print("*-*-*-*-*-*-*-*-*TOKEN*-*-*-*-*-*-*-*-*")
-        print(UserDefaults.standard.string(forKey: "user_auth_token"))
+        
     }
 
     override func didReceiveMemoryWarning() {
