@@ -21,7 +21,14 @@ class ToolsViewController: UIViewController {
         // Dispose of any resources that can be recreated.
     }
     
-
+    @IBAction func didTabOnScore(_ sender: Any) {
+        let alertPrompt = UIAlertController(title: "Score", message: "760", preferredStyle: UIAlertControllerStyle.alert)
+        let btn = UIAlertAction(title: "Ok", style: .default) { (action:UIAlertAction) in }
+        alertPrompt.addAction(btn)
+        //alertPrompt.addAction(btn)
+        self.present(alertPrompt,animated:true,completion:nil)
+    }
+    
     /*
     // MARK: - Navigation
 

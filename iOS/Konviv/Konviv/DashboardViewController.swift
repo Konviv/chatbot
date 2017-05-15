@@ -100,22 +100,11 @@ class DashboardViewController: UIViewController {
                             ]
                     ]
             ]
-
-        /*let endpoint = "http://192.168.1.117:8080/api/v1/plaid/authenticate";
-        let url = URL(string: endpoint)!
-        let session = URLSession.shared*/
         let request: NSMutableURLRequest = Request().createRequest(endPoint: Constants.REGISTER_BANK, method: "POST")
-        
-        //request.httpMethod = "POST"
+
         let json = try? JSONSerialization.data(withJSONObject: dictionary)
         request.httpBody = json
         self.sendRequest(request: request)
-        //let auth_token = UserDefaults.standard.string(forKey: "user_auth_token")
-        //request.addValue(auth_token!, forHTTPHeaderField: "Authorization")
-        //request.addValue("application/json", forHTTPHeaderField: "Content-Type")
-        //request.addValue("application/json", forHTTPHeaderField: "Accept")
-        
-        
     }
     func sendRequest(request:NSMutableURLRequest) -> Void {
         let task = URLSession.shared.dataTask(with: request as URLRequest) { (data: Data?, response: URLResponse?, error: Error?) in
@@ -140,8 +129,8 @@ class DashboardViewController: UIViewController {
             print(UserDefaults.standard.bool(forKey: "hasAccounts"))
             let vc = self.storyboard?.instantiateViewController(withIdentifier: "DashboardNavController")
             self.present(vc!, animated: true, completion: nil)
-            let appDelegate = UIApplication.shared.delegate as! AppDelegate
-            appDelegate.window?.rootViewController = vc
+          //  let appDelegate = UIApplication.shared.delegate as! AppDelegate
+          //  appDelegate.window?.rootViewController = vc
 
         }else if(status! >= 400) {
             if let user = FIRAuth.auth()?.currentUser {

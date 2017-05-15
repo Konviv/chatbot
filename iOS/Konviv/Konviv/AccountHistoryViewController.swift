@@ -16,6 +16,7 @@ class AccountHistoryViewController: UIViewController, UITableViewDelegate, UITab
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        bank.accounts = []
         self.getAccountHistory()
         // Do any additional setup after loading the view.
     }
@@ -59,19 +60,27 @@ class AccountHistoryViewController: UIViewController, UITableViewDelegate, UITab
     }
     
     func response(response: URLResponse, data: Data) -> Void {
+        do{
+            print()
+            let jsonObject = try! JSONSerialization.jsonObject(with: data, options: .allowFragments)
+            if(JSONSerialization.isValidJSONObject(jsonObject)){
+                
+                if let dictionary = jsonObject as? [String: AnyObject] {
+                    self.bank.name = dictionary["bank"] as! String
+                    let transactions :[[String:AnyObject]] = dictionary["account"]!["transactions"] as! [[String : AnyObject]]
         
-        let jsonObject = try! JSONSerialization.jsonObject(with: data, options: .allowFragments)
-        if let dictionary = jsonObject as? [String: AnyObject] {
-            self.bank.name = dictionary["bank"] as! String
-            let transactions :[[String:AnyObject]] = dictionary["account"]!["transactions"] as! [[String : AnyObject]]
-            
-            if(JSONSerialization.isValidJSONObject(transactions) && transactions.count > 0){
-                print("IS VALID")
-                self.getResponseData(transactions: transactions)
-                return
-            }else{
-                self.noHasHistoryAccount()
+                    if(JSONSerialization.isValidJSONObject(transactions) && transactions.count > 0){
+                        print("IS VALID")
+                        self.getResponseData(transactions: transactions)
+                        return
+                    }else{
+                        self.noHasHistoryAccount()
+                    }
+                }
             }
+            self.noHasHistoryAccount()
+        }catch{
+            self.noHasHistoryAccount()
         }
     }
     
