@@ -2,7 +2,7 @@
 
 #### Konviv: Connection with Amazon EC2
 1. Open a terminal and change to directory where is located the key-pair.pem file.
-2. `ssh -i /path/my-key-pair.pem ec2-user@ec2-35-167-131-202.us-west-2.compute.amazonaws.com`
+2. `ssh -i ./my-key-pair.pem ec2-user@ec2-35-167-131-202.us-west-2.compute.amazonaws.com`
 3. `cd/chatbot/backend`
 
 #### Start Konviv API
