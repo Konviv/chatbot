@@ -18,14 +18,23 @@
 		B86F390E1E97F8AA00FD3A57 /* Konviv.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = B86F390C1E97F8AA00FD3A57 /* Konviv.xcdatamodeld */; };
 		B86F39101E97F8AA00FD3A57 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = B86F390F1E97F8AA00FD3A57 /* Assets.xcassets */; };
 		B86F39131E97F8AA00FD3A57 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = B86F39111E97F8AA00FD3A57 /* LaunchScreen.storyboard */; };
-		B86F391D1E98066700FD3A57 /* HomeViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B86F391C1E98066700FD3A57 /* HomeViewController.swift */; };
 		B86F391F1E98067A00FD3A57 /* RegisterViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B86F391E1E98067A00FD3A57 /* RegisterViewController.swift */; };
 		B86F39211E98068700FD3A57 /* SignInViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B86F39201E98068700FD3A57 /* SignInViewController.swift */; };
 		B86F39251E984D6E00FD3A57 /* DashboardViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B86F39241E984D6E00FD3A57 /* DashboardViewController.swift */; };
 		B86F39271E984D7A00FD3A57 /* ToolsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B86F39261E984D7A00FD3A57 /* ToolsViewController.swift */; };
 		B86F39291E984D8500FD3A57 /* ChatViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B86F39281E984D8500FD3A57 /* ChatViewController.swift */; };
+		B877FE4A1EC3B0FF001CFCB2 /* AccountHistoryViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B877FE491EC3B0FF001CFCB2 /* AccountHistoryViewController.swift */; };
+		B877FE4C1EC3B662001CFCB2 /* Transactions.swift in Sources */ = {isa = PBXBuildFile; fileRef = B877FE4B1EC3B662001CFCB2 /* Transactions.swift */; };
+		B877FE501EC3BFC1001CFCB2 /* HistoryItemTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = B877FE4F1EC3BFC1001CFCB2 /* HistoryItemTableViewCell.swift */; };
 		B8884F981EBBCDED00050DE1 /* UserAccountsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B8884F971EBBCDED00050DE1 /* UserAccountsViewController.swift */; };
 		B8886D041EB2362D00FBAB21 /* AddBankViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B8886D031EB2362D00FBAB21 /* AddBankViewController.swift */; };
+		B89875E01EC0B79700EA25B4 /* UserAccountsTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = B89875DF1EC0B79700EA25B4 /* UserAccountsTableViewCell.swift */; };
+		B89BE6AD1EC60B2900559393 /* AuthUserActions.swift in Sources */ = {isa = PBXBuildFile; fileRef = B89BE6AC1EC60B2900559393 /* AuthUserActions.swift */; };
+		B89BE6AF1EC61FD600559393 /* Request.swift in Sources */ = {isa = PBXBuildFile; fileRef = B89BE6AE1EC61FD600559393 /* Request.swift */; };
+		B89BE6B31EC6741900559393 /* Constants.swift in Sources */ = {isa = PBXBuildFile; fileRef = B89BE6B21EC6741900559393 /* Constants.swift */; };
+		B8C21CD51EC0DACF00979301 /* UserAccounts.swift in Sources */ = {isa = PBXBuildFile; fileRef = B8C21CD41EC0DACF00979301 /* UserAccounts.swift */; };
+		B8C21CD71EC0FED900979301 /* ChatTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = B8C21CD61EC0FED900979301 /* ChatTableViewCell.swift */; };
+		B8C21CD91EC104F800979301 /* Message.swift in Sources */ = {isa = PBXBuildFile; fileRef = B8C21CD81EC104F800979301 /* Message.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -43,15 +52,24 @@
 		B86F390F1E97F8AA00FD3A57 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		B86F39121E97F8AA00FD3A57 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		B86F39141E97F8AA00FD3A57 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		B86F391C1E98066700FD3A57 /* HomeViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HomeViewController.swift; sourceTree = "<group>"; };
 		B86F391E1E98067A00FD3A57 /* RegisterViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RegisterViewController.swift; sourceTree = "<group>"; };
 		B86F39201E98068700FD3A57 /* SignInViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SignInViewController.swift; sourceTree = "<group>"; };
 		B86F39241E984D6E00FD3A57 /* DashboardViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DashboardViewController.swift; sourceTree = "<group>"; };
 		B86F39261E984D7A00FD3A57 /* ToolsViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ToolsViewController.swift; sourceTree = "<group>"; };
 		B86F39281E984D8500FD3A57 /* ChatViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ChatViewController.swift; sourceTree = "<group>"; };
+		B877FE491EC3B0FF001CFCB2 /* AccountHistoryViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AccountHistoryViewController.swift; sourceTree = "<group>"; };
+		B877FE4B1EC3B662001CFCB2 /* Transactions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Transactions.swift; sourceTree = "<group>"; };
+		B877FE4F1EC3BFC1001CFCB2 /* HistoryItemTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HistoryItemTableViewCell.swift; sourceTree = "<group>"; };
 		B87D1A841EB0E4A50047617D /* Konviv.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = Konviv.entitlements; sourceTree = "<group>"; };
 		B8884F971EBBCDED00050DE1 /* UserAccountsViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UserAccountsViewController.swift; sourceTree = "<group>"; };
 		B8886D031EB2362D00FBAB21 /* AddBankViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AddBankViewController.swift; sourceTree = "<group>"; };
+		B89875DF1EC0B79700EA25B4 /* UserAccountsTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UserAccountsTableViewCell.swift; sourceTree = "<group>"; };
+		B89BE6AC1EC60B2900559393 /* AuthUserActions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AuthUserActions.swift; sourceTree = "<group>"; };
+		B89BE6AE1EC61FD600559393 /* Request.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Request.swift; sourceTree = "<group>"; };
+		B89BE6B21EC6741900559393 /* Constants.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Constants.swift; sourceTree = "<group>"; };
+		B8C21CD41EC0DACF00979301 /* UserAccounts.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UserAccounts.swift; sourceTree = "<group>"; };
+		B8C21CD61EC0FED900979301 /* ChatTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ChatTableViewCell.swift; sourceTree = "<group>"; };
+		B8C21CD81EC104F800979301 /* Message.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Message.swift; sourceTree = "<group>"; };
 		E6C43E009F189BA6C18EE32D /* Pods-Konviv.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Konviv.release.xcconfig"; path = "Pods/Target Support Files/Pods-Konviv/Pods-Konviv.release.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -105,28 +123,69 @@
 		B86F39041E97F8A900FD3A57 /* Konviv */ = {
 			isa = PBXGroup;
 			children = (
+				B89BE6AB1EC60B0800559393 /* helpers */,
+				B8C21CD31EC0D9D200979301 /* Models */,
+				B89875DE1EC0B76100EA25B4 /* Views */,
 				B87D1A841EB0E4A50047617D /* Konviv.entitlements */,
 				B867675B1EAFE62C0067CAAC /* GoogleService-Info.plist */,
 				B86F39051E97F8AA00FD3A57 /* AppDelegate.swift */,
-				B86F39281E984D8500FD3A57 /* ChatViewController.swift */,
-				B86F39071E97F8AA00FD3A57 /* ViewController.swift */,
-				B82893EF1EAEA82300527C08 /* LandingViewController.swift */,
+				B877FE481EC3ACDC001CFCB2 /* Controllers */,
 				B86F39091E97F8AA00FD3A57 /* Main.storyboard */,
-				B82893E31EAE72D400527C08 /* PageViewController.swift */,
 				B86AB1441EBD13DA00320DB9 /* UserAccountsTableViewController.swift */,
 				B86F390F1E97F8AA00FD3A57 /* Assets.xcassets */,
 				B86F39111E97F8AA00FD3A57 /* LaunchScreen.storyboard */,
 				B86F39141E97F8AA00FD3A57 /* Info.plist */,
 				B86F390C1E97F8AA00FD3A57 /* Konviv.xcdatamodeld */,
-				B86F391C1E98066700FD3A57 /* HomeViewController.swift */,
+				B8886D031EB2362D00FBAB21 /* AddBankViewController.swift */,
+			);
+			path = Konviv;
+			sourceTree = "<group>";
+		};
+		B877FE481EC3ACDC001CFCB2 /* Controllers */ = {
+			isa = PBXGroup;
+			children = (
+				B86F39071E97F8AA00FD3A57 /* ViewController.swift */,
+				B877FE491EC3B0FF001CFCB2 /* AccountHistoryViewController.swift */,
+				B86F39281E984D8500FD3A57 /* ChatViewController.swift */,
+				B82893E31EAE72D400527C08 /* PageViewController.swift */,
 				B86F391E1E98067A00FD3A57 /* RegisterViewController.swift */,
 				B86F39201E98068700FD3A57 /* SignInViewController.swift */,
 				B86F39241E984D6E00FD3A57 /* DashboardViewController.swift */,
 				B86F39261E984D7A00FD3A57 /* ToolsViewController.swift */,
-				B8886D031EB2362D00FBAB21 /* AddBankViewController.swift */,
+				B82893EF1EAEA82300527C08 /* LandingViewController.swift */,
 				B8884F971EBBCDED00050DE1 /* UserAccountsViewController.swift */,
 			);
-			path = Konviv;
+			name = Controllers;
+			sourceTree = "<group>";
+		};
+		B89875DE1EC0B76100EA25B4 /* Views */ = {
+			isa = PBXGroup;
+			children = (
+				B89875DF1EC0B79700EA25B4 /* UserAccountsTableViewCell.swift */,
+				B8C21CD61EC0FED900979301 /* ChatTableViewCell.swift */,
+				B877FE4F1EC3BFC1001CFCB2 /* HistoryItemTableViewCell.swift */,
+			);
+			name = Views;
+			sourceTree = "<group>";
+		};
+		B89BE6AB1EC60B0800559393 /* helpers */ = {
+			isa = PBXGroup;
+			children = (
+				B89BE6AC1EC60B2900559393 /* AuthUserActions.swift */,
+				B89BE6AE1EC61FD600559393 /* Request.swift */,
+				B89BE6B21EC6741900559393 /* Constants.swift */,
+			);
+			name = helpers;
+			sourceTree = "<group>";
+		};
+		B8C21CD31EC0D9D200979301 /* Models */ = {
+			isa = PBXGroup;
+			children = (
+				B8C21CD41EC0DACF00979301 /* UserAccounts.swift */,
+				B8C21CD81EC104F800979301 /* Message.swift */,
+				B877FE4B1EC3B662001CFCB2 /* Transactions.swift */,
+			);
+			name = Models;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -260,17 +319,26 @@
 			buildActionMask = 2147483647;
 			files = (
 				B86F39081E97F8AA00FD3A57 /* ViewController.swift in Sources */,
+				B877FE4A1EC3B0FF001CFCB2 /* AccountHistoryViewController.swift in Sources */,
 				B86F39251E984D6E00FD3A57 /* DashboardViewController.swift in Sources */,
 				B82893E41EAE72D400527C08 /* PageViewController.swift in Sources */,
+				B8C21CD91EC104F800979301 /* Message.swift in Sources */,
 				B86F391F1E98067A00FD3A57 /* RegisterViewController.swift in Sources */,
+				B89BE6B31EC6741900559393 /* Constants.swift in Sources */,
+				B89BE6AD1EC60B2900559393 /* AuthUserActions.swift in Sources */,
 				B86F39211E98068700FD3A57 /* SignInViewController.swift in Sources */,
 				B86F39271E984D7A00FD3A57 /* ToolsViewController.swift in Sources */,
 				B86AB1451EBD13DA00320DB9 /* UserAccountsTableViewController.swift in Sources */,
+				B89875E01EC0B79700EA25B4 /* UserAccountsTableViewCell.swift in Sources */,
 				B86F39061E97F8AA00FD3A57 /* AppDelegate.swift in Sources */,
 				B86F390E1E97F8AA00FD3A57 /* Konviv.xcdatamodeld in Sources */,
 				B86F39291E984D8500FD3A57 /* ChatViewController.swift in Sources */,
-				B86F391D1E98066700FD3A57 /* HomeViewController.swift in Sources */,
+				B8C21CD71EC0FED900979301 /* ChatTableViewCell.swift in Sources */,
+				B89BE6AF1EC61FD600559393 /* Request.swift in Sources */,
+				B8C21CD51EC0DACF00979301 /* UserAccounts.swift in Sources */,
+				B877FE4C1EC3B662001CFCB2 /* Transactions.swift in Sources */,
 				B8884F981EBBCDED00050DE1 /* UserAccountsViewController.swift in Sources */,
+				B877FE501EC3BFC1001CFCB2 /* HistoryItemTableViewCell.swift in Sources */,
 				B8886D041EB2362D00FBAB21 /* AddBankViewController.swift in Sources */,
 				B82893F01EAEA82300527C08 /* LandingViewController.swift in Sources */,
 			);

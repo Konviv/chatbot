@@ -7,19 +7,17 @@
 //
 
 import UIKit
-
+import Firebase
 class UserAccountsViewController: UIViewController,  UITableViewDataSource, UITableViewDelegate {
 
-    @IBOutlet weak var tableView: UITableView!
+    @IBOutlet weak var accountsTableView: UITableView!
+        
+    var bankAccounts : [Bank] = []
     
-    var sections = [String]()
-    
-    var items = [["5"]]
-    var amounts : [[String:AnyObject]] = [[:]]
     override func viewDidLoad() {
         
         super.viewDidLoad()
-        self.tableView.register(UITableViewCell.self, forCellReuseIdentifier: "menuItem")
+       // self.tableView.register(UITableViewCell.self, forCellReuseIdentifier: "menuItem")
         
         // Uncomment the following line to preserve selection between presentations
         // self.clearsSelectionOnViewWillAppear = false
@@ -28,8 +26,9 @@ class UserAccountsViewController: UIViewController,  UITableViewDataSource, UITa
         // self.navigationItem.rightBarButtonItem = self.editButtonItem()
     }
     override func viewWillAppear(_ animated: Bool) {
+        self.bankAccounts = []
         self.getUserBankAccounts()
-        tableView.reloadData()
+        //self.noHasBankAccounts()
     }
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
@@ -40,73 +39,92 @@ class UserAccountsViewController: UIViewController,  UITableViewDataSource, UITa
     
      func numberOfSections(in tableView: UITableView) -> Int {
         // #warning Incomplete implementation, return the number of sections
-        return sections.count
+        return self.bankAccounts.count
     }
      func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
-        return sections[section]
+        return self.bankAccounts[section].name
     }
     
      func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         // #warning Incomplete implementation, return the number of rows
-        return items[section].count
+        return self.bankAccounts[section].accounts.count
     }
-    
-    
-     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCell(withIdentifier: "menuItem", for: indexPath)
+
+    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        let cell = tableView.dequeueReusableCell(withIdentifier: "menuItem", for: indexPath) as! UserAccountsTableViewCell
+        cell.accountName.text = self.bankAccounts[indexPath.section].accounts[indexPath.row].name
+        let amount = self.bankAccounts[indexPath.section].accounts[indexPath.row].balances["current"] as? NSNumber
         
-        // Configure the cell...
-        cell.textLabel?.text = items[indexPath.section][indexPath.row]
-        //cell.LabelAmount?.text = self.amounts[indexPath.section][indexPath.row]
+        cell.amount.text = amount != nil ? "$\(String(describing: amount!))" : "$0"
         return cell
     }
-    func getUserBankAccounts() -> Void {
-        let endpoint = "http://192.168.1.9:8080/api/v1/plaid/accounts";
-        let url = URL(string: endpoint)!
-        let session = URLSession.shared
-        let request = NSMutableURLRequest(url: url)
+    
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        let vc = storyboard?.instantiateViewController(withIdentifier: "AccountHistory") as! AccountHistoryViewController
+        vc.idAccount = self.bankAccounts[indexPath.section].accounts[indexPath.row].id
         
-        request.httpMethod = "GET"
-        let auth_token = UserDefaults.standard.string(forKey: "user_auth_token")
-        request.addValue(auth_token!, forHTTPHeaderField: "Authorization")
-        request.addValue("application/json", forHTTPHeaderField: "Content-Type")
-        request.addValue("application/json", forHTTPHeaderField: "Accept")
-        let task = session.dataTask(with: request as URLRequest) { (data: Data?, response: URLResponse?, error: Error?) in
+        navigationController?.pushViewController(vc, animated: true)
+    }
+    
+    func noHasBankAccounts() -> Void {
+        let vc = self.storyboard?.instantiateViewController(withIdentifier: "DashboardWelcomeNavController")
+        self.present(vc!, animated: true, completion: nil)
+        let appDelegate = UIApplication.shared.delegate as! AppDelegate
+        appDelegate.window?.rootViewController = vc
+        UserDefaults.standard.set(false, forKey: "hasAccounts")
+    }
+    
+    func getUserBankAccounts() -> Void {
+        self.sendRequest(request: Request().createRequest(endPoint: Constants.BANK_ACCOUNTS, method: "GET"))
+    }
+    
+    func sendRequest(request: NSMutableURLRequest) -> Void {
+        let task = URLSession.shared.dataTask(with: request as URLRequest) { (data: Data?, response: URLResponse?, error: Error?) in
             if error != nil
             {
                 print("error=\(error)")
                 return
             }
-            print("response = \(response!)")
-            //self.handleResponse(respose: response!)
-            let res = String(data: data!, encoding: String.Encoding.utf8) // the data will be converted to the string
-            print(res!)
-            do{
-                let object = try JSONSerialization.jsonObject(with: data!, options: .allowFragments)
-                if let dictionary = object as? [String: AnyObject] {
-                    let b = dictionary["banks"] as? [[String: AnyObject]]
-                    //   self.numberOfSections = (b?.count)!
-                    self.items.removeAll()
-                    for banks in b! {
-                        self.sections.append(banks["bank_name"] as! String)
-                        let accounts = banks["accounts"] as? [[String:AnyObject]]
-                        var arr :[String]=[]
-                        var acountAmount :[[String:AnyObject]]=[[:]]
-                        for account in accounts!{
-                            arr.append(account["name"] as! String)
-                            var balances = account["balances"] as? [String: AnyObject]
-                            acountAmount.append(balances!)
-                        }
-                        self.items.append(arr)
-                        //self.amounts.append(acountAmount)
-                    }
-                }
-                self.tableView.reloadData()
-            }catch let myJSONError {
-                print(myJSONError)
+            if(JSONSerialization.isValidJSONObject(try!JSONSerialization.jsonObject(with: data!, options: .allowFragments))){
+                self.getResponseData(data: data!)
+                return
             }
+            self.noHasBankAccounts()
         }
         task.resume()
+    }
+    func getResponseData(data:Data) -> Void {
+        let object = try? JSONSerialization.jsonObject(with: data, options: .allowFragments)
+        if let dictionary = object as? [String: AnyObject] {
+            let b = dictionary["banks"] as? [[String: AnyObject]]
+            for banks in b! {
+                let bank = Bank()
+                bank.name = banks["bank_name"] as! String
+                let accounts = banks["accounts"] as? [[String:AnyObject]]
+                if((accounts?.count)! == 0){
+                    self.noHasBankAccounts()
+                    return
+                }
+                UserDefaults.standard.setValue(true, forKey: "hasAccounts")
+                for account in accounts!{
+                    let ac = Account()
+                    ac.id = account["id"] as! String
+                    ac.name = account["name"] as! String
+                    ac.balances = account["balances"] as! [String:Any]
+                    bank.accounts.append(ac)
+                }
+                self.bankAccounts.append(bank)
+            }
+            DispatchQueue.main.async(execute: {
+                self.accountsTableView.reloadData()
+            })
+        }
+    }
+    
+    @IBAction func didTabOnLogout(_ sender: Any) {
+        let vc = self.storyboard?.instantiateViewController(withIdentifier: "Landingscreen")
+        AuthUserActions().signOut()
+        self.present(vc!, animated: true)
     }
     /*
     // MARK: - Navigation

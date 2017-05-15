@@ -53,10 +53,10 @@ class RegisterViewController: UIViewController {
         UIView.commitAnimations()
     }
     @IBAction func didTabOnRegister(_ sender: Any) {
-        let name = nameTextField.text
-        let lastname = lastNameField.text
-        let email = emailTxtField.text
-        let password = passwordTxtField.text
+        let name = nameTextField.text?.trimmingCharacters(in: NSCharacterSet.whitespaces)
+        let lastname = lastNameField.text?.trimmingCharacters(in: NSCharacterSet.whitespaces)
+        let email = emailTxtField.text?.trimmingCharacters(in: NSCharacterSet.whitespaces)
+        let password = passwordTxtField.text?.trimmingCharacters(in: NSCharacterSet.whitespaces)
         self.view.endEditing(true)
         if (name?.isEmpty)! {
             self.prensetAlert(msg: "The name is empy")
@@ -76,7 +76,7 @@ class RegisterViewController: UIViewController {
         FIRAuth.auth()?.createUser(withEmail: email!, password: password!) {(user, error)in
             
             if(user == nil){
-                self.prensetAlert(msg: self.handlrRegisterError(error: error as! NSError))
+                self.prensetAlert(msg: self.handleRegisterError(error: error as! NSError))
                 return
             }
             let updateRequest = user?.profileChangeRequest()
@@ -94,7 +94,7 @@ class RegisterViewController: UIViewController {
         }
     }
     
-    func handlrRegisterError(error:NSError) -> String {
+    func handleRegisterError(error:NSError) -> String {
         print(error)
         switch error.code {
         case FIRAuthErrorCode.errorCodeInvalidEmail.rawValue:
@@ -109,7 +109,7 @@ class RegisterViewController: UIViewController {
     }
     
     func prensetAlert(msg:String) -> Void {
-        let alert = UIAlertController(title: "Error", message: msg, preferredStyle: .actionSheet)
+        let alert = UIAlertController(title: "Error", message: msg, preferredStyle: .alert)
         let okAction = UIAlertAction(title: "OK", style: .default) { action in
             alert.dismiss(animated: true, completion: nil)
         }
