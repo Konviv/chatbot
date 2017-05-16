@@ -9,7 +9,7 @@
 import UIKit
 import Messages
 
-class ChatViewController: UIViewController, UITableViewDelegate, UITableViewDataSource {
+class ChatViewController: UIViewController, UITableViewDelegate, UITableViewDataSource,UITextViewDelegate {
     
     var messages : [Message] = [Message()]
     @IBOutlet weak var chatTableView: UITableView!
@@ -19,6 +19,8 @@ class ChatViewController: UIViewController, UITableViewDelegate, UITableViewData
     @IBOutlet weak var typingImg: UIImageView!
     override func viewDidLoad() {
         super.viewDidLoad()
+        chatTableView.estimatedRowHeight = 200.0 //(your estimated row height)
+        chatTableView.rowHeight = UITableViewAutomaticDimension
         self.view.addGestureRecognizer(UITapGestureRecognizer(target:self.view, action: #selector(UIView.endEditing(_:))))
         self.navigationItem.setHidesBackButton(true, animated: false)
         messageTxt.layer.cornerRadius = 20
@@ -26,7 +28,7 @@ class ChatViewController: UIViewController, UITableViewDelegate, UITableViewData
         messageTxt.layer.backgroundColor = UIColor.white.cgColor
         messageTxt.layer.borderWidth = 0.5
         messageTxt.layer.borderColor = UIColor.lightGray.cgColor
-        
+        messageTxt.delegate = self
         // Do any additional setup after loading the view.
     }
     override func viewWillAppear(_ animated: Bool) {
@@ -51,6 +53,13 @@ class ChatViewController: UIViewController, UITableViewDelegate, UITableViewData
          animateViewMoving(up: false, moveValue: 150)
     }
     
+    func textViewDidBeginEditing(_ textView: UITextView) {
+        animateViewMoving(up: true, moveValue: 150)
+    }
+    func textViewDidEndEditing(_ textView: UITextView) {
+        animateViewMoving(up: false, moveValue: 150)
+    }
+    
     func animateViewMoving (up:Bool, moveValue :CGFloat){
         let movementDuration:TimeInterval = 0.2
         let movement:CGFloat = ( up ? -moveValue : moveValue)
@@ -64,7 +73,7 @@ class ChatViewController: UIViewController, UITableViewDelegate, UITableViewData
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return messages.count
     }
-   
+    
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "chatCell", for: indexPath) as! ChatTableViewCell
         // Configure Cell
@@ -105,8 +114,6 @@ class ChatViewController: UIViewController, UITableViewDelegate, UITableViewData
             cell.bubbleReceiveTextView.layer.masksToBounds = true
             cell.bubbleReceiveTextView.isHidden=false
             cell.bubbleSendTextView.layer.isHidden = true
-            
-            print("You have not registered banks yet." == messages[indexPath.row].message)
             cell.btnLinkAccount.isHidden = true
             
             if("link-dashboard" == messages[indexPath.row].message){
@@ -115,11 +122,6 @@ class ChatViewController: UIViewController, UITableViewDelegate, UITableViewData
                 cell.btnLinkAccount.frame = CGRect(x: CGFloat(48.0+8.0), y: 0, width: estimatedFrame.width + 16+8, height: estimatedFrame.height + 20);
                 cell.btnLinkAccount.layer.cornerRadius = 8
                 cell.btnLinkAccount.layer.masksToBounds = true
-                cell.btnLinkAccount.addTarget(self, action:#selector(self.buttonTabed), for: .touchUpInside)
-            }
-            if("ninja" == messages[indexPath.row].message){
-                cell.btnLinkAccount.isHidden = true
-                cell.bubbleReceiveTextView.isHidden = true
                 cell.btnLinkAccount.addTarget(self, action:#selector(self.buttonTabed), for: .touchUpInside)
             }
         }
@@ -146,11 +148,7 @@ class ChatViewController: UIViewController, UITableViewDelegate, UITableViewData
                     break
                 }
             }
-            print(text)
             text = self.messageTxt.text.trimmingCharacters(in: .newlines)
-            
-            //text = self.messageTxt.text.trimmingCharacters(in: .)
-            print(text)
             self.createMessage(messageText: text,isUser:true)
             self.reloadTable()
             self.sendMessage(text: text)
@@ -164,8 +162,7 @@ class ChatViewController: UIViewController, UITableViewDelegate, UITableViewData
     }
     func sendMessage(text: String) -> Void {
         let request = Request().createRequest(endPoint:Constants.CHAT_SEND_MESSAGE, method: "POST")
-       // print(UserDefaults.standard.object(forKey: "context"))
-        let dic :[String:AnyObject] = ["message" : messageTxt.text as AnyObject, "context" : UserDefaults.standard.object(forKey: "context") as AnyObject]// TODO
+        let dic :[String:AnyObject] = ["message" : messageTxt.text as AnyObject, "context" : UserDefaults.standard.object(forKey: "context") as AnyObject]
         let json = try? JSONSerialization.data(withJSONObject: dic)
         request.httpBody = json
         self.typingImg.isHidden = false
@@ -184,13 +181,17 @@ class ChatViewController: UIViewController, UITableViewDelegate, UITableViewData
     }
     
     func sendRequest(request :NSMutableURLRequest, isAllMessages:Bool) -> Void {
+        if(!Request().IsInternetConnection()){
+            self.presentAlert()
+            return
+        }
         self.typingImg.isHidden = false
         let task = URLSession.shared.dataTask(with: request as URLRequest) { (data: Data?, response: URLResponse?, error: Error?) in
             
             if error != nil
             {
                 print(error)
-                self.handleError(error: error!, response: response!)
+                self.handleError(error: error, response: response!)
                 return
             }
             
@@ -200,7 +201,6 @@ class ChatViewController: UIViewController, UITableViewDelegate, UITableViewData
     }
     
     func response(response: URLResponse, data: Data, isAllMessages:Bool) -> Void {
-        print(data)
         let res = response as? HTTPURLResponse
         if(res?.statusCode == 200){
             let jsonObject = try! JSONSerialization.jsonObject(with: data, options: .allowFragments)
@@ -209,22 +209,18 @@ class ChatViewController: UIViewController, UITableViewDelegate, UITableViewData
                 return
             }
             if let dictionary = jsonObject as? [String: Any] {
-                self.context = dictionary["context"] as AnyObject? //TODO
-                // print(context)
+                self.context = dictionary["context"] as AnyObject?
                 self.createMessage(messageText: dictionary["output"] as! String,isUser: false)
-                var d = dictionary["output"]as! String
+                //var d = dictionary["output"]as! String
                 //print(d.stringByReplacingOccurrencesOfString("\\", withString: "\\\\", options: .LiteralSearch, range: nil))
                 
                 if(UserDefaults.standard.string(forKey: "context") == ""){
                     self.createMessage(messageText: Constants.CHAT_WELCOME, isUser: false)
-                    //self.createMessage(messageText: "ninja", isUser: false)
                     self.createMessage(messageText: "link-dashboard", isUser: false)
                     self.createMessage(messageText: Constants.SELECT_NUMBER, isUser: false)
                     self.createMessage(messageText: Constants.POSIBLE_QUESTIONS, isUser: false)
                 }
                 UserDefaults.standard.setValue(self.context, forKey: "context")
-                print(UserDefaults.standard.object(forKey: "context"))
-                
                 self.reloadTable()
             }
         }
@@ -243,7 +239,7 @@ class ChatViewController: UIViewController, UITableViewDelegate, UITableViewData
         self.reloadTable()
     }
     
-    func handleError(error:Error, response: URLResponse) -> Void {
+    func handleError(error: Error?, response: URLResponse?) -> Void {
         if let httpResponse = response as? HTTPURLResponse {
             print(httpResponse.statusCode) //todo
         }
@@ -258,10 +254,11 @@ class ChatViewController: UIViewController, UITableViewDelegate, UITableViewData
     }
     
     func reloadTable() -> Void {
+        
         DispatchQueue.main.async(execute: {
             self.chatTableView.reloadData()
             self.typingImg.isHidden = true
-            DispatchQueue.main.asyncAfter(deadline: .now() + .milliseconds(25)) {
+            DispatchQueue.main.asyncAfter(deadline: .now() + .milliseconds(2)) {
                 
                 let numberOfSections = self.chatTableView.numberOfSections
                 let numberOfRows = self.chatTableView.numberOfRows(inSection: numberOfSections-1)
@@ -271,7 +268,7 @@ class ChatViewController: UIViewController, UITableViewDelegate, UITableViewData
                     self.chatTableView.scrollToRow(at: indexPath, at: .none, animated: false)
                 }
             }
-           /* DispatchQueue.main.async {
+            /*DispatchQueue.main.async {
               self.typingImg.isHidden = true
                 let numberOfSections = self.chatTableView.numberOfSections
                 let numberOfRows = self.chatTableView.numberOfRows(inSection: numberOfSections-1)
@@ -283,13 +280,22 @@ class ChatViewController: UIViewController, UITableViewDelegate, UITableViewData
                     var myRect: CGRect = self.chatTableView.rectForRow(at: indexPath)
                     var point: CGPoint = self.chatTableView.contentOffset
                     point.y += myRect.origin.y
-                    self.chatTableView.contentOffset = point
+                    self.chatTableView.setContentOffset(point, animated: false)
                     //self.chatTableView.scrollToRow(at: indexPath, at: .none, animated: false)
                 }
             }*/
+            
         })
+        
     }
-    
+    func presentAlert() -> Void {
+        let alert = UIAlertController(title: "Error", message: "No internet connection", preferredStyle: UIAlertControllerStyle.alert)
+        let okAction = UIAlertAction(title: "OK", style: .default) { action in
+            alert.dismiss(animated: true, completion: nil)
+        }
+        alert.addAction(okAction)
+        self.present(alert,animated: true, completion: nil)
+    }
     /*
     // MARK: - Navigation
 

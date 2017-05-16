@@ -48,10 +48,13 @@ class AccountHistoryViewController: UIViewController, UITableViewDelegate, UITab
     }
     
     func sendRequest(request :NSMutableURLRequest) -> Void {
+        if(!Request().IsInternetConnection()){
+            self.presentAlert(message: "No internet connection")
+            return
+        }
         let task = URLSession.shared.dataTask(with: request as URLRequest) { (data: Data?, response: URLResponse?, error: Error?) in
             if error != nil
             {
-                // self.handleError(error: error!, response: response!)
                 return
             }
             self.response(response: response!, data: data!)
@@ -70,17 +73,16 @@ class AccountHistoryViewController: UIViewController, UITableViewDelegate, UITab
                     let transactions :[[String:AnyObject]] = dictionary["account"]!["transactions"] as! [[String : AnyObject]]
         
                     if(JSONSerialization.isValidJSONObject(transactions) && transactions.count > 0){
-                        print("IS VALID")
                         self.getResponseData(transactions: transactions)
                         return
                     }else{
-                        self.noHasHistoryAccount()
+                        self.presentAlert(message: "This account doesn't have history.")
                     }
                 }
             }
-            self.noHasHistoryAccount()
+            self.presentAlert(message: "This information is not enable yet, please try later.")
         }catch{
-            self.noHasHistoryAccount()
+            presentAlert(message: "Something was wrong.")
         }
     }
     
@@ -98,8 +100,8 @@ class AccountHistoryViewController: UIViewController, UITableViewDelegate, UITab
 
     }
     
-    func noHasHistoryAccount() -> Void {
-        let alert = UIAlertController(title: "Error", message: "This account doesn't have history.", preferredStyle: UIAlertControllerStyle.alert)
+    func presentAlert(message:String) -> Void {
+        let alert = UIAlertController(title: "", message: message, preferredStyle: UIAlertControllerStyle.alert)
         let actionOk = UIAlertAction(title: "Ok", style: UIAlertActionStyle.default){ (action:UIAlertAction) in
        _ = self.navigationController?.popViewController(animated: true)
         }

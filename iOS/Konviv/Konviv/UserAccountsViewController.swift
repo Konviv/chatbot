@@ -19,9 +19,6 @@ class UserAccountsViewController: UIViewController,  UITableViewDataSource, UITa
     override func viewDidLoad() {
         
         super.viewDidLoad()
-        print(UserDefaults.standard.string(forKey: "user_auth_token"))
-       // self.tableView.register(UITableViewCell.self, forCellReuseIdentifier: "menuItem")
-        
         // Uncomment the following line to preserve selection between presentations
         // self.clearsSelectionOnViewWillAppear = false
         
@@ -29,7 +26,6 @@ class UserAccountsViewController: UIViewController,  UITableViewDataSource, UITa
         // self.navigationItem.rightBarButtonItem = self.editButtonItem()
     }
     override func viewWillAppear(_ animated: Bool) {
-        self.bankAccounts = []
         print(UserDefaults.standard.bool(forKey: "hasAccounts"))
         self.getLastTransaction()
         self.getUserBankAccounts()
@@ -84,10 +80,16 @@ class UserAccountsViewController: UIViewController,  UITableViewDataSource, UITa
     }
     //MARK: - GET BANKS ACCOUNTS
     func getUserBankAccounts() -> Void {
+        self.bankAccounts = []
         self.sendRequest(request: Request().createRequest(endPoint: Constants.BANK_ACCOUNTS, method: "GET"))
     }
     
     func sendRequest(request: NSMutableURLRequest) -> Void {
+        if(!Request().IsInternetConnection()){
+            self.presentAlert()
+            return
+        }
+        
         let task = URLSession.shared.dataTask(with: request as URLRequest) { (data: Data?, response: URLResponse?, error: Error?) in
             if error != nil
             {
@@ -132,6 +134,10 @@ class UserAccountsViewController: UIViewController,  UITableViewDataSource, UITa
     //MARK: - GET LAST TRANSACTION
     
     func getLastTransaction() -> Void {
+        if(!Request().IsInternetConnection()){
+            self.presentAlert()
+            return
+        }
         let request = Request().createRequest(endPoint: Constants.LAST_TRANSACTION, method: "GET")
         let task = URLSession.shared.dataTask(with: request as URLRequest) { (data: Data?, response: URLResponse?, error: Error?) in
             if error != nil
@@ -156,6 +162,16 @@ class UserAccountsViewController: UIViewController,  UITableViewDataSource, UITa
     @IBAction func didTabOnAddBank(_ sender: Any) {
         configuration()
     }
+    
+    func presentAlert() -> Void {
+        let alert = UIAlertController(title: "Error", message: "No internet connection", preferredStyle: UIAlertControllerStyle.alert)
+        let okAction = UIAlertAction(title: "OK", style: .default) { action in
+            alert.dismiss(animated: true, completion: nil)
+        }
+        alert.addAction(okAction)
+        self.present(alert,animated: true, completion: nil)
+    }
+    
     // MARK: -  PLAID DELEGATE
     func configuration() {
         let linkConfiguration = PLKConfiguration(key: Constants.PLAID_KEY, env: .sandbox, product: .auth)
@@ -247,6 +263,8 @@ class UserAccountsViewController: UIViewController,  UITableViewDataSource, UITa
         let status = res?.statusCode
         
         if (status! >= 200 && status! < 300) {
+            self.getUserBankAccounts()
+            self.getLastTransaction()
         }else if(status! >= 400) {
             if let user = FIRAuth.auth()?.currentUser {
                 

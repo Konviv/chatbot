@@ -62,7 +62,6 @@ class DashboardViewController: UIViewController {
     }
     
     func handleSuccessWithToken(publicToken: String, metadata: [String : AnyObject]?) {
-       //var data = try? JSONSerialization.jsonObject(with: metadata?["institution"], options: [])
         let inst  =  metadata?["institution"] as AnyObject
         let instName = self.getValue(anyVal: inst["name"] as Any)
         let id = self.getValue(anyVal: inst["type"] as Any)
@@ -104,7 +103,18 @@ class DashboardViewController: UIViewController {
 
         let json = try? JSONSerialization.data(withJSONObject: dictionary)
         request.httpBody = json
-        self.sendRequest(request: request)
+        
+        if(Request().IsInternetConnection()){
+            self.sendRequest(request: request)
+            return
+        }
+        
+        let alert = UIAlertController(title: "Error", message: "No internet connection", preferredStyle: UIAlertControllerStyle.alert)
+        let okAction = UIAlertAction(title: "OK", style: .default) { action in
+            alert.dismiss(animated: true, completion: nil)
+        }
+        alert.addAction(okAction)
+        self.present(alert,animated: true, completion: nil)
     }
     func sendRequest(request:NSMutableURLRequest) -> Void {
         let task = URLSession.shared.dataTask(with: request as URLRequest) { (data: Data?, response: URLResponse?, error: Error?) in
@@ -129,8 +139,6 @@ class DashboardViewController: UIViewController {
             print(UserDefaults.standard.bool(forKey: "hasAccounts"))
             let vc = self.storyboard?.instantiateViewController(withIdentifier: "DashboardNavController")
             self.present(vc!, animated: true, completion: nil)
-          //  let appDelegate = UIApplication.shared.delegate as! AppDelegate
-          //  appDelegate.window?.rootViewController = vc
 
         }else if(status! >= 400) {
             if let user = FIRAuth.auth()?.currentUser {

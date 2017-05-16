@@ -28,4 +28,8 @@ class Request: NSObject {
         return self.createHeaders(request: request)
     }
     
+    func IsInternetConnection() -> Bool {
+        return currentReachabilityStatus == .reachableViaWiFi || currentReachabilityStatus == .reachableViaWiFi ? true : false
+    }
+    
 }

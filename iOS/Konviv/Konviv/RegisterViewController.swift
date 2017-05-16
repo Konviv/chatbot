@@ -69,29 +69,32 @@ class RegisterViewController: UIViewController {
         }
         
         if(email?.isEmpty)! {
-           self.prensetAlert(msg: "Invalid email")
-           return
+            self.prensetAlert(msg: "Invalid email")
+            return
         }
-        
-        FIRAuth.auth()?.createUser(withEmail: email!, password: password!) {(user, error)in
-            
-            if(user == nil){
-                self.prensetAlert(msg: self.handleRegisterError(error: error as! NSError))
-                return
-            }
-            let updateRequest = user?.profileChangeRequest()
-            
-            updateRequest?.displayName = name! + " " + lastname!
-            updateRequest?.commitChanges { error in
-                if let error = error {
-                    // An error happened.
-                } else {
-                    let vc = self.storyboard?.instantiateViewController(withIdentifier: "SignIn")
-                    self.present(vc!, animated: true)
-
+        if(Request().IsInternetConnection()){
+            FIRAuth.auth()?.createUser(withEmail: email!, password: password!) {(user, error)in
+                
+                if(user == nil){
+                    self.prensetAlert(msg: self.handleRegisterError(error: error as! NSError))
+                    return
+                }
+                let updateRequest = user?.profileChangeRequest()
+                
+                updateRequest?.displayName = name! + " " + lastname!
+                updateRequest?.commitChanges { error in
+                    if let error = error {
+                        // An error happened.
+                    } else {
+                        let vc = self.storyboard?.instantiateViewController(withIdentifier: "SignIn")
+                        self.present(vc!, animated: true)
+                        
+                    }
                 }
             }
+            return
         }
+        self.prensetAlert(msg: "No internet connection")
     }
     
     func handleRegisterError(error:NSError) -> String {

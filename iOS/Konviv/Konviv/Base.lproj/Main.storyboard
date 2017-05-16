@@ -78,6 +78,10 @@
                                     <segue destination="hk6-8l-WtN" kind="show" id="ZZr-XY-kCD"/>
                                 </connections>
                             </button>
+                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" image="screen2" translatesAutoresizingMaskIntoConstraints="NO" id="crL-Qo-bj6">
+                                <rect key="frame" x="86" y="138" width="202" height="257"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                            </imageView>
                         </subviews>
                         <color key="backgroundColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
                     </view>
@@ -88,7 +92,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="1zo-Wo-Fum" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="1956" y="-1516"/>
+            <point key="canvasLocation" x="1956" y="-1516.1919040479761"/>
         </scene>
         <!--Sign In-->
         <scene sceneID="3js-hr-E5U">
@@ -663,7 +667,7 @@
                                 <nil key="highlightedColor"/>
                             </label>
                             <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="lpw-iJ-1bZ">
-                                <rect key="frame" x="62" y="575" width="43" height="3"/>
+                                <rect key="frame" x="63" y="575" width="42" height="3"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <color key="backgroundColor" red="0.0" green="0.6467081294" blue="0.85685213989999998" alpha="0.39668642240000002" colorSpace="calibratedRGB"/>
                             </button>
@@ -680,7 +684,7 @@
                                 <textInputTraits key="textInputTraits" autocapitalizationType="sentences"/>
                             </textView>
                             <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="H0V-Qb-n5Y">
-                                <rect key="frame" x="320" y="514" width="29" height="29"/>
+                                <rect key="frame" x="320" y="508" width="40" height="40"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <state key="normal" image="send"/>
                                 <connections>
@@ -868,6 +872,10 @@
                                     <action selector="didTabOnScore:" destination="vG1-6O-Exm" eventType="touchUpInside" id="3c5-qe-wPg"/>
                                 </connections>
                             </button>
+                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" image="chart" translatesAutoresizingMaskIntoConstraints="NO" id="uQz-iG-bpT">
+                                <rect key="frame" x="32" y="267" width="313" height="175"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                            </imageView>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <gestureRecognizers/>
@@ -1101,6 +1109,10 @@
                                     <segue destination="xBe-lg-Wza" kind="show" id="cci-Hp-G2B"/>
                                 </connections>
                             </button>
+                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" image="sample2" translatesAutoresizingMaskIntoConstraints="NO" id="WxN-dH-efn">
+                                <rect key="frame" x="113" y="238" width="148" height="133"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                            </imageView>
                         </subviews>
                         <color key="backgroundColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
                     </view>
@@ -1173,6 +1185,10 @@
                                     <segue destination="xBe-lg-Wza" kind="show" id="9kR-Db-rAD"/>
                                 </connections>
                             </button>
+                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" image="screen1" translatesAutoresizingMaskIntoConstraints="NO" id="INt-4d-cdP">
+                                <rect key="frame" x="70" y="140" width="234" height="250"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                            </imageView>
                         </subviews>
                         <color key="backgroundColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
                     </view>
@@ -1260,21 +1276,25 @@
         </scene>
     </scenes>
     <resources>
+        <image name="chart" width="616" height="301"/>
         <image name="chat" width="512" height="456"/>
         <image name="dashboard" width="512" height="512"/>
         <image name="icon_chat" width="347" height="347"/>
         <image name="iphone_typing_indicator_bubble_still.png.CROP.thumbnail-small" width="274" height="238"/>
         <image name="left-32" width="32" height="32"/>
+        <image name="sample2" width="230" height="230"/>
+        <image name="screen1" width="476" height="508"/>
+        <image name="screen2" width="882" height="1075"/>
         <image name="send" width="512" height="512"/>
         <image name="tools" width="512" height="512"/>
     </resources>
     <inferredMetricsTieBreakers>
-        <segue reference="9g7-iy-U1z"/>
-        <segue reference="VSc-so-8sF"/>
-        <segue reference="M4C-Oh-OTh"/>
         <segue reference="Hhb-RT-aQX"/>
-        <segue reference="bQB-AW-hnQ"/>
-        <segue reference="9kR-Db-rAD"/>
-        <segue reference="tO4-P8-v0G"/>
+        <segue reference="M4C-Oh-OTh"/>
+        <segue reference="VSc-so-8sF"/>
+        <segue reference="Ofn-0X-VAx"/>
+        <segue reference="RAs-As-J62"/>
+        <segue reference="cci-Hp-G2B"/>
+        <segue reference="nZy-yt-K9n"/>
     </inferredMetricsTieBreakers>
 </document>

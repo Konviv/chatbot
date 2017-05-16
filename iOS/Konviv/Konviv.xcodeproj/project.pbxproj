@@ -11,7 +11,6 @@
 		B82893E41EAE72D400527C08 /* PageViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B82893E31EAE72D400527C08 /* PageViewController.swift */; };
 		B82893F01EAEA82300527C08 /* LandingViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B82893EF1EAEA82300527C08 /* LandingViewController.swift */; };
 		B867675C1EAFE62C0067CAAC /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = B867675B1EAFE62C0067CAAC /* GoogleService-Info.plist */; };
-		B86AB1451EBD13DA00320DB9 /* UserAccountsTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B86AB1441EBD13DA00320DB9 /* UserAccountsTableViewController.swift */; };
 		B86F39061E97F8AA00FD3A57 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = B86F39051E97F8AA00FD3A57 /* AppDelegate.swift */; };
 		B86F39081E97F8AA00FD3A57 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B86F39071E97F8AA00FD3A57 /* ViewController.swift */; };
 		B86F390B1E97F8AA00FD3A57 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = B86F39091E97F8AA00FD3A57 /* Main.storyboard */; };
@@ -27,7 +26,7 @@
 		B877FE4C1EC3B662001CFCB2 /* Transactions.swift in Sources */ = {isa = PBXBuildFile; fileRef = B877FE4B1EC3B662001CFCB2 /* Transactions.swift */; };
 		B877FE501EC3BFC1001CFCB2 /* HistoryItemTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = B877FE4F1EC3BFC1001CFCB2 /* HistoryItemTableViewCell.swift */; };
 		B8884F981EBBCDED00050DE1 /* UserAccountsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B8884F971EBBCDED00050DE1 /* UserAccountsViewController.swift */; };
-		B8886D041EB2362D00FBAB21 /* AddBankViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B8886D031EB2362D00FBAB21 /* AddBankViewController.swift */; };
+		B89664D41ECB6A9A00804EE8 /* Reachability.swift in Sources */ = {isa = PBXBuildFile; fileRef = B89664D31ECB6A9A00804EE8 /* Reachability.swift */; };
 		B89875E01EC0B79700EA25B4 /* UserAccountsTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = B89875DF1EC0B79700EA25B4 /* UserAccountsTableViewCell.swift */; };
 		B89BE6AD1EC60B2900559393 /* AuthUserActions.swift in Sources */ = {isa = PBXBuildFile; fileRef = B89BE6AC1EC60B2900559393 /* AuthUserActions.swift */; };
 		B89BE6AF1EC61FD600559393 /* Request.swift in Sources */ = {isa = PBXBuildFile; fileRef = B89BE6AE1EC61FD600559393 /* Request.swift */; };
@@ -43,7 +42,6 @@
 		B82893E31EAE72D400527C08 /* PageViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PageViewController.swift; sourceTree = "<group>"; };
 		B82893EF1EAEA82300527C08 /* LandingViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LandingViewController.swift; sourceTree = "<group>"; };
 		B867675B1EAFE62C0067CAAC /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
-		B86AB1441EBD13DA00320DB9 /* UserAccountsTableViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UserAccountsTableViewController.swift; sourceTree = "<group>"; };
 		B86F39021E97F8A900FD3A57 /* Konviv.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Konviv.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		B86F39051E97F8AA00FD3A57 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		B86F39071E97F8AA00FD3A57 /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
@@ -62,7 +60,7 @@
 		B877FE4F1EC3BFC1001CFCB2 /* HistoryItemTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HistoryItemTableViewCell.swift; sourceTree = "<group>"; };
 		B87D1A841EB0E4A50047617D /* Konviv.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = Konviv.entitlements; sourceTree = "<group>"; };
 		B8884F971EBBCDED00050DE1 /* UserAccountsViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UserAccountsViewController.swift; sourceTree = "<group>"; };
-		B8886D031EB2362D00FBAB21 /* AddBankViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AddBankViewController.swift; sourceTree = "<group>"; };
+		B89664D31ECB6A9A00804EE8 /* Reachability.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Reachability.swift; sourceTree = "<group>"; };
 		B89875DF1EC0B79700EA25B4 /* UserAccountsTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UserAccountsTableViewCell.swift; sourceTree = "<group>"; };
 		B89BE6AC1EC60B2900559393 /* AuthUserActions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AuthUserActions.swift; sourceTree = "<group>"; };
 		B89BE6AE1EC61FD600559393 /* Request.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Request.swift; sourceTree = "<group>"; };
@@ -131,12 +129,10 @@
 				B86F39051E97F8AA00FD3A57 /* AppDelegate.swift */,
 				B877FE481EC3ACDC001CFCB2 /* Controllers */,
 				B86F39091E97F8AA00FD3A57 /* Main.storyboard */,
-				B86AB1441EBD13DA00320DB9 /* UserAccountsTableViewController.swift */,
 				B86F390F1E97F8AA00FD3A57 /* Assets.xcassets */,
 				B86F39111E97F8AA00FD3A57 /* LaunchScreen.storyboard */,
 				B86F39141E97F8AA00FD3A57 /* Info.plist */,
 				B86F390C1E97F8AA00FD3A57 /* Konviv.xcdatamodeld */,
-				B8886D031EB2362D00FBAB21 /* AddBankViewController.swift */,
 			);
 			path = Konviv;
 			sourceTree = "<group>";
@@ -174,6 +170,7 @@
 				B89BE6AC1EC60B2900559393 /* AuthUserActions.swift */,
 				B89BE6AE1EC61FD600559393 /* Request.swift */,
 				B89BE6B21EC6741900559393 /* Constants.swift */,
+				B89664D31ECB6A9A00804EE8 /* Reachability.swift */,
 			);
 			name = helpers;
 			sourceTree = "<group>";
@@ -328,7 +325,6 @@
 				B89BE6AD1EC60B2900559393 /* AuthUserActions.swift in Sources */,
 				B86F39211E98068700FD3A57 /* SignInViewController.swift in Sources */,
 				B86F39271E984D7A00FD3A57 /* ToolsViewController.swift in Sources */,
-				B86AB1451EBD13DA00320DB9 /* UserAccountsTableViewController.swift in Sources */,
 				B89875E01EC0B79700EA25B4 /* UserAccountsTableViewCell.swift in Sources */,
 				B86F39061E97F8AA00FD3A57 /* AppDelegate.swift in Sources */,
 				B86F390E1E97F8AA00FD3A57 /* Konviv.xcdatamodeld in Sources */,
@@ -337,9 +333,9 @@
 				B89BE6AF1EC61FD600559393 /* Request.swift in Sources */,
 				B8C21CD51EC0DACF00979301 /* UserAccounts.swift in Sources */,
 				B877FE4C1EC3B662001CFCB2 /* Transactions.swift in Sources */,
+				B89664D41ECB6A9A00804EE8 /* Reachability.swift in Sources */,
 				B8884F981EBBCDED00050DE1 /* UserAccountsViewController.swift in Sources */,
 				B877FE501EC3BFC1001CFCB2 /* HistoryItemTableViewCell.swift in Sources */,
-				B8886D041EB2362D00FBAB21 /* AddBankViewController.swift in Sources */,
 				B82893F01EAEA82300527C08 /* LandingViewController.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
