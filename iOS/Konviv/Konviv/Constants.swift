@@ -8,7 +8,7 @@
 
 import Foundation
 struct Constants {
-    static let BASE_URL = "http://192.168.1.117:8080/api/v1/"
+    static let BASE_URL = "http://api.konviv.com/api/v1/"
     static let PLAID_KEY = "ebc098404b162edaadb2b8c6c45c8f"
     static let CHAT_START = "chatbot/start"
     static let CHAT_SEND_MESSAGE = "chatbot/"

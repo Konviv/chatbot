@@ -186,6 +186,7 @@ class UserAccountsViewController: UIViewController,  UITableViewDataSource, UITa
             }
             else if let error = error {
                 NSLog("Unable to setup Plaid Link due to: \(error.localizedDescription)")
+                self.presentAlert()
             }
             else {
                 NSLog("Unable to setup Plaid Link")

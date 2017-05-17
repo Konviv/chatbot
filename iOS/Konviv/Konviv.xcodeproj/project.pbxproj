@@ -220,7 +220,7 @@
 				TargetAttributes = {
 					B86F39011E97F8A900FD3A57 = {
 						CreatedOnToolsVersion = 8.2.1;
-						DevelopmentTeam = JF85GXCLDA;
+						DevelopmentTeam = 4WDKFM2UY6;
 						ProvisioningStyle = Automatic;
 						SystemCapabilities = {
 							com.apple.Keychain = {
@@ -459,7 +459,9 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_ENTITLEMENTS = Konviv/Konviv.entitlements;
-				DEVELOPMENT_TEAM = JF85GXCLDA;
+				CODE_SIGN_IDENTITY = "";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				DEVELOPMENT_TEAM = 4WDKFM2UY6;
 				INFOPLIST_FILE = Konviv/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = com.Konviv;
@@ -474,7 +476,9 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_ENTITLEMENTS = Konviv/Konviv.entitlements;
-				DEVELOPMENT_TEAM = JF85GXCLDA;
+				CODE_SIGN_IDENTITY = "";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				DEVELOPMENT_TEAM = 4WDKFM2UY6;
 				INFOPLIST_FILE = Konviv/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = com.Konviv;

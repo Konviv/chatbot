@@ -87,6 +87,7 @@ class ChatViewController: UIViewController, UITableViewDelegate, UITableViewData
             cell.btnLinkAccount.isHidden = true
             cell.bubbleReceiveTextView.layer.isHidden = true
             cell.bubbleSendTextView.layer.isHidden = true
+            cell.iconChat.isHidden = true
             cell.bubbleReceiveTextView.frame = CGRect(x: CGFloat(48.0+8.0), y: 0, width: estimatedFrame.width + 16+8, height: estimatedFrame.height-10);
             return cell
         }
@@ -191,7 +192,9 @@ class ChatViewController: UIViewController, UITableViewDelegate, UITableViewData
             if error != nil
             {
                 print(error)
-                self.handleError(error: error, response: response!)
+                if let httpResponse = response as? HTTPURLResponse {
+                    print(httpResponse.statusCode) //todo
+                }
                 return
             }
             
