@@ -18,27 +18,31 @@ class PageViewController: UIPageViewController, UIPageViewControllerDelegate, UI
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        if(UserDefaults.standard.string(forKey: "user_auth_token") != ""){
-            if(FIRAuth.auth()?.currentUser?.displayName != nil){
-                FIRAuth.auth()?.currentUser?.getTokenForcingRefresh(true) {idToken, err in
-                    
-                    if(err != nil){
-                        self.loadLanding()
+        if(Request().IsInternetConnection()){
+            if(UserDefaults.standard.string(forKey: "user_auth_token") != ""){
+                if(FIRAuth.auth()?.currentUser?.displayName != nil){
+                    FIRAuth.auth()?.currentUser?.getTokenForcingRefresh(true) {idToken, err in
+                        
+                        if(err != nil){
+                            self.loadLanding()
+                        }
+                        
+                        UserDefaults.standard.setValue(idToken, forKey: "user_auth_token")
+                        let vc = self.storyboard?.instantiateViewController(withIdentifier: "DashboardNavController")
+                        let appDelegate = UIApplication.shared.delegate as! AppDelegate
+                        appDelegate.window?.rootViewController = vc
+                        
                     }
-                    
-                    UserDefaults.standard.setValue(idToken, forKey: "user_auth_token")
-                    let vc = self.storyboard?.instantiateViewController(withIdentifier: "DashboardNavController")
-                    let appDelegate = UIApplication.shared.delegate as! AppDelegate
-                    appDelegate.window?.rootViewController = vc
-                    
+                }else{
+                    self.loadLanding()
                 }
             }else{
                 self.loadLanding()
             }
-        }else{
-            self.loadLanding()
+            return
         }
-                // Do any additional setup after loading the view.
+        self.loadLanding()
+        // Do any additional setup after loading the view.
     }
     
     func loadLanding() -> Void {

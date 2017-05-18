@@ -12,6 +12,9 @@ class ChatTableViewCell: UITableViewCell {
 
     @IBOutlet weak var bubbleReceiveTextView: UITextView!
     @IBOutlet weak var bubbleSendTextView: UITextView!
+    @IBOutlet weak var btnLinkAccount: UIButton!
+    @IBOutlet weak var iconChat: UIImageView!
+    
     
     override func awakeFromNib() {
         super.awakeFromNib()

@@ -58,21 +58,26 @@ class SignInViewController: UIViewController {
         let email = emailTxtField.text?.trimmingCharacters(in: NSCharacterSet.whitespaces)
         let password  = passwordTxtField.text?.trimmingCharacters(in: NSCharacterSet.whitespaces)
         self.view.endEditing(true)
-        FIRAuth.auth()?.signIn(withEmail: email!, password: password!) { (user, error) in
-            if (error != nil){
-                self.prensetAler(msg: self.handleError(error: error as! NSError))
-                return;
+        if (Request().IsInternetConnection()) {
+            FIRAuth.auth()?.signIn(withEmail: email!, password: password!) { (user, error) in
+                if (error != nil){
+                    self.prensetAler(msg: self.handleError(error: error as! NSError))
+                    return;
+                }
+                user?.getTokenForcingRefresh(true) {idToken, err in
+                    
+                    UserDefaults.standard.setValue(idToken, forKey: "user_auth_token")
+                    UserDefaults.standard.setValue("", forKey: "context")
+                    
+                    let vc = self.storyboard?.instantiateViewController(withIdentifier: "DashboardNavController")
+                    let appDelegate = UIApplication.shared.delegate as! AppDelegate
+                    appDelegate.window?.rootViewController = vc
+                    
+                }
             }
-            user?.getTokenForcingRefresh(true) {idToken, err in
-                
-                UserDefaults.standard.setValue(idToken, forKey: "user_auth_token")
-                let vc = self.storyboard?.instantiateViewController(withIdentifier: "DashboardNavController")
-                let appDelegate = UIApplication.shared.delegate as! AppDelegate
-                appDelegate.window?.rootViewController = vc
-                
-            }
+            return
         }
-
+        self.prensetAler(msg: "No internet connection")
     }
     
     func handleError(error:NSError) -> String{

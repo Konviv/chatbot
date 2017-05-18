@@ -12,6 +12,7 @@ class AuthUserActions: NSObject {
     func signOut() -> Void {
         UserDefaults.standard.set("", forKey: "user_auth_token")
         UserDefaults.standard.set(false, forKey: "hasAccounts")
+        UserDefaults.standard.setValue("", forKey: "context")
         try!FIRAuth.auth()?.signOut()
     }
 }
