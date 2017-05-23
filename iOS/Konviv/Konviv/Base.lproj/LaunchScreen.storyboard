@@ -21,15 +21,24 @@
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="KONVIV" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="dur-n3-7vi">
-                                <rect key="frame" x="88" y="304" width="198" height="59"/>
-                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="KONVIV" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="dur-n3-7vi">
+                                <rect key="frame" x="0.0" y="304" width="375" height="59"/>
+                                <constraints>
+                                    <constraint firstAttribute="width" constant="375" id="XVM-FS-noZ"/>
+                                    <constraint firstAttribute="height" constant="59" id="v3m-hh-i5n"/>
+                                </constraints>
                                 <fontDescription key="fontDescription" name="Helvetica" family="Helvetica" pointSize="50"/>
                                 <color key="textColor" red="0.0" green="0.6467081294" blue="0.85685213989999998" alpha="0.39668642240000002" colorSpace="calibratedRGB"/>
                                 <nil key="highlightedColor"/>
                             </label>
                         </subviews>
                         <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                        <constraints>
+                            <constraint firstAttribute="trailing" secondItem="dur-n3-7vi" secondAttribute="trailing" id="1lg-Bi-52K"/>
+                            <constraint firstItem="dur-n3-7vi" firstAttribute="top" secondItem="Llm-lL-Icb" secondAttribute="bottom" constant="284" id="VyA-Nl-9eg"/>
+                            <constraint firstItem="xb3-aO-Qok" firstAttribute="top" secondItem="dur-n3-7vi" secondAttribute="bottom" constant="304" id="ZUo-gD-ITP"/>
+                            <constraint firstItem="dur-n3-7vi" firstAttribute="leading" secondItem="Ze5-6b-2t3" secondAttribute="leading" id="yex-AD-3Nj"/>
+                        </constraints>
                     </view>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="iYj-Kq-Ea1" userLabel="First Responder" sceneMemberID="firstResponder"/>
