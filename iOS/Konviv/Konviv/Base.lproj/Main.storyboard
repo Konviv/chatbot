@@ -1264,8 +1264,8 @@
                                 <rect key="frame" x="67" y="407" width="240" height="40"/>
                                 <color key="backgroundColor" red="0.0" green="0.52390272010422434" blue="1" alpha="0.5297144396551724" colorSpace="calibratedRGB"/>
                                 <constraints>
-                                    <constraint firstAttribute="width" constant="240" id="DYd-0N-H7e"/>
-                                    <constraint firstAttribute="height" constant="40" id="SLD-ZC-5Em"/>
+                                    <constraint firstAttribute="width" constant="240" id="TLQ-e0-XGQ"/>
+                                    <constraint firstAttribute="height" constant="40" id="qUd-8y-Y4g"/>
                                 </constraints>
                                 <fontDescription key="fontDescription" type="system" weight="medium" pointSize="15"/>
                                 <state key="normal" title="Register">
@@ -1275,81 +1275,6 @@
                                     <action selector="didTabOnRegister:" destination="xBe-lg-Wza" eventType="touchUpInside" id="hpK-gv-cug"/>
                                 </connections>
                             </button>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Once your register we will send you a verification  message to make sure it's really you. The you're go!" lineBreakMode="wordWrap" numberOfLines="3" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Mu5-wr-loO">
-                                <rect key="frame" x="72" y="485" width="230" height="54"/>
-                                <color key="tintColor" red="0.0" green="0.47843137250000001" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-                                <constraints>
-                                    <constraint firstAttribute="height" constant="54" id="7Hc-1P-pSU"/>
-                                    <constraint firstAttribute="width" constant="230" id="Oam-Uu-XSa"/>
-                                </constraints>
-                                <fontDescription key="fontDescription" name=".AppleSystemUIFont" family=".AppleSystemUIFont" pointSize="14"/>
-                                <color key="textColor" red="0.5" green="0.5" blue="0.5" alpha="1" colorSpace="calibratedRGB"/>
-                                <color key="highlightedColor" red="0.58769633509999997" green="0.58769633509999997" blue="0.58769633509999997" alpha="1" colorSpace="calibratedRGB"/>
-                            </label>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" usesAttributedText="YES" lineBreakMode="wordWrap" numberOfLines="2" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="MVu-Nb-nOl">
-                                <rect key="frame" x="31" y="598" width="312" height="54"/>
-                                <color key="tintColor" red="0.0" green="0.47843137250000001" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-                                <constraints>
-                                    <constraint firstAttribute="height" constant="54" id="YOo-09-BLh"/>
-                                    <constraint firstAttribute="width" constant="312" id="uBz-fA-3BS"/>
-                                </constraints>
-                                <attributedString key="attributedText">
-                                    <fragment content="By using Konviv, you agree to our ">
-                                        <attributes>
-                                            <color key="NSColor" red="0.5" green="0.5" blue="0.5" alpha="1" colorSpace="calibratedRGB"/>
-                                            <font key="NSFont" size="12" name=".AppleSystemUIFont"/>
-                                            <paragraphStyle key="NSParagraphStyle" alignment="center" lineBreakMode="wordWrapping" baseWritingDirection="natural" tighteningFactorForTruncation="0.0"/>
-                                        </attributes>
-                                    </fragment>
-                                    <fragment content="Terms of Service">
-                                        <attributes>
-                                            <color key="NSColor" red="0.0" green="0.3817860450493078" blue="1" alpha="1" colorSpace="calibratedRGB"/>
-                                            <font key="NSFont" size="12" name=".AppleSystemUIFont"/>
-                                            <paragraphStyle key="NSParagraphStyle" alignment="center" lineBreakMode="wordWrapping" baseWritingDirection="natural" tighteningFactorForTruncation="0.0"/>
-                                        </attributes>
-                                    </fragment>
-                                    <fragment content=" and ">
-                                        <attributes>
-                                            <color key="NSColor" red="0.5" green="0.5" blue="0.5" alpha="1" colorSpace="calibratedRGB"/>
-                                            <font key="NSFont" size="12" name=".AppleSystemUIFont"/>
-                                            <paragraphStyle key="NSParagraphStyle" alignment="center" lineBreakMode="wordWrapping" baseWritingDirection="natural" tighteningFactorForTruncation="0.0"/>
-                                        </attributes>
-                                    </fragment>
-                                    <fragment content="Privacy Policy">
-                                        <attributes>
-                                            <color key="NSColor" red="0.0016353240705124783" green="0.41085059937553203" blue="1" alpha="1" colorSpace="calibratedRGB"/>
-                                            <font key="NSFont" size="12" name=".AppleSystemUIFont"/>
-                                            <paragraphStyle key="NSParagraphStyle" alignment="center" lineBreakMode="wordWrapping" baseWritingDirection="natural" tighteningFactorForTruncation="0.0"/>
-                                        </attributes>
-                                    </fragment>
-                                    <fragment content=". Questions?. ">
-                                        <attributes>
-                                            <color key="NSColor" red="0.5" green="0.5" blue="0.5" alpha="1" colorSpace="calibratedRGB"/>
-                                            <font key="NSFont" size="12" name=".AppleSystemUIFont"/>
-                                            <paragraphStyle key="NSParagraphStyle" alignment="center" lineBreakMode="wordWrapping" baseWritingDirection="natural" tighteningFactorForTruncation="0.0"/>
-                                        </attributes>
-                                    </fragment>
-                                    <fragment content="Contact Us.">
-                                        <attributes>
-                                            <color key="NSColor" red="0.0" green="0.3091955559136732" blue="1" alpha="1" colorSpace="calibratedRGB"/>
-                                            <font key="NSFont" size="12" name=".AppleSystemUIFont"/>
-                                            <paragraphStyle key="NSParagraphStyle" alignment="center" lineBreakMode="wordWrapping" baseWritingDirection="natural" tighteningFactorForTruncation="0.0"/>
-                                        </attributes>
-                                    </fragment>
-                                </attributedString>
-                                <color key="highlightedColor" red="0.58769633509999997" green="0.58769633509999997" blue="0.58769633509999997" alpha="1" colorSpace="calibratedRGB"/>
-                            </label>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="gbN-WP-xLl">
-                                <rect key="frame" x="32" y="655" width="311" height="1"/>
-                                <color key="backgroundColor" red="0.71953124999999996" green="0.71953124999999996" blue="0.71953124999999996" alpha="1" colorSpace="calibratedRGB"/>
-                                <constraints>
-                                    <constraint firstAttribute="height" constant="1" id="GWf-aA-6E5"/>
-                                    <constraint firstAttribute="width" constant="311" id="tLQ-tM-C6b"/>
-                                </constraints>
-                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
-                                <nil key="textColor"/>
-                                <nil key="highlightedColor"/>
-                            </label>
                             <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="Your name" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="hqw-Lu-De5">
                                 <rect key="frame" x="31" y="132" width="311" height="30"/>
                                 <constraints>
@@ -1388,41 +1313,43 @@
                                     </navigationItem>
                                 </items>
                             </navigationBar>
+                            <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" misplaced="YES" scrollEnabled="NO" editable="NO" text="By using Konviv, you agree to our Terms of Service and Privacy Policy. Questions?. Contact Us." textAlignment="center" translatesAutoresizingMaskIntoConstraints="NO" id="II2-Cf-gm5">
+                                <rect key="frame" x="16" y="593" width="349" height="66"/>
+                                <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                <constraints>
+                                    <constraint firstAttribute="width" constant="349" id="32g-ew-RsQ"/>
+                                    <constraint firstAttribute="height" relation="greaterThanOrEqual" constant="66" id="MZw-sT-zth"/>
+                                    <constraint firstAttribute="width" relation="greaterThanOrEqual" constant="349" id="PyD-e6-Zg4"/>
+                                    <constraint firstAttribute="height" constant="60" id="yRt-KZ-xnM"/>
+                                </constraints>
+                                <color key="textColor" red="0.5" green="0.5" blue="0.5" alpha="1" colorSpace="calibratedRGB"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="11"/>
+                                <textInputTraits key="textInputTraits" autocapitalizationType="sentences"/>
+                            </textView>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <color key="tintColor" red="0.074327241630478463" green="0.3553362865045247" blue="0.58769633509999997" alpha="1" colorSpace="calibratedRGB"/>
                         <constraints>
                             <constraint firstItem="j6J-mb-WOp" firstAttribute="top" secondItem="Vfi-ru-HV8" secondAttribute="bottom" constant="38" id="05D-3Q-bJL"/>
-                            <constraint firstItem="MVu-Nb-nOl" firstAttribute="leading" secondItem="fkv-gh-1er" secondAttribute="leadingMargin" constant="15" id="3LD-xU-hVb"/>
                             <constraint firstItem="Vfi-ru-HV8" firstAttribute="top" secondItem="E1p-Wo-CuU" secondAttribute="bottom" constant="39" id="4Kg-nb-uvV"/>
                             <constraint firstItem="jD0-JM-Hyg" firstAttribute="top" secondItem="2C1-Pb-eXu" secondAttribute="bottom" id="9Dh-hq-7Vd"/>
-                            <constraint firstAttribute="trailingMargin" secondItem="Mu5-wr-loO" secondAttribute="trailing" constant="57" id="Ah4-Q0-fZ6"/>
-                            <constraint firstItem="Mu5-wr-loO" firstAttribute="top" secondItem="tRv-tV-iUh" secondAttribute="bottom" constant="38" id="BMI-UT-pLX"/>
-                            <constraint firstItem="cEH-Sc-T5R" firstAttribute="top" secondItem="gbN-WP-xLl" secondAttribute="bottom" constant="11" id="Dgs-sG-kO9"/>
-                            <constraint firstItem="Mu5-wr-loO" firstAttribute="top" secondItem="tRv-tV-iUh" secondAttribute="bottom" constant="38" id="Evk-72-9aA"/>
+                            <constraint firstItem="cEH-Sc-T5R" firstAttribute="top" secondItem="II2-Cf-gm5" secondAttribute="bottom" id="EQS-bG-BhP"/>
                             <constraint firstItem="E1p-Wo-CuU" firstAttribute="top" secondItem="hqw-Lu-De5" secondAttribute="bottom" constant="38" id="FWI-1u-4ig"/>
+                            <constraint firstAttribute="trailing" secondItem="II2-Cf-gm5" secondAttribute="trailing" constant="23" id="FgK-tv-4os"/>
                             <constraint firstAttribute="trailingMargin" secondItem="j6J-mb-WOp" secondAttribute="trailing" constant="16" id="JJS-CB-aSB"/>
                             <constraint firstItem="hqw-Lu-De5" firstAttribute="leading" secondItem="fkv-gh-1er" secondAttribute="leadingMargin" constant="15" id="Log-5h-grL"/>
-                            <constraint firstItem="tRv-tV-iUh" firstAttribute="top" secondItem="j6J-mb-WOp" secondAttribute="bottom" constant="40" id="Mlj-ay-Vu7"/>
-                            <constraint firstAttribute="trailingMargin" secondItem="gbN-WP-xLl" secondAttribute="trailing" constant="16" id="QbU-2W-s06"/>
-                            <constraint firstItem="gbN-WP-xLl" firstAttribute="top" secondItem="MVu-Nb-nOl" secondAttribute="bottom" constant="3" id="SYF-Hk-Csc"/>
-                            <constraint firstItem="gbN-WP-xLl" firstAttribute="leading" secondItem="fkv-gh-1er" secondAttribute="leadingMargin" constant="16" id="SvZ-uH-MhM"/>
-                            <constraint firstAttribute="trailingMargin" secondItem="MVu-Nb-nOl" secondAttribute="trailing" constant="16" id="Sy2-D2-B40"/>
+                            <constraint firstAttribute="trailingMargin" secondItem="tRv-tV-iUh" secondAttribute="trailing" constant="52" id="N1Q-lH-Nj5"/>
+                            <constraint firstItem="II2-Cf-gm5" firstAttribute="leading" secondItem="fkv-gh-1er" secondAttribute="leading" constant="3" id="Ovm-5T-ezY"/>
                             <constraint firstItem="j6J-mb-WOp" firstAttribute="top" secondItem="Vfi-ru-HV8" secondAttribute="bottom" constant="38" id="Uea-cF-oxH"/>
                             <constraint firstAttribute="trailingMargin" secondItem="hqw-Lu-De5" secondAttribute="trailing" constant="17" id="VUh-DX-TMb"/>
-                            <constraint firstItem="tRv-tV-iUh" firstAttribute="top" secondItem="j6J-mb-WOp" secondAttribute="bottom" constant="40" id="Vdh-RP-hPz"/>
-                            <constraint firstItem="tRv-tV-iUh" firstAttribute="leading" secondItem="fkv-gh-1er" secondAttribute="leadingMargin" constant="51" id="YsX-Z4-0Xx"/>
-                            <constraint firstItem="MVu-Nb-nOl" firstAttribute="top" secondItem="Mu5-wr-loO" secondAttribute="bottom" constant="59" id="ZkN-P4-jg0"/>
                             <constraint firstItem="Vfi-ru-HV8" firstAttribute="top" secondItem="E1p-Wo-CuU" secondAttribute="bottom" constant="39" id="Zne-SG-QpD"/>
-                            <constraint firstItem="Mu5-wr-loO" firstAttribute="leading" secondItem="fkv-gh-1er" secondAttribute="leadingMargin" constant="56" id="cCG-0c-REb"/>
                             <constraint firstItem="hqw-Lu-De5" firstAttribute="top" secondItem="jD0-JM-Hyg" secondAttribute="bottom" constant="68" id="dya-ML-Ujs"/>
                             <constraint firstAttribute="trailing" secondItem="jD0-JM-Hyg" secondAttribute="trailing" id="gv9-R7-KDv"/>
-                            <constraint firstItem="MVu-Nb-nOl" firstAttribute="top" secondItem="Mu5-wr-loO" secondAttribute="bottom" constant="59" id="hX3-xD-2hR"/>
                             <constraint firstAttribute="trailingMargin" secondItem="E1p-Wo-CuU" secondAttribute="trailing" constant="17" id="jBx-UU-cRv"/>
                             <constraint firstItem="Vfi-ru-HV8" firstAttribute="leading" secondItem="fkv-gh-1er" secondAttribute="leadingMargin" constant="16" id="jf5-ff-lSz"/>
+                            <constraint firstItem="tRv-tV-iUh" firstAttribute="top" secondItem="j6J-mb-WOp" secondAttribute="bottom" constant="40" id="mBY-9O-LgV"/>
                             <constraint firstItem="jD0-JM-Hyg" firstAttribute="leading" secondItem="fkv-gh-1er" secondAttribute="leading" id="mZU-X1-l0a"/>
-                            <constraint firstItem="gbN-WP-xLl" firstAttribute="top" secondItem="MVu-Nb-nOl" secondAttribute="bottom" constant="3" id="nUE-Vy-SlQ"/>
-                            <constraint firstAttribute="trailingMargin" secondItem="tRv-tV-iUh" secondAttribute="trailing" constant="52" id="rAw-D7-aDc"/>
+                            <constraint firstItem="tRv-tV-iUh" firstAttribute="leading" secondItem="fkv-gh-1er" secondAttribute="leadingMargin" constant="51" id="pyD-Ap-rZe"/>
                             <constraint firstItem="hqw-Lu-De5" firstAttribute="top" secondItem="jD0-JM-Hyg" secondAttribute="bottom" constant="68" id="uh1-04-PGg"/>
                             <constraint firstItem="E1p-Wo-CuU" firstAttribute="leading" secondItem="fkv-gh-1er" secondAttribute="leadingMargin" constant="15" id="vIU-hP-Juh"/>
                             <constraint firstItem="j6J-mb-WOp" firstAttribute="leading" secondItem="fkv-gh-1er" secondAttribute="leadingMargin" constant="16" id="vUJ-eO-Rfg"/>
@@ -1789,9 +1716,9 @@
         <segue reference="pP9-GK-a6U"/>
         <segue reference="VSc-so-8sF"/>
         <segue reference="sa4-ry-1vT"/>
-        <segue reference="tO4-P8-v0G"/>
-        <segue reference="nZy-yt-K9n"/>
+        <segue reference="RAs-As-J62"/>
         <segue reference="cci-Hp-G2B"/>
+        <segue reference="nZy-yt-K9n"/>
         <segue reference="nKV-Sr-ZLf"/>
     </inferredMetricsTieBreakers>
 </document>
