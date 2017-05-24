@@ -13,6 +13,7 @@ class ChatViewController: UIViewController, UITableViewDelegate, UITableViewData
     
     var messages : [Message] = [Message()]
     @IBOutlet weak var chatTableView: UITableView!
+    
     @IBOutlet weak var messageTxt: UITextView!
     var context: AnyObject? = nil
     
