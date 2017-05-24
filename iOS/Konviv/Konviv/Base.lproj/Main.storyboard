@@ -458,6 +458,9 @@
                                     <constraint firstAttribute="height" constant="50" id="udm-Uu-zPb"/>
                                 </constraints>
                                 <state key="normal" backgroundImage="tools"/>
+                                <connections>
+                                    <segue destination="Tkt-gE-6u3" kind="show" id="sEt-A6-KUo"/>
+                                </connections>
                             </button>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Wg0-wA-XcZ">
                                 <rect key="frame" x="167" y="575" width="42" height="2"/>
@@ -482,6 +485,9 @@
                                     <constraint firstAttribute="height" constant="45" id="chr-kx-XRv"/>
                                 </constraints>
                                 <state key="normal" backgroundImage="chat"/>
+                                <connections>
+                                    <segue destination="DQh-au-h7r" kind="show" id="c1t-Vs-wF9"/>
+                                </connections>
                             </button>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Tools" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="rKI-MP-mJl">
                                 <rect key="frame" x="268" y="626" width="67" height="21"/>
@@ -1698,9 +1704,9 @@
         <image name="tools" width="512" height="512"/>
     </resources>
     <inferredMetricsTieBreakers>
-        <segue reference="Wzq-M5-YS8"/>
-        <segue reference="nKV-Sr-ZLf"/>
+        <segue reference="c1t-Vs-wF9"/>
         <segue reference="sa4-ry-1vT"/>
+        <segue reference="sEt-A6-KUo"/>
         <segue reference="cci-Hp-G2B"/>
         <segue reference="nZy-yt-K9n"/>
         <segue reference="RAs-As-J62"/>
