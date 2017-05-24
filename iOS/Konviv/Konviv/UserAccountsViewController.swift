@@ -11,6 +11,7 @@ import LinkKit
 import Firebase
 class UserAccountsViewController: UIViewController,  UITableViewDataSource, UITableViewDelegate {
 
+    
     @IBOutlet weak var accountsTableView: UITableView!
     @IBOutlet weak var lblLastTransaction: UILabel!
         
