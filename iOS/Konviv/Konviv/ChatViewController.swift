@@ -98,7 +98,6 @@ class ChatViewController: UIViewController, UITableViewDelegate, UITableViewData
         cell.bubbleReceiveTextView.isEditable = false
         
         if(messages[indexPath.row].sendByUser){
-            print(messages[indexPath.row].message)
             cell.bubbleSendTextView.text = messages[indexPath.row].message
             cell.bubbleSendTextView.frame = CGRect(x: CGFloat(view.frame.width - estimatedFrame.width - 16-8-8), y: 0, width: estimatedFrame.width+16+8, height: estimatedFrame.height + 20);
             
@@ -286,23 +285,6 @@ class ChatViewController: UIViewController, UITableViewDelegate, UITableViewData
                     self.chatTableView.scrollToRow(at: indexPath, at: .none, animated: false)
                 }
             }
-            /*DispatchQueue.main.async {
-              self.typingImg.isHidden = true
-                let numberOfSections = self.chatTableView.numberOfSections
-                let numberOfRows = self.chatTableView.numberOfRows(inSection: numberOfSections-1)
-                let size:CGSize  = self.chatTableView.contentSize
-                print(size.height)
-                
-                if numberOfRows > 0 {
-                    let indexPath = IndexPath(row: numberOfRows-1, section: (numberOfSections-1))
-                    var myRect: CGRect = self.chatTableView.rectForRow(at: indexPath)
-                    var point: CGPoint = self.chatTableView.contentOffset
-                    point.y += myRect.origin.y
-                    self.chatTableView.setContentOffset(point, animated: false)
-                    //self.chatTableView.scrollToRow(at: indexPath, at: .none, animated: false)
-                }
-            }*/
-            
         })
         
     }
