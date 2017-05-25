@@ -38,8 +38,30 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
     func applicationDidBecomeActive(_ application: UIApplication) {
         // Restart any tasks that were paused (or not yet started) while the application was inactive. If the application was previously in the background, optionally refresh the user interface.
+        if(Request().IsInternetConnection()){
+            if(UserDefaults.standard.string(forKey: "user_auth_token") != ""){
+                if(FIRAuth.auth()?.currentUser?.displayName != nil){
+                    FIRAuth.auth()?.currentUser?.getTokenForcingRefresh(true) {idToken, err in
+                        
+                        if(err != nil){
+                           self.redirectToLogin(view: "Landingscreen")
+                        }
+                        UserDefaults.standard.setValue(idToken, forKey: "user_auth_token")
+                        print("new token")
+                        self.redirectToLogin(view:"DashboardNavController")
+                    }
+                    return
+                }
+            }
+        }
+        self.redirectToLogin(view:"Landingscreen")
     }
-
+    func redirectToLogin(view: String) -> Void {
+        let storyboard = UIStoryboard(name: "Main", bundle: nil)
+        let vc = storyboard.instantiateViewController(withIdentifier: view)
+        let appDelegate = UIApplication.shared.delegate as! AppDelegate
+        appDelegate.window?.rootViewController = vc
+    }
     func applicationWillTerminate(_ application: UIApplication) {
         // Called when the application is about to terminate. Save data if appropriate. See also applicationDidEnterBackground:.
         // Saves changes in the application's managed object context before the application terminates.

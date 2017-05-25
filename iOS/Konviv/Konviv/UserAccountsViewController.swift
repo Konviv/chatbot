@@ -146,12 +146,11 @@ class UserAccountsViewController: UIViewController,  UITableViewDataSource, UITa
                 print("error=\(error)")
                 return
             }
-            print( String(data: data!, encoding: .utf8))
             DispatchQueue.main.async {
-               self.lblLastTransaction.text = String(data: data!, encoding: .utf8)!
+               self.lblLastTransaction.text = String(data: data!, encoding: .utf8)!.replacingOccurrences(of: "\"", with: "")
 
             }
-                    }
+        }
         task.resume()
     }
     
