@@ -96,7 +96,8 @@ class ChatViewController: UIViewController, UITableViewDelegate, UITableViewData
         tableView.rowHeight = estimatedFrame.height + 25
         cell.bubbleSendTextView.isEditable = false
         cell.bubbleReceiveTextView.isEditable = false
-        
+        cell.bubbleSendTextView.textContainerInset = UIEdgeInsetsMake(8.0,5.0,8.0,2.0)
+        cell.bubbleReceiveTextView.textContainerInset = UIEdgeInsetsMake(8.0,5.0,8.0,2.0)
         if(messages[indexPath.row].sendByUser){
             cell.bubbleSendTextView.text = messages[indexPath.row].message
             cell.bubbleSendTextView.frame = CGRect(x: CGFloat(view.frame.width - estimatedFrame.width - 16-8-8), y: 0, width: estimatedFrame.width+16+8, height: estimatedFrame.height + 20);
@@ -126,7 +127,7 @@ class ChatViewController: UIViewController, UITableViewDelegate, UITableViewData
                 cell.btnLinkAccount.addTarget(self, action:#selector(self.buttonTabed), for: .touchUpInside)
             }
         }
-        
+
         return cell
     }
     
@@ -271,11 +272,11 @@ class ChatViewController: UIViewController, UITableViewDelegate, UITableViewData
     }
     
     func reloadTable() -> Void {
-        
+        print("refreshing")
         DispatchQueue.main.async(execute: {
             self.chatTableView.reloadData()
-            self.typingImg.isHidden = true
-            DispatchQueue.main.asyncAfter(deadline: .now() + .milliseconds(2)) {
+                        self.typingImg.isHidden = true
+            DispatchQueue.main.asyncAfter(deadline: .now() + .milliseconds(1)) {
                 
                 let numberOfSections = self.chatTableView.numberOfSections
                 let numberOfRows = self.chatTableView.numberOfRows(inSection: numberOfSections-1)
@@ -283,6 +284,7 @@ class ChatViewController: UIViewController, UITableViewDelegate, UITableViewData
                 if numberOfRows > 0 {
                     let indexPath = IndexPath(row: numberOfRows-1, section: (numberOfSections-1))
                     self.chatTableView.scrollToRow(at: indexPath, at: .none, animated: false)
+
                 }
             }
         })
