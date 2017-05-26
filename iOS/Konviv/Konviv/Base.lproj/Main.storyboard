@@ -172,7 +172,7 @@
                             </navigationBar>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="37c-mU-139">
                                 <rect key="frame" x="67" y="266" width="240" height="40"/>
-                                <color key="backgroundColor" red="0.1247191549593385" green="0.60329341097695133" blue="1" alpha="0.72297952586206893" colorSpace="calibratedRGB"/>
+                                <color key="backgroundColor" red="0.13725490200000001" green="0.72549019609999998" blue="0.78823529410000004" alpha="1" colorSpace="calibratedRGB"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="40" id="QwQ-wh-IkC"/>
                                     <constraint firstAttribute="width" constant="240" id="rp5-GL-YJg"/>
@@ -194,7 +194,7 @@
                                     <constraint firstAttribute="height" relation="greaterThanOrEqual" constant="49" id="Mae-n2-R0M"/>
                                 </constraints>
                                 <state key="normal" title="Forgot password">
-                                    <color key="titleColor" red="0.0" green="0.68828705547528224" blue="0.90114182692307687" alpha="1" colorSpace="calibratedRGB"/>
+                                    <color key="titleColor" red="0.13725490200000001" green="0.72549019609999998" blue="0.78823529410000004" alpha="1" colorSpace="calibratedRGB"/>
                                 </state>
                                 <connections>
                                     <action selector="didTabOnResetPassword:" destination="hk6-8l-WtN" eventType="touchUpInside" id="d98-la-mii"/>
@@ -1423,7 +1423,7 @@
                             </textField>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="tRv-tV-iUh">
                                 <rect key="frame" x="67" y="407" width="240" height="40"/>
-                                <color key="backgroundColor" red="0.0" green="0.52390272010422434" blue="1" alpha="0.5297144396551724" colorSpace="calibratedRGB"/>
+                                <color key="backgroundColor" red="0.13333333333333333" green="0.72549019607843135" blue="0.78431372549019607" alpha="1" colorSpace="calibratedRGB"/>
                                 <constraints>
                                     <constraint firstAttribute="width" constant="240" id="TLQ-e0-XGQ"/>
                                     <constraint firstAttribute="height" constant="40" id="qUd-8y-Y4g"/>
@@ -1474,7 +1474,7 @@
                                     </navigationItem>
                                 </items>
                             </navigationBar>
-                            <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" scrollEnabled="NO" editable="NO" text="By using Konviv, you agree to our Terms of Service and Privacy Policy. Questions?. Contact Us." textAlignment="center" translatesAutoresizingMaskIntoConstraints="NO" id="II2-Cf-gm5">
+                            <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" scrollEnabled="NO" editable="NO" usesAttributedText="YES" translatesAutoresizingMaskIntoConstraints="NO" id="II2-Cf-gm5">
                                 <rect key="frame" x="16" y="593" width="349" height="66"/>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                 <constraints>
@@ -1482,8 +1482,50 @@
                                     <constraint firstAttribute="height" relation="greaterThanOrEqual" constant="66" id="MZw-sT-zth"/>
                                     <constraint firstAttribute="width" relation="greaterThanOrEqual" constant="349" id="PyD-e6-Zg4"/>
                                 </constraints>
-                                <color key="textColor" red="0.34901960780000002" green="0.34901960780000002" blue="0.34901960780000002" alpha="1" colorSpace="calibratedRGB"/>
-                                <fontDescription key="fontDescription" type="system" pointSize="11"/>
+                                <attributedString key="attributedText">
+                                    <fragment content="By using Konviv, you agree to our ">
+                                        <attributes>
+                                            <color key="NSColor" red="0.34901960780000002" green="0.34901960780000002" blue="0.34901960780000002" alpha="1" colorSpace="calibratedRGB"/>
+                                            <font key="NSFont" metaFont="smallSystem"/>
+                                            <paragraphStyle key="NSParagraphStyle" alignment="center" lineBreakMode="wordWrapping" baseWritingDirection="natural" tighteningFactorForTruncation="0.0"/>
+                                        </attributes>
+                                    </fragment>
+                                    <fragment content="Terms of Service">
+                                        <attributes>
+                                            <color key="NSColor" red="0.13333333333333333" green="0.72549019607843135" blue="0.7803921568627451" alpha="1" colorSpace="calibratedRGB"/>
+                                            <font key="NSFont" metaFont="smallSystem"/>
+                                            <paragraphStyle key="NSParagraphStyle" alignment="center" lineBreakMode="wordWrapping" baseWritingDirection="natural" tighteningFactorForTruncation="0.0"/>
+                                        </attributes>
+                                    </fragment>
+                                    <fragment content=" and ">
+                                        <attributes>
+                                            <color key="NSColor" red="0.34901960780000002" green="0.34901960780000002" blue="0.34901960780000002" alpha="1" colorSpace="calibratedRGB"/>
+                                            <font key="NSFont" metaFont="smallSystem"/>
+                                            <paragraphStyle key="NSParagraphStyle" alignment="center" lineBreakMode="wordWrapping" baseWritingDirection="natural" tighteningFactorForTruncation="0.0"/>
+                                        </attributes>
+                                    </fragment>
+                                    <fragment content="Privacy Policy.">
+                                        <attributes>
+                                            <color key="NSColor" red="0.13725490196078433" green="0.72156862745098038" blue="0.77647058823529413" alpha="1" colorSpace="calibratedRGB"/>
+                                            <font key="NSFont" metaFont="smallSystem"/>
+                                            <paragraphStyle key="NSParagraphStyle" alignment="center" lineBreakMode="wordWrapping" baseWritingDirection="natural" tighteningFactorForTruncation="0.0"/>
+                                        </attributes>
+                                    </fragment>
+                                    <fragment content=" Questions?. ">
+                                        <attributes>
+                                            <color key="NSColor" red="0.34901960780000002" green="0.34901960780000002" blue="0.34901960780000002" alpha="1" colorSpace="calibratedRGB"/>
+                                            <font key="NSFont" metaFont="smallSystem"/>
+                                            <paragraphStyle key="NSParagraphStyle" alignment="center" lineBreakMode="wordWrapping" baseWritingDirection="natural" tighteningFactorForTruncation="0.0"/>
+                                        </attributes>
+                                    </fragment>
+                                    <fragment content="Contact Us.">
+                                        <attributes>
+                                            <color key="NSColor" red="0.13725490196078433" green="0.72156862745098038" blue="0.77647058823529413" alpha="1" colorSpace="calibratedRGB"/>
+                                            <font key="NSFont" metaFont="smallSystem"/>
+                                            <paragraphStyle key="NSParagraphStyle" alignment="center" lineBreakMode="wordWrapping" baseWritingDirection="natural" tighteningFactorForTruncation="0.0"/>
+                                        </attributes>
+                                    </fragment>
+                                </attributedString>
                                 <textInputTraits key="textInputTraits" autocapitalizationType="sentences"/>
                             </textView>
                         </subviews>
@@ -1855,8 +1897,8 @@
     </resources>
     <inferredMetricsTieBreakers>
         <segue reference="Wzq-M5-YS8"/>
-        <segue reference="nKV-Sr-ZLf"/>
-        <segue reference="sa4-ry-1vT"/>
+        <segue reference="nkx-TW-10w"/>
+        <segue reference="6bk-b6-P0X"/>
         <segue reference="nZy-yt-K9n"/>
         <segue reference="cci-Hp-G2B"/>
         <segue reference="RAs-As-J62"/>
