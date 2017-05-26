@@ -111,7 +111,7 @@ class AccountHistoryViewController: UIViewController, UITableViewDelegate, UITab
     
     func handleError(error:Error, response: URLResponse) -> Void {
         if let httpResponse = response as? HTTPURLResponse {
-            print(httpResponse.statusCode) //todo
+            print(httpResponse.statusCode)
         }
     }
     /*

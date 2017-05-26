@@ -198,6 +198,8 @@
 				B86F39001E97F8A900FD3A57 /* Resources */,
 				C89547BCE099C4450F0614D9 /* [CP] Embed Pods Frameworks */,
 				088A3691D0A903B6831E831C /* [CP] Copy Pods Resources */,
+				B844C0011ED63F0F00BB0E60 /* Prepare for distribution */,
+				B844C0021ED6408F00BB0E60 /* ShellScript */,
 			);
 			buildRules = (
 			);
@@ -277,6 +279,33 @@
 			shellPath = /bin/sh;
 			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-Konviv/Pods-Konviv-resources.sh\"\n";
 			showEnvVarsInLog = 0;
+		};
+		B844C0011ED63F0F00BB0E60 /* Prepare for distribution */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "Prepare for distribution";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "";
+		};
+		B844C0021ED6408F00BB0E60 /* ShellScript */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "";
 		};
 		C89547BCE099C4450F0614D9 /* [CP] Embed Pods Frameworks */ = {
 			isa = PBXShellScriptBuildPhase;

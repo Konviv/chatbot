@@ -14,14 +14,12 @@ class DashboardViewController: UIViewController {
     @IBOutlet weak var addBankAccountBtn: UIButton!
     override func awakeFromNib() {
         super.awakeFromNib()
-        //   NotificationCenter.defaultCenter.addObserver(self, selector: #selector(AddBankViewController.(_:)), name: "PLDPlaidLinkSetupFinished", object: nil)
     }
     
     override func viewDidLoad() {
         super.viewDidLoad()
         let btnRadious = 20
         addBankAccountBtn?.layer.cornerRadius = CGFloat(btnRadious)
-        
     }
     
     override func didReceiveMemoryWarning() {

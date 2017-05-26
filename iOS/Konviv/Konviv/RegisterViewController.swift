@@ -84,6 +84,7 @@ class RegisterViewController: UIViewController {
                 updateRequest?.displayName = name! + " " + lastname!
                 updateRequest?.commitChanges { error in
                     if let error = error {
+                        print(error)
                         // An error happened.
                     } else {
                         let vc = self.storyboard?.instantiateViewController(withIdentifier: "SignIn")
