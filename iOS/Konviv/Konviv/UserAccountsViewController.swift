@@ -68,6 +68,8 @@ class UserAccountsViewController: UIViewController,  UITableViewDataSource, UITa
     }
     
     func noHasBankAccounts() -> Void {
+        self.activityIndicator.stopAnimating()
+        UIApplication.shared.endIgnoringInteractionEvents()
         let vc = self.storyboard?.instantiateViewController(withIdentifier: "DashboardWelcomeNavController")
        
         DispatchQueue.main.async(execute: {

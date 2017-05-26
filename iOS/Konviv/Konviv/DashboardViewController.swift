@@ -28,6 +28,7 @@ class DashboardViewController: UIViewController {
     }
     
     @IBAction func didTabOnAddBankAccount(_ sender: Any) {
+        print("entro")
         self.configuration()
     }
     

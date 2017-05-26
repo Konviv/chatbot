@@ -55,10 +55,10 @@ class ChatViewController: UIViewController, UITableViewDelegate, UITableViewData
     }
     
     func textViewDidBeginEditing(_ textView: UITextView) {
-        animateViewMoving(up: true, moveValue: 150)
+        animateViewMoving(up: true, moveValue: 170)
     }
     func textViewDidEndEditing(_ textView: UITextView) {
-        animateViewMoving(up: false, moveValue: 150)
+        animateViewMoving(up: false, moveValue: 170)
     }
     
     func animateViewMoving (up:Bool, moveValue :CGFloat){
