@@ -1216,7 +1216,7 @@
                                     <constraint firstAttribute="height" constant="45" id="Qj9-NV-hoK"/>
                                     <constraint firstAttribute="width" constant="300" id="f6d-b3-ypx"/>
                                 </constraints>
-                                <color key="textColor" red="0.99215686274509807" green="0.74509803921568629" blue="0.035294117647058823" alpha="1" colorSpace="calibratedRGB"/>
+                                <color key="textColor" red="1" green="0.0" blue="0.34901960784313724" alpha="1" colorSpace="calibratedRGB"/>
                                 <fontDescription key="fontDescription" type="boldSystem" pointSize="12"/>
                                 <textInputTraits key="textInputTraits" autocapitalizationType="sentences"/>
                             </textView>
@@ -1383,6 +1383,9 @@
                         </connections>
                     </view>
                     <navigationItem key="navigationItem" title="Tools" id="q8P-VQ-BHd"/>
+                    <connections>
+                        <outlet property="btnViewScore" destination="eU1-iZ-QJZ" id="kzR-A7-hHV"/>
+                    </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="nCL-Ws-jvx" userLabel="First Responder" sceneMemberID="firstResponder"/>
                 <swipeGestureRecognizer direction="left" id="2YW-AE-WHm"/>
@@ -1897,9 +1900,9 @@
         <image name="toptextkonviv" width="706" height="114"/>
     </resources>
     <inferredMetricsTieBreakers>
-        <segue reference="Wzq-M5-YS8"/>
+        <segue reference="pP9-GK-a6U"/>
         <segue reference="nkx-TW-10w"/>
-        <segue reference="6bk-b6-P0X"/>
+        <segue reference="sa4-ry-1vT"/>
         <segue reference="nZy-yt-K9n"/>
         <segue reference="cci-Hp-G2B"/>
         <segue reference="RAs-As-J62"/>
