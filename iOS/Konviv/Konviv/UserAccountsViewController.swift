@@ -14,7 +14,7 @@ class UserAccountsViewController: UIViewController,  UITableViewDataSource, UITa
     
     @IBOutlet weak var accountsTableView: UITableView!
     @IBOutlet weak var lblLastTransaction: UILabel!
-        
+    var activityIndicator: UIActivityIndicatorView = UIActivityIndicatorView()
     var bankAccounts : [Bank] = []
     var amount = ""
     override func viewDidLoad() {
@@ -82,6 +82,13 @@ class UserAccountsViewController: UIViewController,  UITableViewDataSource, UITa
     //MARK: - GET BANKS ACCOUNTS
     func getUserBankAccounts() -> Void {
         self.bankAccounts = []
+        self.activityIndicator.center = self.view.center
+        self.activityIndicator.hidesWhenStopped = true
+        self.activityIndicator.activityIndicatorViewStyle = UIActivityIndicatorViewStyle.gray
+        view.addSubview(activityIndicator)
+        self.activityIndicator.startAnimating()
+        UIApplication.shared.beginIgnoringInteractionEvents()
+        
         self.sendRequest(request: Request().createRequest(endPoint: Constants.BANK_ACCOUNTS, method: "GET"))
     }
     
@@ -129,6 +136,8 @@ class UserAccountsViewController: UIViewController,  UITableViewDataSource, UITa
             }
             DispatchQueue.main.async(execute: {
                 self.accountsTableView.reloadData()
+                self.activityIndicator.stopAnimating()
+                UIApplication.shared.endIgnoringInteractionEvents()
             })
         }
     }
