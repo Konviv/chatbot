@@ -192,7 +192,7 @@ class UserAccountsViewController: UIViewController,  UITableViewDataSource, UITa
     
     // MARK: -  PLAID DELEGATE
     func configuration() {
-        let linkConfiguration = PLKConfiguration(key: Constants.PLAID_KEY, env: .production, product: .auth)
+        let linkConfiguration = PLKConfiguration(key: Constants.PLAID_KEY, env: .sandbox, product: .auth)
         linkConfiguration.clientName = "Konviv"
         PLKPlaidLink.setup(with: linkConfiguration) { (success, error) in
             if (success) {
@@ -213,7 +213,7 @@ class UserAccountsViewController: UIViewController,  UITableViewDataSource, UITa
     }
     
     func presentPlaidLinkWithCustomConfiguration() {
-        let linkConfiguration = PLKConfiguration(key: Constants.PLAID_KEY, env: .production, product: .auth)
+        let linkConfiguration = PLKConfiguration(key: Constants.PLAID_KEY, env: .sandbox, product: .auth)
         linkConfiguration.clientName = "Link Demo"
         let linkViewDelegate = self
         let linkViewController = PLKPlaidLinkViewController(configuration: linkConfiguration, delegate: linkViewDelegate)
