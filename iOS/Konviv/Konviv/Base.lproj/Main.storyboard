@@ -985,8 +985,8 @@
                                                         <color key="titleColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
                                                     </state>
                                                 </button>
-                                                <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" image="icon_chat" translatesAutoresizingMaskIntoConstraints="NO" id="xbh-eX-eXg">
-                                                    <rect key="frame" x="0.0" y="8" width="45" height="45"/>
+                                                <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" image="icon_chat" translatesAutoresizingMaskIntoConstraints="NO" id="xbh-eX-eXg">
+                                                    <rect key="frame" x="6" y="0.0" width="30" height="30"/>
                                                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                                 </imageView>
                                                 <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="Eiw-wX-iOm">
@@ -1802,7 +1802,7 @@
             <objects>
                 <navigationController automaticallyAdjustsScrollViewInsets="NO" id="DQh-au-h7r" sceneMemberID="viewController">
                     <toolbarItems/>
-                    <navigationBar key="navigationBar" contentMode="scaleToFill" misplaced="YES" id="Ih3-3a-dwZ">
+                    <navigationBar key="navigationBar" contentMode="scaleToFill" id="Ih3-3a-dwZ">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="44"/>
                         <autoresizingMask key="autoresizingMask"/>
                     </navigationBar>
@@ -1820,7 +1820,7 @@
             <objects>
                 <navigationController automaticallyAdjustsScrollViewInsets="NO" id="Tkt-gE-6u3" sceneMemberID="viewController">
                     <toolbarItems/>
-                    <navigationBar key="navigationBar" contentMode="scaleToFill" misplaced="YES" id="yro-Za-aPF">
+                    <navigationBar key="navigationBar" contentMode="scaleToFill" id="yro-Za-aPF">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="44"/>
                         <autoresizingMask key="autoresizingMask"/>
                     </navigationBar>
@@ -1838,7 +1838,7 @@
             <objects>
                 <navigationController storyboardIdentifier="DashboardNavController" automaticallyAdjustsScrollViewInsets="NO" id="E8g-Ep-YZI" sceneMemberID="viewController">
                     <toolbarItems/>
-                    <navigationBar key="navigationBar" contentMode="scaleToFill" misplaced="YES" id="qRR-dT-UbC">
+                    <navigationBar key="navigationBar" contentMode="scaleToFill" id="qRR-dT-UbC">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="44"/>
                         <autoresizingMask key="autoresizingMask"/>
                     </navigationBar>
@@ -1856,7 +1856,7 @@
             <objects>
                 <navigationController storyboardIdentifier="DashboardWelcomeNavController" automaticallyAdjustsScrollViewInsets="NO" id="V2v-sd-W0Y" sceneMemberID="viewController">
                     <toolbarItems/>
-                    <navigationBar key="navigationBar" contentMode="scaleToFill" misplaced="YES" id="dkB-mc-qri">
+                    <navigationBar key="navigationBar" contentMode="scaleToFill" id="dkB-mc-qri">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="44"/>
                         <autoresizingMask key="autoresizingMask"/>
                     </navigationBar>
@@ -1874,7 +1874,7 @@
         <image name="chart" width="586" height="272"/>
         <image name="chat" width="300" height="300"/>
         <image name="dashboard" width="300" height="300"/>
-        <image name="icon_chat" width="347" height="347"/>
+        <image name="icon_chat" width="199" height="245"/>
         <image name="image1" width="878" height="941"/>
         <image name="image2" width="878" height="941"/>
         <image name="image3" width="794" height="941"/>
@@ -1888,8 +1888,8 @@
         <segue reference="ZZr-XY-kCD"/>
         <segue reference="aOU-Ls-Aaa"/>
         <segue reference="tO4-P8-v0G"/>
-        <segue reference="sEt-A6-KUo"/>
-        <segue reference="sa4-ry-1vT"/>
+        <segue reference="nkx-TW-10w"/>
         <segue reference="pP9-GK-a6U"/>
+        <segue reference="6bk-b6-P0X"/>
     </inferredMetricsTieBreakers>
 </document>

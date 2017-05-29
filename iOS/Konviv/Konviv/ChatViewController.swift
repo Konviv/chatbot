@@ -111,7 +111,7 @@ class ChatViewController: UIViewController, UITableViewDelegate, UITableViewData
             cell.iconChat.layer.isHidden = true
         }else{
             cell.bubbleReceiveTextView.text = messages[indexPath.row].message
-            cell.bubbleReceiveTextView.frame = CGRect(x: CGFloat(48.0+8.0), y: 0, width: estimatedFrame.width + 30+10, height: estimatedFrame.height + 20);
+            cell.bubbleReceiveTextView.frame = CGRect(x: CGFloat(40.0), y: 0, width: estimatedFrame.width + 30+10, height: estimatedFrame.height + 20);
             
             cell.iconChat.layer.isHidden = false
             cell.bubbleReceiveTextView.layer.cornerRadius = 8
