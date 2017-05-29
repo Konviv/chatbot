@@ -33,7 +33,7 @@ class DashboardViewController: UIViewController {
     }
     
     func configuration() {
-        let linkConfiguration = PLKConfiguration(key: Constants.PLAID_KEY, env: .sandbox, product: .auth)
+        let linkConfiguration = PLKConfiguration(key: Constants.PLAID_KEY, env: .production, product: .auth)
         linkConfiguration.clientName = "Konviv"
         PLKPlaidLink.setup(with: linkConfiguration) { (success, error) in
             if (success) {
@@ -53,7 +53,7 @@ class DashboardViewController: UIViewController {
     }
     
     func presentPlaidLinkWithCustomConfiguration() {
-        let linkConfiguration = PLKConfiguration(key: Constants.PLAID_KEY, env: .sandbox, product: .auth)
+        let linkConfiguration = PLKConfiguration(key: Constants.PLAID_KEY, env: .production, product: .auth)
         linkConfiguration.clientName = "Link Demo"
         let linkViewDelegate = self
         let linkViewController = PLKPlaidLinkViewController(configuration: linkConfiguration, delegate: linkViewDelegate)
