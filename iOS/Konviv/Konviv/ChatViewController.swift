@@ -96,11 +96,13 @@ class ChatViewController: UIViewController, UITableViewDelegate, UITableViewData
         tableView.rowHeight = estimatedFrame.height + 25
         cell.bubbleSendTextView.isEditable = false
         cell.bubbleReceiveTextView.isEditable = false
-        cell.bubbleSendTextView.textContainerInset = UIEdgeInsetsMake(8.0,12.0,8.0,10.0)
-        cell.bubbleReceiveTextView.textContainerInset = UIEdgeInsetsMake(8.0,10.0,8.0,10.0)
+        cell.bubbleSendTextView.textContainerInset.left = 6
+        cell.bubbleSendTextView.textContainerInset.right = 6
+        cell.bubbleReceiveTextView.textContainerInset.left = 9
+        
         if(messages[indexPath.row].sendByUser){
             cell.bubbleSendTextView.text = messages[indexPath.row].message
-            cell.bubbleSendTextView.frame = CGRect(x: CGFloat(view.frame.width - estimatedFrame.width - 16-15-15), y: 0, width: estimatedFrame.width+16+20, height: estimatedFrame.height + 20);
+           cell.bubbleSendTextView.frame = CGRect(x: CGFloat(view.frame.width - estimatedFrame.width - 16-18-8), y: 0, width: estimatedFrame.width+30+10, height: estimatedFrame.height + 20);
             
             cell.bubbleSendTextView.layer.cornerRadius = 8
             cell.bubbleSendTextView.layer.masksToBounds = true
@@ -109,7 +111,7 @@ class ChatViewController: UIViewController, UITableViewDelegate, UITableViewData
             cell.iconChat.layer.isHidden = true
         }else{
             cell.bubbleReceiveTextView.text = messages[indexPath.row].message
-            cell.bubbleReceiveTextView.frame = CGRect(x: CGFloat(48.0+8.0), y: 0, width: estimatedFrame.width + 16+20, height: estimatedFrame.height + 20);
+            cell.bubbleReceiveTextView.frame = CGRect(x: CGFloat(48.0+8.0), y: 0, width: estimatedFrame.width + 30+10, height: estimatedFrame.height + 20);
             
             cell.iconChat.layer.isHidden = false
             cell.bubbleReceiveTextView.layer.cornerRadius = 8
