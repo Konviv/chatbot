@@ -17,6 +17,7 @@ class AccountHistoryViewController: UIViewController, UITableViewDelegate, UITab
     override func viewDidLoad() {
         super.viewDidLoad()
         bank.accounts = []
+        self.navigationController?.navigationBar.tintColor = UIColor.black
         self.getAccountHistory()
         // Do any additional setup after loading the view.
     }
