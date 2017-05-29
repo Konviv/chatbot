@@ -272,7 +272,7 @@ class ChatViewController: UIViewController, UITableViewDelegate, UITableViewData
     }
     
     func reloadTable() -> Void {
-        print("refreshing")
+
         DispatchQueue.main.async(execute: {
             self.chatTableView.reloadData()
                         self.typingImg.isHidden = true

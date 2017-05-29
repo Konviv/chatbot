@@ -35,7 +35,9 @@ class AccountHistoryViewController: UIViewController, UITableViewDelegate, UITab
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "HistoryCell", for: indexPath) as! HistoryItemTableViewCell
         cell.lblAmount.text = "$\(String(self.bank.transactions[indexPath.row].amount))"
-        print(self.bank.transactions[indexPath.row].name)
+        if(self.bank.transactions[indexPath.row].amount < 0){
+            cell.lblAmount.textColor = UIColor.red
+        }
         cell.lblDate.text = String(describing: self.bank.transactions[indexPath.row].date)
         cell.textViewDescription.text = self.bank.transactions[indexPath.row].name
         return cell

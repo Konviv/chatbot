@@ -57,6 +57,9 @@ class UserAccountsViewController: UIViewController,  UITableViewDataSource, UITa
         let amount = self.bankAccounts[indexPath.section].accounts[indexPath.row].balances["current"] as? NSNumber
         
         cell.amount.text = amount != nil ? "$\(String(describing: amount!))" : "$0"
+        if((amount as! Double) < 0){
+            cell.amount.textColor = UIColor.red
+        }
         return cell
     }
     
@@ -159,7 +162,11 @@ class UserAccountsViewController: UIViewController,  UITableViewDataSource, UITa
             }
             DispatchQueue.main.async {
                self.lblLastTransaction.text = String(data: data!, encoding: .utf8)!.replacingOccurrences(of: "\"", with: "")
-
+                var amount  = String(data: data!, encoding: .utf8)!.replacingOccurrences(of: "\"", with: "")
+                amount  = amount.replacingOccurrences(of: "$", with: "")
+                if(Double(amount)! < Double(0)){
+                    self.lblLastTransaction.textColor = UIColor(red: 217.0, green: 0.11, blue: 0.3, alpha: 1.0)
+                }
             }
         }
         task.resume()
