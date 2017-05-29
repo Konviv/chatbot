@@ -25,7 +25,7 @@ class ChatViewController: UIViewController, UITableViewDelegate, UITableViewData
         self.view.addGestureRecognizer(UITapGestureRecognizer(target:self.view, action: #selector(UIView.endEditing(_:))))
         self.navigationItem.setHidesBackButton(true, animated: false)
         messageTxt.layer.cornerRadius = 20
-        messageTxt.textContainerInset = UIEdgeInsetsMake(5.0, 20.0, 5.0, 50.0)
+        messageTxt.textContainerInset = UIEdgeInsetsMake(12.0, 20.0, 5.0, 50.0)
         messageTxt.layer.backgroundColor = UIColor.white.cgColor
         messageTxt.layer.borderWidth = 0.5
         messageTxt.layer.borderColor = UIColor.lightGray.cgColor
