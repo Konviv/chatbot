@@ -11,7 +11,7 @@ import Messages
 
 class ChatViewController: UIViewController, UITableViewDelegate, UITableViewDataSource,UITextViewDelegate {
     
-    var messages : [Message] = [Message()]
+    var messages : [Message] = []
     @IBOutlet weak var chatTableView: UITableView!
     
     @IBOutlet weak var messageTxt: UITextView!
@@ -30,6 +30,10 @@ class ChatViewController: UIViewController, UITableViewDelegate, UITableViewData
         messageTxt.layer.borderWidth = 0.5
         messageTxt.layer.borderColor = UIColor.lightGray.cgColor
         messageTxt.delegate = self
+        let m1 = Message()
+        m1.message = ""
+        messages.append(m1)
+        messages.append(m1)
         // Do any additional setup after loading the view.
     }
     override func viewWillAppear(_ animated: Bool) {
@@ -83,13 +87,17 @@ class ChatViewController: UIViewController, UITableViewDelegate, UITableViewData
         let options = NSStringDrawingOptions.usesFontLeading.union(.usesLineFragmentOrigin)
         let estimatedFrame = NSString(string :messages[indexPath.row].message).boundingRect(with: size, options: options, attributes: [NSFontAttributeName:UIFont.systemFont(ofSize: 14)], context: nil)
         cell.btnLinkAccount.isHidden = true
-
-        if(messages[indexPath.row].message == ""){
+        if(messages[indexPath.row].message != ""){
+            tableView.rowHeight = 100
+        }
+        if(indexPath.row == 0 || indexPath.row == 1){
             cell.btnLinkAccount.isHidden = true
             cell.bubbleReceiveTextView.layer.isHidden = true
             cell.bubbleSendTextView.layer.isHidden = true
             cell.iconChat.isHidden = true
-            cell.bubbleReceiveTextView.frame = CGRect(x: CGFloat(48.0+8.0), y: 0, width: estimatedFrame.width + 16+8, height: estimatedFrame.height-10);
+            tableView.rowHeight = 50
+            cell.bubbleReceiveTextView.text = messages[indexPath.row].message
+            cell.bubbleReceiveTextView.frame = CGRect(x: CGFloat(40.0), y: 0, width: estimatedFrame.width + 30+10, height: estimatedFrame.height + 20);
             return cell
         }
         
@@ -251,6 +259,7 @@ class ChatViewController: UIViewController, UITableViewDelegate, UITableViewData
                                             DispatchQueue.main.asyncAfter(deadline: .now() + .milliseconds(5000))  {
                                                 self.isHelp = true
                                                 self.sendMessage(text: "could you")
+                                                
                                                 
                                             }
                                         }

@@ -19,5 +19,5 @@ struct Constants {
     static let LAST_TRANSACTION = "plaid/last_transaction"
     static let POSIBLE_QUESTIONS = "1. How much do I have in my checking account?could\n2. Can you give me a full summary of my accounts? \n3. How much did I spend on coffee this month? \n4. Can I get a total of all accounts? \n5. Can I get a total of all accounts? \n6. What was my most expensive bill? \n7. How much do I have in my savings account? \n8. What is my average spending amount? \n9. What were my last five transactions? \n10 How much did I spend today?"
     static let CHAT_WELCOME = "Wahoooo!!\nSo, what’s next? For you to put your ninja skills into use we first have to link Konviv to your banking info. You can do it at the next link"
-    static let SELECT_NUMBER = "Then you can select a number corresponding to a question or you can type it, if you don't remember a question you can type 'help'"
+    static let SELECT_NUMBER = "Then you can select a number corresponding to a question or you can type the question out. If you don't remember a question or the number, type 'help'"
 }
