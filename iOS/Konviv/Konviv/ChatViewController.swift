@@ -123,7 +123,7 @@ class ChatViewController: UIViewController, UITableViewDelegate, UITableViewData
             if("link-dashboard" == messages[indexPath.row].message){
                 cell.btnLinkAccount.isHidden = false
                 cell.bubbleReceiveTextView.isHidden = true
-                cell.btnLinkAccount.frame = CGRect(x: CGFloat(48.0+8.0), y: 0, width: estimatedFrame.width + 16+8, height: estimatedFrame.height + 20);
+                cell.btnLinkAccount.frame = CGRect(x: CGFloat(40.0), y: 0, width: estimatedFrame.width + 16+8, height: estimatedFrame.height + 20);
                 cell.btnLinkAccount.layer.cornerRadius = 8
                 cell.btnLinkAccount.layer.masksToBounds = true
                 cell.btnLinkAccount.addTarget(self, action:#selector(self.buttonTabed), for: .touchUpInside)
@@ -224,25 +224,47 @@ class ChatViewController: UIViewController, UITableViewDelegate, UITableViewData
                 self.context = dictionary["context"] as AnyObject?
                 let messageResponse = (dictionary["output"] as! String).replacingOccurrences(of: "\\n", with: "\n" )
                 self.createMessage(messageText: messageResponse,isUser: false)
-
+                self.reloadTable()
                 if(self.isHelp){
                     let pos =  messageResponse.index(messageResponse.startIndex, offsetBy: ((messageResponse.components(separatedBy: "\n").first)?.characters.count)! )
                     UserDefaults.standard.set(messageResponse.substring(from: pos), forKey: "questions")
                     self.isHelp = false
                 }
                 if(UserDefaults.standard.string(forKey: "context") == ""){
-                    self.createMessage(messageText: Constants.CHAT_WELCOME, isUser: false)
-                    self.createMessage(messageText: "link-dashboard", isUser: false)
-                    self.createMessage(messageText: Constants.SELECT_NUMBER, isUser: false)
-                    UserDefaults.standard.setValue(self.context, forKey: "context")
-                    self.reloadTable()
-                    self.isHelp = true
-                    self.sendMessage(text: "could you")
+                    DispatchQueue.main.asyncAfter(deadline: .now() + .milliseconds(1600))  {
+                        self.typingImg.isHidden = false
+                        DispatchQueue.main.asyncAfter(deadline: .now() + .milliseconds(1600))  {
+                            self.createMessage(messageText: Constants.CHAT_WELCOME, isUser: false)
+                            self.reloadTable()
+                            DispatchQueue.main.asyncAfter(deadline: .now() + .milliseconds(1600))  {
+                                self.typingImg.isHidden = false
+                                DispatchQueue.main.asyncAfter(deadline: .now() + .milliseconds(1600))  {
+                                    self.createMessage(messageText: "link-dashboard", isUser: false)
+                                    self.reloadTable()
+                                    DispatchQueue.main.asyncAfter(deadline: .now() + .milliseconds(2000))  {
+                                        self.typingImg.isHidden = false
+                                        DispatchQueue.main.asyncAfter(deadline: .now() + .milliseconds(2000))  {
+                                            self.createMessage(messageText: Constants.SELECT_NUMBER, isUser: false)
+                                            UserDefaults.standard.setValue(self.context, forKey: "context")
+                                            self.reloadTable()
+                                            self.typingImg.isHidden = false
+                                            DispatchQueue.main.asyncAfter(deadline: .now() + .milliseconds(5000))  {
+                                                self.isHelp = true
+                                                self.sendMessage(text: "could you")
+                                                
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                    
                     return
                 }
                 UserDefaults.standard.setValue(self.context, forKey: "context")
                 self.reloadTable()
-            }
+            }//
         }
         
     }
