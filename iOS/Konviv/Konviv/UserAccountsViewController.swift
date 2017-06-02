@@ -109,11 +109,18 @@ class UserAccountsViewController: UIViewController,  UITableViewDataSource, UITa
                 print("error=\(error)")
                 return
             }
-            if(JSONSerialization.isValidJSONObject(try!JSONSerialization.jsonObject(with: data!, options: .allowFragments))){
-                self.getResponseData(data: data!)
-                return
+            let s = response as! HTTPURLResponse
+            print(response)
+            if(300 > s.statusCode ){
+                if(JSONSerialization.isValidJSONObject(try!JSONSerialization.jsonObject(with: data!, options: .allowFragments))){
+                    self.getResponseData(data: data!)
+                    return
+                }
+                self.noHasBankAccounts()
+            }else{
+                self.activityIndicator.stopAnimating()
+                UIApplication.shared.endIgnoringInteractionEvents()
             }
-            self.noHasBankAccounts()
         }
         task.resume()
     }
@@ -160,13 +167,20 @@ class UserAccountsViewController: UIViewController,  UITableViewDataSource, UITa
                 print("error=\(error)")
                 return
             }
-            DispatchQueue.main.async {
-               self.lblLastTransaction.text = String(data: data!, encoding: .utf8)!.replacingOccurrences(of: "\"", with: "")
-                var amount  = String(data: data!, encoding: .utf8)!.replacingOccurrences(of: "\"", with: "")
-                amount  = amount.replacingOccurrences(of: "$", with: "")
-                if(Double(amount)! < Double(0)){
-                    self.lblLastTransaction.textColor = UIColor(red: 217.0, green: 0.11, blue: 0.3, alpha: 1.0)
+            let s = response as! HTTPURLResponse
+            print(response)
+            if(300 > s.statusCode ){
+                DispatchQueue.main.async {
+                self.lblLastTransaction.text = String(data: data!, encoding: .utf8)!.replacingOccurrences(of: "\"", with: "")
+                    var amount  = String(data: data!, encoding: .utf8)!.replacingOccurrences(of: "\"", with: "")
+                    amount  = amount.replacingOccurrences(of: "$", with: "")
+                    if(Double(amount)! < Double(0)){
+                        self.lblLastTransaction.textColor = UIColor(red: 217.0, green: 0.11, blue: 0.3, alpha: 1.0)
+                    }
                 }
+            }else{
+                self.activityIndicator.stopAnimating()
+                UIApplication.shared.endIgnoringInteractionEvents()
             }
         }
         task.resume()
