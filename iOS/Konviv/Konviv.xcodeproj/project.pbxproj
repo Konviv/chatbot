@@ -10,6 +10,10 @@
 		278E18EE96DE74662B4E11C7 /* Pods_Konviv.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 2E7EDB89F9B7F408D4C7ED19 /* Pods_Konviv.framework */; };
 		B82893E41EAE72D400527C08 /* PageViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B82893E31EAE72D400527C08 /* PageViewController.swift */; };
 		B82893F01EAEA82300527C08 /* LandingViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B82893EF1EAEA82300527C08 /* LandingViewController.swift */; };
+		B86146CF1ED8ED9200F58092 /* Montserrat-Light.ttf in Resources */ = {isa = PBXBuildFile; fileRef = B86146CE1ED8ED9200F58092 /* Montserrat-Light.ttf */; };
+		B86146D11ED8EDA700F58092 /* Montserrat-SemiBold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = B86146D01ED8EDA700F58092 /* Montserrat-SemiBold.ttf */; };
+		B86146D31ED8EDB200F58092 /* Montserrat-Bold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = B86146D21ED8EDB200F58092 /* Montserrat-Bold.ttf */; };
+		B86146D51ED8EF0200F58092 /* Montserrat-Regular.ttf in Resources */ = {isa = PBXBuildFile; fileRef = B86146D41ED8EF0200F58092 /* Montserrat-Regular.ttf */; };
 		B867675C1EAFE62C0067CAAC /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = B867675B1EAFE62C0067CAAC /* GoogleService-Info.plist */; };
 		B86F39061E97F8AA00FD3A57 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = B86F39051E97F8AA00FD3A57 /* AppDelegate.swift */; };
 		B86F39081E97F8AA00FD3A57 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B86F39071E97F8AA00FD3A57 /* ViewController.swift */; };
@@ -41,6 +45,10 @@
 		68939D3222CE8F1F10BD4A81 /* Pods-Konviv.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Konviv.debug.xcconfig"; path = "Pods/Target Support Files/Pods-Konviv/Pods-Konviv.debug.xcconfig"; sourceTree = "<group>"; };
 		B82893E31EAE72D400527C08 /* PageViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PageViewController.swift; sourceTree = "<group>"; };
 		B82893EF1EAEA82300527C08 /* LandingViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LandingViewController.swift; sourceTree = "<group>"; };
+		B86146CE1ED8ED9200F58092 /* Montserrat-Light.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; name = "Montserrat-Light.ttf"; path = "../../../../../../Downloads/Montserrat/Montserrat-Light.ttf"; sourceTree = "<group>"; };
+		B86146D01ED8EDA700F58092 /* Montserrat-SemiBold.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; name = "Montserrat-SemiBold.ttf"; path = "../../../../../../Downloads/Montserrat/Montserrat-SemiBold.ttf"; sourceTree = "<group>"; };
+		B86146D21ED8EDB200F58092 /* Montserrat-Bold.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; name = "Montserrat-Bold.ttf"; path = "../../../../../../Downloads/Montserrat/Montserrat-Bold.ttf"; sourceTree = "<group>"; };
+		B86146D41ED8EF0200F58092 /* Montserrat-Regular.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; name = "Montserrat-Regular.ttf"; path = "../../../../../../Downloads/Montserrat/Montserrat-Regular.ttf"; sourceTree = "<group>"; };
 		B867675B1EAFE62C0067CAAC /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		B86F39021E97F8A900FD3A57 /* Konviv.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Konviv.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		B86F39051E97F8AA00FD3A57 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
@@ -100,6 +108,17 @@
 			name = Pods;
 			sourceTree = "<group>";
 		};
+		B86146CD1ED8ED7900F58092 /* fonts */ = {
+			isa = PBXGroup;
+			children = (
+				B86146D41ED8EF0200F58092 /* Montserrat-Regular.ttf */,
+				B86146D01ED8EDA700F58092 /* Montserrat-SemiBold.ttf */,
+				B86146D21ED8EDB200F58092 /* Montserrat-Bold.ttf */,
+				B86146CE1ED8ED9200F58092 /* Montserrat-Light.ttf */,
+			);
+			name = fonts;
+			sourceTree = "<group>";
+		};
 		B86F38F91E97F8A900FD3A57 = {
 			isa = PBXGroup;
 			children = (
@@ -121,6 +140,7 @@
 		B86F39041E97F8A900FD3A57 /* Konviv */ = {
 			isa = PBXGroup;
 			children = (
+				B86146CD1ED8ED7900F58092 /* fonts */,
 				B89BE6AB1EC60B0800559393 /* helpers */,
 				B8C21CD31EC0D9D200979301 /* Models */,
 				B89875DE1EC0B76100EA25B4 /* Views */,
@@ -255,10 +275,14 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				B86146D51ED8EF0200F58092 /* Montserrat-Regular.ttf in Resources */,
+				B86146D11ED8EDA700F58092 /* Montserrat-SemiBold.ttf in Resources */,
+				B86146CF1ED8ED9200F58092 /* Montserrat-Light.ttf in Resources */,
 				B86F39131E97F8AA00FD3A57 /* LaunchScreen.storyboard in Resources */,
 				B867675C1EAFE62C0067CAAC /* GoogleService-Info.plist in Resources */,
 				B86F39101E97F8AA00FD3A57 /* Assets.xcassets in Resources */,
 				B86F390B1E97F8AA00FD3A57 /* Main.storyboard in Resources */,
+				B86146D31ED8EDB200F58092 /* Montserrat-Bold.ttf in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

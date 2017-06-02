@@ -10,10 +10,12 @@ import UIKit
 
 class ToolsViewController: UIViewController {
 
+    @IBOutlet weak var btnViewScore: UIButton!
     override func viewDidLoad() {
         super.viewDidLoad()
         self.navigationItem.setHidesBackButton(true, animated: false)
         // Do any additional setup after loading the view.
+        self.btnViewScore.layer.cornerRadius = CGFloat(15)
     }
 
     override func didReceiveMemoryWarning() {

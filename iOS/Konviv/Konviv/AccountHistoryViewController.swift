@@ -13,10 +13,11 @@ class AccountHistoryViewController: UIViewController, UITableViewDelegate, UITab
     var idAccount:String = ""
     var bank = Bank()
     @IBOutlet weak var accountHistoryTableView: UITableView!
-    
+    var activityIndicator: UIActivityIndicatorView = UIActivityIndicatorView()
     override func viewDidLoad() {
         super.viewDidLoad()
         bank.accounts = []
+        self.navigationController?.navigationBar.tintColor = UIColor.black
         self.getAccountHistory()
         // Do any additional setup after loading the view.
     }
@@ -35,7 +36,9 @@ class AccountHistoryViewController: UIViewController, UITableViewDelegate, UITab
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "HistoryCell", for: indexPath) as! HistoryItemTableViewCell
         cell.lblAmount.text = "$\(String(self.bank.transactions[indexPath.row].amount))"
-        print(self.bank.transactions[indexPath.row].name)
+        if(self.bank.transactions[indexPath.row].amount < 0){
+            cell.lblAmount.textColor = UIColor.red
+        }
         cell.lblDate.text = String(describing: self.bank.transactions[indexPath.row].date)
         cell.textViewDescription.text = self.bank.transactions[indexPath.row].name
         return cell
@@ -44,6 +47,11 @@ class AccountHistoryViewController: UIViewController, UITableViewDelegate, UITab
     // MARK: - Request
     
     func getAccountHistory() -> Void {
+        self.activityIndicator.center = self.view.center
+        self.activityIndicator.hidesWhenStopped = true
+        self.activityIndicator.activityIndicatorViewStyle = UIActivityIndicatorViewStyle.gray
+        view.addSubview(activityIndicator)
+        self.activityIndicator.startAnimating()
         self.sendRequest(request: Request().createRequest(endPoint: "\(Constants.HISTORY_BANK_ACCOUNT)\(self.idAccount)", method: "GET"))
     }
     
@@ -96,11 +104,13 @@ class AccountHistoryViewController: UIViewController, UITableViewDelegate, UITab
         }
         DispatchQueue.main.async {
             self.accountHistoryTableView.reloadData()
+            self.activityIndicator.stopAnimating()
         }
 
     }
     
     func presentAlert(message:String) -> Void {
+        self.activityIndicator.stopAnimating()
         let alert = UIAlertController(title: "", message: message, preferredStyle: UIAlertControllerStyle.alert)
         let actionOk = UIAlertAction(title: "Ok", style: UIAlertActionStyle.default){ (action:UIAlertAction) in
        _ = self.navigationController?.popViewController(animated: true)

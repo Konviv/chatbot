@@ -28,11 +28,12 @@ class DashboardViewController: UIViewController {
     }
     
     @IBAction func didTabOnAddBankAccount(_ sender: Any) {
+        print("entro")
         self.configuration()
     }
     
     func configuration() {
-        let linkConfiguration = PLKConfiguration(key: Constants.PLAID_KEY, env: .sandbox, product: .auth)
+        let linkConfiguration = PLKConfiguration(key: Constants.PLAID_KEY, env: .development, product: .auth)
         linkConfiguration.clientName = "Konviv"
         PLKPlaidLink.setup(with: linkConfiguration) { (success, error) in
             if (success) {
@@ -52,7 +53,7 @@ class DashboardViewController: UIViewController {
     }
     
     func presentPlaidLinkWithCustomConfiguration() {
-        let linkConfiguration = PLKConfiguration(key: Constants.PLAID_KEY, env: .sandbox, product: .auth)
+        let linkConfiguration = PLKConfiguration(key: Constants.PLAID_KEY, env: .development, product: .auth)
         linkConfiguration.clientName = "Link Demo"
         let linkViewDelegate = self
         let linkViewController = PLKPlaidLinkViewController(configuration: linkConfiguration, delegate: linkViewDelegate)

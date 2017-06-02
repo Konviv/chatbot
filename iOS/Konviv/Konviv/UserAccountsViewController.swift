@@ -14,7 +14,7 @@ class UserAccountsViewController: UIViewController,  UITableViewDataSource, UITa
     
     @IBOutlet weak var accountsTableView: UITableView!
     @IBOutlet weak var lblLastTransaction: UILabel!
-        
+    var activityIndicator: UIActivityIndicatorView = UIActivityIndicatorView()
     var bankAccounts : [Bank] = []
     var amount = ""
     override func viewDidLoad() {
@@ -57,6 +57,9 @@ class UserAccountsViewController: UIViewController,  UITableViewDataSource, UITa
         let amount = self.bankAccounts[indexPath.section].accounts[indexPath.row].balances["current"] as? NSNumber
         
         cell.amount.text = amount != nil ? "$\(String(describing: amount!))" : "$0"
+        if((amount as! Double) < 0){
+            cell.amount.textColor = UIColor.red
+        }
         return cell
     }
     
@@ -68,6 +71,8 @@ class UserAccountsViewController: UIViewController,  UITableViewDataSource, UITa
     }
     
     func noHasBankAccounts() -> Void {
+        self.activityIndicator.stopAnimating()
+        UIApplication.shared.endIgnoringInteractionEvents()
         let vc = self.storyboard?.instantiateViewController(withIdentifier: "DashboardWelcomeNavController")
        
         DispatchQueue.main.async(execute: {
@@ -82,6 +87,13 @@ class UserAccountsViewController: UIViewController,  UITableViewDataSource, UITa
     //MARK: - GET BANKS ACCOUNTS
     func getUserBankAccounts() -> Void {
         self.bankAccounts = []
+        self.activityIndicator.center = self.view.center
+        self.activityIndicator.hidesWhenStopped = true
+        self.activityIndicator.activityIndicatorViewStyle = UIActivityIndicatorViewStyle.gray
+        view.addSubview(activityIndicator)
+        self.activityIndicator.startAnimating()
+        UIApplication.shared.beginIgnoringInteractionEvents()
+        
         self.sendRequest(request: Request().createRequest(endPoint: Constants.BANK_ACCOUNTS, method: "GET"))
     }
     
@@ -97,11 +109,18 @@ class UserAccountsViewController: UIViewController,  UITableViewDataSource, UITa
                 print("error=\(error)")
                 return
             }
-            if(JSONSerialization.isValidJSONObject(try!JSONSerialization.jsonObject(with: data!, options: .allowFragments))){
-                self.getResponseData(data: data!)
-                return
+            let s = response as! HTTPURLResponse
+            print(response)
+            if(300 > s.statusCode ){
+                if(JSONSerialization.isValidJSONObject(try!JSONSerialization.jsonObject(with: data!, options: .allowFragments))){
+                    self.getResponseData(data: data!)
+                    return
+                }
+                self.noHasBankAccounts()
+            }else{
+                self.activityIndicator.stopAnimating()
+                UIApplication.shared.endIgnoringInteractionEvents()
             }
-            self.noHasBankAccounts()
         }
         task.resume()
     }
@@ -129,6 +148,8 @@ class UserAccountsViewController: UIViewController,  UITableViewDataSource, UITa
             }
             DispatchQueue.main.async(execute: {
                 self.accountsTableView.reloadData()
+                self.activityIndicator.stopAnimating()
+                UIApplication.shared.endIgnoringInteractionEvents()
             })
         }
     }
@@ -146,9 +167,20 @@ class UserAccountsViewController: UIViewController,  UITableViewDataSource, UITa
                 print("error=\(error)")
                 return
             }
-            DispatchQueue.main.async {
-               self.lblLastTransaction.text = String(data: data!, encoding: .utf8)!.replacingOccurrences(of: "\"", with: "")
-
+            let s = response as! HTTPURLResponse
+            print(response)
+            if(300 > s.statusCode ){
+                DispatchQueue.main.async {
+                self.lblLastTransaction.text = String(data: data!, encoding: .utf8)!.replacingOccurrences(of: "\"", with: "")
+                    var amount  = String(data: data!, encoding: .utf8)!.replacingOccurrences(of: "\"", with: "")
+                    amount  = amount.replacingOccurrences(of: "$", with: "")
+                    if(Double(amount)! < Double(0)){
+                        self.lblLastTransaction.textColor = UIColor(red: 217.0, green: 0.11, blue: 0.3, alpha: 1.0)
+                    }
+                }
+            }else{
+                self.activityIndicator.stopAnimating()
+                UIApplication.shared.endIgnoringInteractionEvents()
             }
         }
         task.resume()
@@ -174,7 +206,7 @@ class UserAccountsViewController: UIViewController,  UITableViewDataSource, UITa
     
     // MARK: -  PLAID DELEGATE
     func configuration() {
-        let linkConfiguration = PLKConfiguration(key: Constants.PLAID_KEY, env: .sandbox, product: .auth)
+        let linkConfiguration = PLKConfiguration(key: Constants.PLAID_KEY, env: .development, product: .auth)
         linkConfiguration.clientName = "Konviv"
         PLKPlaidLink.setup(with: linkConfiguration) { (success, error) in
             if (success) {
@@ -195,7 +227,7 @@ class UserAccountsViewController: UIViewController,  UITableViewDataSource, UITa
     }
     
     func presentPlaidLinkWithCustomConfiguration() {
-        let linkConfiguration = PLKConfiguration(key: Constants.PLAID_KEY, env: .sandbox, product: .auth)
+        let linkConfiguration = PLKConfiguration(key: Constants.PLAID_KEY, env: .development, product: .auth)
         linkConfiguration.clientName = "Link Demo"
         let linkViewDelegate = self
         let linkViewController = PLKPlaidLinkViewController(configuration: linkConfiguration, delegate: linkViewDelegate)

@@ -11,7 +11,7 @@ import Messages
 
 class ChatViewController: UIViewController, UITableViewDelegate, UITableViewDataSource,UITextViewDelegate {
     
-    var messages : [Message] = [Message()]
+    var messages : [Message] = []
     @IBOutlet weak var chatTableView: UITableView!
     
     @IBOutlet weak var messageTxt: UITextView!
@@ -25,11 +25,15 @@ class ChatViewController: UIViewController, UITableViewDelegate, UITableViewData
         self.view.addGestureRecognizer(UITapGestureRecognizer(target:self.view, action: #selector(UIView.endEditing(_:))))
         self.navigationItem.setHidesBackButton(true, animated: false)
         messageTxt.layer.cornerRadius = 20
-        messageTxt.textContainerInset = UIEdgeInsetsMake(5.0, 20.0, 5.0, 50.0)
+        messageTxt.textContainerInset = UIEdgeInsetsMake(12.0, 20.0, 5.0, 50.0)
         messageTxt.layer.backgroundColor = UIColor.white.cgColor
         messageTxt.layer.borderWidth = 0.5
         messageTxt.layer.borderColor = UIColor.lightGray.cgColor
         messageTxt.delegate = self
+        let m1 = Message()
+        m1.message = ""
+        messages.append(m1)
+        messages.append(m1)
         // Do any additional setup after loading the view.
     }
     override func viewWillAppear(_ animated: Bool) {
@@ -55,10 +59,10 @@ class ChatViewController: UIViewController, UITableViewDelegate, UITableViewData
     }
     
     func textViewDidBeginEditing(_ textView: UITextView) {
-        animateViewMoving(up: true, moveValue: 150)
+        animateViewMoving(up: true, moveValue: 170)
     }
     func textViewDidEndEditing(_ textView: UITextView) {
-        animateViewMoving(up: false, moveValue: 150)
+        animateViewMoving(up: false, moveValue: 170)
     }
     
     func animateViewMoving (up:Bool, moveValue :CGFloat){
@@ -83,23 +87,30 @@ class ChatViewController: UIViewController, UITableViewDelegate, UITableViewData
         let options = NSStringDrawingOptions.usesFontLeading.union(.usesLineFragmentOrigin)
         let estimatedFrame = NSString(string :messages[indexPath.row].message).boundingRect(with: size, options: options, attributes: [NSFontAttributeName:UIFont.systemFont(ofSize: 14)], context: nil)
         cell.btnLinkAccount.isHidden = true
-
-        if(messages[indexPath.row].message == ""){
+        if(messages[indexPath.row].message != ""){
+            tableView.rowHeight = 100
+        }
+        if(indexPath.row == 0 || indexPath.row == 1){
             cell.btnLinkAccount.isHidden = true
             cell.bubbleReceiveTextView.layer.isHidden = true
             cell.bubbleSendTextView.layer.isHidden = true
             cell.iconChat.isHidden = true
-            cell.bubbleReceiveTextView.frame = CGRect(x: CGFloat(48.0+8.0), y: 0, width: estimatedFrame.width + 16+8, height: estimatedFrame.height-10);
+            tableView.rowHeight = 50
+            cell.bubbleReceiveTextView.text = messages[indexPath.row].message
+            cell.bubbleReceiveTextView.frame = CGRect(x: CGFloat(40.0), y: 0, width: estimatedFrame.width + 30+10, height: estimatedFrame.height + 20);
             return cell
         }
         
         tableView.rowHeight = estimatedFrame.height + 25
         cell.bubbleSendTextView.isEditable = false
         cell.bubbleReceiveTextView.isEditable = false
+        cell.bubbleSendTextView.textContainerInset.left = 6
+        cell.bubbleSendTextView.textContainerInset.right = 6
+        cell.bubbleReceiveTextView.textContainerInset.left = 9
         
         if(messages[indexPath.row].sendByUser){
             cell.bubbleSendTextView.text = messages[indexPath.row].message
-            cell.bubbleSendTextView.frame = CGRect(x: CGFloat(view.frame.width - estimatedFrame.width - 16-8-8), y: 0, width: estimatedFrame.width+16+8, height: estimatedFrame.height + 20);
+           cell.bubbleSendTextView.frame = CGRect(x: CGFloat(view.frame.width - estimatedFrame.width - 16-18-8), y: 0, width: estimatedFrame.width+30+10, height: estimatedFrame.height + 20);
             
             cell.bubbleSendTextView.layer.cornerRadius = 8
             cell.bubbleSendTextView.layer.masksToBounds = true
@@ -108,7 +119,7 @@ class ChatViewController: UIViewController, UITableViewDelegate, UITableViewData
             cell.iconChat.layer.isHidden = true
         }else{
             cell.bubbleReceiveTextView.text = messages[indexPath.row].message
-            cell.bubbleReceiveTextView.frame = CGRect(x: CGFloat(48.0+8.0), y: 0, width: estimatedFrame.width + 16+8, height: estimatedFrame.height + 20);
+            cell.bubbleReceiveTextView.frame = CGRect(x: CGFloat(40.0), y: 0, width: estimatedFrame.width + 30+10, height: estimatedFrame.height + 20);
             
             cell.iconChat.layer.isHidden = false
             cell.bubbleReceiveTextView.layer.cornerRadius = 8
@@ -120,13 +131,13 @@ class ChatViewController: UIViewController, UITableViewDelegate, UITableViewData
             if("link-dashboard" == messages[indexPath.row].message){
                 cell.btnLinkAccount.isHidden = false
                 cell.bubbleReceiveTextView.isHidden = true
-                cell.btnLinkAccount.frame = CGRect(x: CGFloat(48.0+8.0), y: 0, width: estimatedFrame.width + 16+8, height: estimatedFrame.height + 20);
+                cell.btnLinkAccount.frame = CGRect(x: CGFloat(40.0), y: 0, width: estimatedFrame.width + 16+8, height: estimatedFrame.height + 20);
                 cell.btnLinkAccount.layer.cornerRadius = 8
                 cell.btnLinkAccount.layer.masksToBounds = true
                 cell.btnLinkAccount.addTarget(self, action:#selector(self.buttonTabed), for: .touchUpInside)
             }
         }
-        
+
         return cell
     }
     
@@ -221,25 +232,48 @@ class ChatViewController: UIViewController, UITableViewDelegate, UITableViewData
                 self.context = dictionary["context"] as AnyObject?
                 let messageResponse = (dictionary["output"] as! String).replacingOccurrences(of: "\\n", with: "\n" )
                 self.createMessage(messageText: messageResponse,isUser: false)
-
+                self.reloadTable()
                 if(self.isHelp){
                     let pos =  messageResponse.index(messageResponse.startIndex, offsetBy: ((messageResponse.components(separatedBy: "\n").first)?.characters.count)! )
                     UserDefaults.standard.set(messageResponse.substring(from: pos), forKey: "questions")
                     self.isHelp = false
                 }
                 if(UserDefaults.standard.string(forKey: "context") == ""){
-                    self.createMessage(messageText: Constants.CHAT_WELCOME, isUser: false)
-                    self.createMessage(messageText: "link-dashboard", isUser: false)
-                    self.createMessage(messageText: Constants.SELECT_NUMBER, isUser: false)
-                    UserDefaults.standard.setValue(self.context, forKey: "context")
-                    self.reloadTable()
-                    self.isHelp = true
-                    self.sendMessage(text: "could you")
+                    DispatchQueue.main.asyncAfter(deadline: .now() + .milliseconds(1600))  {
+                        self.typingImg.isHidden = false
+                        DispatchQueue.main.asyncAfter(deadline: .now() + .milliseconds(1600))  {
+                            self.createMessage(messageText: Constants.CHAT_WELCOME, isUser: false)
+                            self.reloadTable()
+                            DispatchQueue.main.asyncAfter(deadline: .now() + .milliseconds(1600))  {
+                                self.typingImg.isHidden = false
+                                DispatchQueue.main.asyncAfter(deadline: .now() + .milliseconds(1600))  {
+                                    self.createMessage(messageText: "link-dashboard", isUser: false)
+                                    self.reloadTable()
+                                    DispatchQueue.main.asyncAfter(deadline: .now() + .milliseconds(2000))  {
+                                        self.typingImg.isHidden = false
+                                        DispatchQueue.main.asyncAfter(deadline: .now() + .milliseconds(2000))  {
+                                            self.createMessage(messageText: Constants.SELECT_NUMBER, isUser: false)
+                                            UserDefaults.standard.setValue(self.context, forKey: "context")
+                                            self.reloadTable()
+                                            self.typingImg.isHidden = false
+                                            DispatchQueue.main.asyncAfter(deadline: .now() + .milliseconds(5000))  {
+                                                self.isHelp = true
+                                                self.sendMessage(text: "could you")
+                                                
+                                                
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                    
                     return
                 }
                 UserDefaults.standard.setValue(self.context, forKey: "context")
                 self.reloadTable()
-            }
+            }//
         }
         
     }
@@ -271,11 +305,11 @@ class ChatViewController: UIViewController, UITableViewDelegate, UITableViewData
     }
     
     func reloadTable() -> Void {
-        
+
         DispatchQueue.main.async(execute: {
             self.chatTableView.reloadData()
-            self.typingImg.isHidden = true
-            DispatchQueue.main.asyncAfter(deadline: .now() + .milliseconds(2)) {
+                        self.typingImg.isHidden = true
+            DispatchQueue.main.asyncAfter(deadline: .now() + .milliseconds(1)) {
                 
                 let numberOfSections = self.chatTableView.numberOfSections
                 let numberOfRows = self.chatTableView.numberOfRows(inSection: numberOfSections-1)
@@ -283,6 +317,7 @@ class ChatViewController: UIViewController, UITableViewDelegate, UITableViewData
                 if numberOfRows > 0 {
                     let indexPath = IndexPath(row: numberOfRows-1, section: (numberOfSections-1))
                     self.chatTableView.scrollToRow(at: indexPath, at: .none, animated: false)
+
                 }
             }
         })
