@@ -17,7 +17,6 @@ class ChatViewController: UIViewController, UITableViewDelegate, UITableViewData
     @IBOutlet weak var messageTxt: UITextView!
     var context: AnyObject? = nil
     var isHelp:Bool = false
-    @IBOutlet weak var typingImg: UIImageView!
     override func viewDidLoad() {
         super.viewDidLoad()
         chatTableView.estimatedRowHeight = 200.0
@@ -37,7 +36,6 @@ class ChatViewController: UIViewController, UITableViewDelegate, UITableViewData
         // Do any additional setup after loading the view.
     }
     override func viewWillAppear(_ animated: Bool) {
-        self.typingImg.isHidden = true
         if(UserDefaults.standard.string(forKey: "context") == ""){
             self.startChat()
             return
@@ -183,17 +181,14 @@ class ChatViewController: UIViewController, UITableViewDelegate, UITableViewData
         let dic :[String:AnyObject] = ["message" : text as AnyObject, "context" : UserDefaults.standard.object(forKey: "context") as AnyObject]
         let json = try? JSONSerialization.data(withJSONObject: dic)
         request.httpBody = json
-        self.typingImg.isHidden = false
         self.sendRequest(request: request,isAllMessages:false)
     }
     
     func getAllMessages() -> Void {
-        self.typingImg.isHidden = false
         self.sendRequest(request: Request().createRequest(endPoint: Constants.CHAT_ALL_MESSAGES, method: "GET"), isAllMessages: true)
     }
     
     func startChat() -> Void {
-        self.typingImg.isHidden = false
         self.sendRequest(request: Request().createRequest(endPoint: Constants.CHAT_START, method: "POST"),isAllMessages:false)
         
     }
@@ -203,7 +198,6 @@ class ChatViewController: UIViewController, UITableViewDelegate, UITableViewData
             self.presentAlert()
             return
         }
-        self.typingImg.isHidden = false
         let task = URLSession.shared.dataTask(with: request as URLRequest) { (data: Data?, response: URLResponse?, error: Error?) in
             
             if error != nil
@@ -240,22 +234,18 @@ class ChatViewController: UIViewController, UITableViewDelegate, UITableViewData
                 }
                 if(UserDefaults.standard.string(forKey: "context") == ""){
                     DispatchQueue.main.asyncAfter(deadline: .now() + .milliseconds(1600))  {
-                        self.typingImg.isHidden = false
                         DispatchQueue.main.asyncAfter(deadline: .now() + .milliseconds(1600))  {
                             self.createMessage(messageText: Constants.CHAT_WELCOME, isUser: false)
                             self.reloadTable()
                             DispatchQueue.main.asyncAfter(deadline: .now() + .milliseconds(1600))  {
-                                self.typingImg.isHidden = false
                                 DispatchQueue.main.asyncAfter(deadline: .now() + .milliseconds(1600))  {
                                     self.createMessage(messageText: "link-dashboard", isUser: false)
                                     self.reloadTable()
                                     DispatchQueue.main.asyncAfter(deadline: .now() + .milliseconds(2000))  {
-                                        self.typingImg.isHidden = false
                                         DispatchQueue.main.asyncAfter(deadline: .now() + .milliseconds(2000))  {
                                             self.createMessage(messageText: Constants.SELECT_NUMBER, isUser: false)
                                             UserDefaults.standard.setValue(self.context, forKey: "context")
                                             self.reloadTable()
-                                            self.typingImg.isHidden = false
                                             DispatchQueue.main.asyncAfter(deadline: .now() + .milliseconds(5000))  {
                                                 self.isHelp = true
                                                 self.sendMessage(text: "could you")
@@ -308,7 +298,6 @@ class ChatViewController: UIViewController, UITableViewDelegate, UITableViewData
 
         DispatchQueue.main.async(execute: {
             self.chatTableView.reloadData()
-                        self.typingImg.isHidden = true
             DispatchQueue.main.asyncAfter(deadline: .now() + .milliseconds(1)) {
                 
                 let numberOfSections = self.chatTableView.numberOfSections
