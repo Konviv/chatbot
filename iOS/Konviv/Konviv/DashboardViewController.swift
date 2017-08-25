@@ -62,8 +62,8 @@ class DashboardViewController: UIViewController {
     
     func handleSuccessWithToken(publicToken: String, metadata: [String : AnyObject]?) {
         let inst  =  metadata?["institution"] as AnyObject
-        let instName = self.getValue(anyVal: inst["name"] as Any)
-        let id = self.getValue(anyVal: inst["type"] as Any)
+        let instName = self.getValue(anyVal: inst["name"] as! String)
+        let id = self.getValue(anyVal: inst["type"] as! String)
         if (!(instName == "" && id == "")) {
             self.sendInfoAccount(token: publicToken,id: id, institution: instName)
         }
